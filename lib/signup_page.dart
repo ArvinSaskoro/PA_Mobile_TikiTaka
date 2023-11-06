@@ -1,0 +1,268 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/material.dart';
+
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // backgorund atas
+            Container(
+              height: 240,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 29, 72, 106),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage('assets/logo.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15),
+                    child: Text(
+                      "Start your Creation Adventure with Tiki Taka",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontFamily: 'Raleway',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 50),
+            // Username, Password, Confirm Password
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              width: double.infinity,
+              height: 70,
+              child: TextField(
+                controller: TextEditingController(),
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  labelText: 'Username',
+                  labelStyle: const TextStyle(
+                    color: Color.fromARGB(255, 41, 179, 173),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  hintText: 'Username',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromARGB(255, 204, 204, 204),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 41, 179, 173),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 41, 179, 173),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              width: double.infinity,
+              height: 70,
+              child: TextField(
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  labelText: 'Password',
+                  labelStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromARGB(255, 41, 179, 173),
+                  ),
+                  hintText: 'Password',
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromARGB(255, 204, 204, 204),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 41, 179, 173),
+                      width: 2,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 41, 179, 173),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              width: double.infinity,
+              height: 70,
+              child: TextField(
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  labelText: 'Confirm Password',
+                  labelStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromARGB(255, 41, 179, 173),
+                  ),
+                  hintText: 'Password',
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromARGB(255, 204, 204, 204),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 41, 179, 173),
+                      width: 2,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 41, 179, 173),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 70),
+            // button bawah
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "By Signing Up, you agree to our ",
+                  style: TextStyle(
+                    fontFamily: 'Raleway',
+                    fontSize: 13,
+                    color: Color.fromARGB(255, 18, 45, 66),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Text(
+                    "Terms & Privacy Policy",
+                    style: TextStyle(
+                      fontFamily: 'Raleway',
+                      color: Color.fromARGB(255, 18, 45, 66),
+                      fontSize: 13,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 5),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(0, 50),
+                    foregroundColor: Color.fromARGB(255, 18, 45, 66),
+                    backgroundColor: Color.fromARGB(255, 29, 72, 106),
+                    padding: const EdgeInsets.symmetric(horizontal: 90),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () {
+                    // arahin ke add_content.dart
+                  },
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        fontFamily: 'Raleway',
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Already has an account? ",
+                  style: TextStyle(
+                    fontFamily: 'Raleway',
+                    fontSize: 13,
+                    color: Color.fromARGB(255, 18, 45, 66),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                  child: Text(
+                    "Sign In",
+                    style: TextStyle(
+                      fontFamily: 'Raleway',
+                      color: Color.fromARGB(255, 41, 179, 173),
+                      fontSize: 13,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 50),
+          ],
+        ),
+      ),
+    );
+  }
+}
