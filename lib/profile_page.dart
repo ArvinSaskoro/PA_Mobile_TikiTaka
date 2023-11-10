@@ -1,5 +1,6 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/edit_profile_page.dart';
 
 class ProfilePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -85,9 +86,7 @@ class ProfilePage extends StatelessWidget {
               title: Text('Edit Profile'),
               onTap: () {
                 // Tambahkan logika untuk navigasi ke halaman edit profil
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => EditProfilePage(),
-                ));
+                Navigator.pushNamed(context, '/editProfile');
               },
             ),
             ListTile(

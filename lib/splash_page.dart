@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 18, 45, 66),
                 ),
               ),
               SizedBox(height: 10),
@@ -38,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 18, 45, 66),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -55,23 +57,23 @@ class _SplashScreenState extends State<SplashScreen> {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  // Navigasi ke halaman selanjutnya
+                  Navigator.pushNamed(context, '/introduction');
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                    Color.fromARGB(
-                        255, 18, 45, 66), // Ubah warna ElevatedButton
+                    Color.fromARGB(255, 18, 45, 66),
                   ),
                 ),
                 child: Text('Get Started',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     )),
               ),
               SizedBox(height: 10),
               TextButton(
                 onPressed: () {
-                  // Navigasi ke halaman login.
+                  Navigator.pushNamed(context, '/signIn');
                 },
                 child: Text(
                   'Sign In To My Account',
