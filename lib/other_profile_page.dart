@@ -1,17 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: OtherProfilePage(),
-    );
-  }
-}
 
 class OtherProfilePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -152,12 +141,13 @@ class OtherProfilePage extends StatelessWidget {
               icon: Icon(Icons.add_circle, color: Colors.white),
               onPressed: () {
                 // Tambahkan logika untuk menambahkan postingan
+                Navigator.pushNamed(context, '/addContent');
               },
             ),
             IconButton(
               icon: Icon(Icons.account_circle, color: Colors.white),
               onPressed: () {
-                // Tambahkan logika untuk navigasi ke halaman profil
+                Navigator.pushNamed(context, '/profile');
               },
             ),
           ],

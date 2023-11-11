@@ -94,6 +94,7 @@ class ProfilePage extends StatelessWidget {
               title: Text('Logout'),
               onTap: () {
                 // Tambahkan logika untuk logout
+                Navigator.pushNamed(context, '/signIn');
               },
             ),
             ListTile(
@@ -154,6 +155,7 @@ class ProfilePage extends StatelessWidget {
               icon: Icon(Icons.add_circle, color: Colors.white),
               onPressed: () {
                 // Tambahkan logika untuk menambahkan postingan
+                Navigator.pushNamed(context, '/addContent');
               },
             ),
             IconButton(

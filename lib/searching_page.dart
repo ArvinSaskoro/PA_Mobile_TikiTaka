@@ -17,10 +17,10 @@ class _SearchingPageState extends State<SearchingPage> {
       margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 18, 45, 66),
-        borderRadius: BorderRadius.circular(10), 
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start, 
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(width: 15),
           Icon(
@@ -60,7 +60,7 @@ class _SearchingPageState extends State<SearchingPage> {
               //   ),
               // ),
               Container(
-                width: MediaQuery.of(context).size.width * 2/3,
+                width: MediaQuery.of(context).size.width * 2 / 3,
                 height: 35,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 217, 217, 217),
@@ -76,11 +76,12 @@ class _SearchingPageState extends State<SearchingPage> {
               SizedBox(width: 20),
               InkWell(
                 onTap: () {
-                  // Aksi saat teks "Search" ditekan (navigasi ke halaman pencarian)
+                  Navigator.pushNamed(context, '/otherProfile');
                 },
                 child: Text(
                   "Search",
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.normal),
                 ),
               ),
             ],
@@ -106,7 +107,6 @@ class _SearchingPageState extends State<SearchingPage> {
                 width: double.infinity,
                 height: 360,
                 margin: EdgeInsets.symmetric(horizontal: 40),
-                //color: Color.fromARGB(255, 18, 45, 66),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -123,8 +123,7 @@ class _SearchingPageState extends State<SearchingPage> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Stack(
-                    alignment:
-                        Alignment.bottomCenter, 
+                    alignment: Alignment.bottomCenter,
                     children: [
                       Container(
                         height: 180,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:project_akhir/add_content_page.dart';
 import 'package:project_akhir/edit_profile_page.dart';
 import 'package:project_akhir/introduction_page.dart';
+import 'package:project_akhir/other_profile_page.dart';
 import 'package:project_akhir/profile_page.dart';
 import 'package:project_akhir/searching_page.dart';
 import 'package:project_akhir/signin_page.dart';
@@ -28,10 +30,11 @@ class MyApp extends StatelessWidget {
         '/introduction': (context) => const IntroductionPage(),
         '/signIn': (context) => const SignIn(),
         '/signUp': (context) => const SignUp(),
-        // '/addContent': (context) => AddContent(),
+        '/addContent': (context) => AddContent(),
         '/search': (context) => const SearchingPage(),
         '/profile': (context) => ProfilePage(),
         '/editProfile': (context) => EditProfilePage(),
+        '/otherProfile': (context) => OtherProfilePage(),
       },
       initialRoute: '/',
     );

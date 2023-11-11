@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'splash_page.dart';
 
 class IntroductionPage extends StatelessWidget {
   const IntroductionPage({super.key});
@@ -12,13 +13,7 @@ class IntroductionPage extends StatelessWidget {
       done: Text("Selesai"),
       onDone: () {
         Navigator.of(context).pop();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return SplashScreen();
-            },
-          ),
-        );
+        Navigator.pushNamed(context, '/signIn');
       },
       pages: [
         PageViewModel(
