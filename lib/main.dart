@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_akhir/add_content_page.dart';
+import 'package:project_akhir/bottomnav.dart';
 import 'package:project_akhir/edit_profile_page.dart';
 import 'package:project_akhir/introduction_page.dart';
 import 'package:project_akhir/other_profile_page.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
+        '/bottomnav': (context) => bottomnav(),
       },
       initialRoute: '/',
     );
