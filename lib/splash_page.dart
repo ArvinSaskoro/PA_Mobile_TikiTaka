@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/introduction');
+                  Navigator.pushNamed(context, '/bottomnav');
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(

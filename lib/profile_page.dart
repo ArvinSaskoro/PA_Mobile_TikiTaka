@@ -139,35 +139,35 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: 60,
-        color: Color.fromARGB(255, 29, 72, 106),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.home, color: Colors.white),
-              onPressed: () {
-                // Tambahkan logika untuk navigasi ke halaman beranda
-                Navigator.pushNamed(context, '/beranda');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.add_circle, color: Colors.white),
-              onPressed: () {
-                // Tambahkan logika untuk menambahkan postingan
-                Navigator.pushNamed(context, '/addContent');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.account_circle, color: Colors.white),
-              onPressed: () {
-                // Tambahkan logika untuk navigasi ke halaman profil
-              },
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   height: 60,
+      //   color: Color.fromARGB(255, 29, 72, 106),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       IconButton(
+      //         icon: Icon(Icons.home, color: Colors.white),
+      //         onPressed: () {
+      //           // Tambahkan logika untuk navigasi ke halaman beranda
+      //           Navigator.pushNamed(context, '/beranda');
+      //         },
+      //       ),
+      //       IconButton(
+      //         icon: Icon(Icons.add_circle, color: Colors.white),
+      //         onPressed: () {
+      //           // Tambahkan logika untuk menambahkan postingan
+      //           Navigator.pushNamed(context, '/addContent');
+      //         },
+      //       ),
+      //       IconButton(
+      //         icon: Icon(Icons.account_circle, color: Colors.white),
+      //         onPressed: () {
+      //           // Tambahkan logika untuk navigasi ke halaman profil
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

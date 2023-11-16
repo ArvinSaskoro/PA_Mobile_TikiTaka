@@ -176,7 +176,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
             ),
-            SizedBox(height: 70),
+            SizedBox(height: 50),
             // button bawah
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

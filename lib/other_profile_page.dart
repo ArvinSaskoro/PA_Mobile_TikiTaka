@@ -41,12 +41,16 @@ class OtherProfilePage extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 0,
-              left: 0,
+              top: 10,
+              left: 10,
               child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 30,
+                ),
                 onPressed: () {
-                  // Tambahkan logika untuk kembali ke halaman sebelumnya
+                  Navigator.pushNamed(context, '/search');
                 },
               ),
             ),
@@ -125,35 +129,35 @@ class OtherProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: 60,
-        color: Color.fromARGB(255, 29, 72, 106),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.home, color: Colors.white),
-              onPressed: () {
-                // Tambahkan logika untuk navigasi ke halaman beranda
-                Navigator.pushNamed(context, '/beranda');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.add_circle, color: Colors.white),
-              onPressed: () {
-                // Tambahkan logika untuk menambahkan postingan
-                Navigator.pushNamed(context, '/addContent');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.account_circle, color: Colors.white),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   height: 60,
+      //   color: Color.fromARGB(255, 29, 72, 106),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       IconButton(
+      //         icon: Icon(Icons.home, color: Colors.white),
+      //         onPressed: () {
+      //           // Tambahkan logika untuk navigasi ke halaman beranda
+      //           Navigator.pushNamed(context, '/beranda');
+      //         },
+      //       ),
+      //       IconButton(
+      //         icon: Icon(Icons.add_circle, color: Colors.white),
+      //         onPressed: () {
+      //           // Tambahkan logika untuk menambahkan postingan
+      //           Navigator.pushNamed(context, '/addContent');
+      //         },
+      //       ),
+      //       IconButton(
+      //         icon: Icon(Icons.account_circle, color: Colors.white),
+      //         onPressed: () {
+      //           Navigator.pushNamed(context, '/profile');
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

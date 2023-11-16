@@ -19,6 +19,7 @@ class _AddContentState extends State<AddContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -26,43 +27,41 @@ class _AddContentState extends State<AddContent> {
             Navigator.pop(context);
           },
         ),
-        //title: Text('Add Content', style: TextStyle(color: Colors.black)),
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: 60,
-        color: Color.fromARGB(255, 29, 72, 106),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.home, color: Colors.white),
-              onPressed: () {
-                // Tambahkan logika untuk navigasi ke halaman beranda
-                Navigator.pushNamed(context, '/beranda');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.add_circle, color: Colors.white),
-              onPressed: () {
-                // Tambahkan logika untuk menambahkan postingan
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.account_circle, color: Colors.white),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   height: 60,
+      //   color: Color.fromARGB(255, 29, 72, 106),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       IconButton(
+      //         icon: Icon(Icons.home, color: Colors.white),
+      //         onPressed: () {
+      //           // Tambahkan logika untuk navigasi ke halaman beranda
+      //           Navigator.pushNamed(context, '/beranda');
+      //         },
+      //       ),
+      //       IconButton(
+      //         icon: Icon(Icons.add_circle, color: Colors.white),
+      //         onPressed: () {
+      //           // Tambahkan logika untuk menambahkan postingan
+      //         },
+      //       ),
+      //       IconButton(
+      //         icon: Icon(Icons.account_circle, color: Colors.white),
+      //         onPressed: () {
+      //           Navigator.pushNamed(context, '/profile');
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
             Text(
               'Title',
               style: TextStyle(
@@ -144,8 +143,9 @@ class _AddContentState extends State<AddContent> {
               width: 140,
               child: ElevatedButton(
                 onPressed: () async {
-                  // print(await controller1
-                  //     .pickFiles(mime: ['assets/jpeg', 'assets/png']));
+                  // print(await controller1.pickFiles(mime: ['assets/jpeg', 'assets/png']));
+                  await controller1
+                      .pickFiles(mime: ['assets/jpeg', 'assets/png']);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(20),
@@ -238,8 +238,8 @@ class _AddContentState extends State<AddContent> {
                         Text(
                           'Post !',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 18, 45, 66), 
-                            fontWeight: FontWeight.bold),
+                              color: Color.fromARGB(255, 18, 45, 66),
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),

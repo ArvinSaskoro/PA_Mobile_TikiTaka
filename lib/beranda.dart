@@ -19,6 +19,7 @@ class _berandaState extends State<beranda> {
     
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.grey[400],
         title: Row(
         children: [
@@ -33,6 +34,7 @@ class _berandaState extends State<beranda> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
+              Navigator.pushNamed(context, '/search');
               // Implement search functionality here
             },
           ),
