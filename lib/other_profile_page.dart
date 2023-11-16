@@ -135,6 +135,7 @@ class OtherProfilePage extends StatelessWidget {
               icon: Icon(Icons.home, color: Colors.white),
               onPressed: () {
                 // Tambahkan logika untuk navigasi ke halaman beranda
+                Navigator.pushNamed(context, '/beranda');
               },
             ),
             IconButton(

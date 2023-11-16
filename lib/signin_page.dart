@@ -169,7 +169,7 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/search');
+                    Navigator.pushNamed(context, '/beranda');
                   },
                   child: const Text(
                     "Sign In",

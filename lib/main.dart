@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_akhir/add_content_page.dart';
+import 'package:project_akhir/beranda.dart';
 import 'package:project_akhir/bottomnav.dart';
 import 'package:project_akhir/edit_profile_page.dart';
 import 'package:project_akhir/introduction_page.dart';
@@ -28,11 +29,12 @@ class MyApp extends StatelessWidget {
       //home: const SignIn(),
       routes: {
         '/': (context) => SplashScreen(),
-        '/introduction': (context) => const IntroductionPage(),
-        '/signIn': (context) => const SignIn(),
-        '/signUp': (context) => const SignUp(),
+        '/introduction': (context) => IntroductionPage(),
+        '/signIn': (context) => SignIn(),
+        '/signUp': (context) => SignUp(),
+        '/beranda': (context) => beranda(),
         '/addContent': (context) => AddContent(),
-        '/search': (context) => const SearchingPage(),
+        '/search': (context) => SearchingPage(),
         '/profile': (context) => ProfilePage(),
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),

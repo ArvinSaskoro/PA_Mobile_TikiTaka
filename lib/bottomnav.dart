@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_akhir/beranda.dart';
+import 'package:project_akhir/searching_page.dart';
 
 class bottomnav extends StatefulWidget {
-  
   const bottomnav({super.key});
 
   @override
@@ -13,9 +13,9 @@ class _bottomnavState extends State<bottomnav> {
   int currentIndex = 0;
   final List<Widget> _children = [
     beranda(),
+    SearchingPage()
     // inputan(),
     // profile(),
-    
   ];
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,22 @@ class _bottomnavState extends State<bottomnav> {
         selectedIconTheme: IconThemeData(size: 35),
         currentIndex: currentIndex,
         onTap: (int index) {
+          // setState(() {
+          //   currentIndex = index;
+          // });
           setState(() {
             currentIndex = index;
+            switch (index) {
+              case 0:
+                Navigator.pushNamed(context, '/beranda');
+                break;
+              case 1:
+                Navigator.pushNamed(context, '/addContent');
+                break;
+              case 2:
+                Navigator.pushNamed(context, '/profile');
+                break;
+            }
           });
         },
         items: [

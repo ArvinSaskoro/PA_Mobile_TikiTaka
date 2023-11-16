@@ -38,6 +38,7 @@ class _AddContentState extends State<AddContent> {
               icon: Icon(Icons.home, color: Colors.white),
               onPressed: () {
                 // Tambahkan logika untuk navigasi ke halaman beranda
+                Navigator.pushNamed(context, '/beranda');
               },
             ),
             IconButton(
