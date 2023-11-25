@@ -14,7 +14,7 @@ class bottomnav extends StatefulWidget {
 class _bottomnavState extends State<bottomnav> {
   int currentIndex = 0;
   final List<Widget> _children = [
-    beranda(),
+    Beranda(),
     AddContent(),
     ProfilePage(),
     

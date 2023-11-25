@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_akhir/add_content_page.dart';
 import 'package:project_akhir/beranda.dart';
 import 'package:project_akhir/bottomnav.dart';
 import 'package:project_akhir/edit_profile_page.dart';
+import 'package:project_akhir/firebase_options.dart';
 import 'package:project_akhir/introduction_page.dart';
 import 'package:project_akhir/other_profile_page.dart';
 import 'package:project_akhir/profile_page.dart';
@@ -11,7 +13,11 @@ import 'package:project_akhir/signin_page.dart';
 import 'package:project_akhir/signup_page.dart';
 import 'package:project_akhir/splash_page.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -32,7 +38,7 @@ class MyApp extends StatelessWidget {
         '/introduction': (context) => IntroductionPage(),
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
-        '/beranda': (context) => beranda(),
+        '/beranda': (context) => Beranda(),
         '/addContent': (context) => AddContent(),
         '/search': (context) => SearchingPage(),
         '/profile': (context) => ProfilePage(),
