@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:project_akhir/Provider/user.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -10,6 +12,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
   // bool signinPressed = false;
 
   // void navigateToSignUp() {
@@ -20,6 +24,8 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    final User = Provider.of<UserProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -74,18 +80,18 @@ class _SignInState extends State<SignIn> {
               width: double.infinity,
               height: 70,
               child: TextField(
-                controller: TextEditingController(),
+                controller: _email,
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                  labelText: 'Username',
+                  labelText: 'Email',
                   labelStyle: const TextStyle(
                     color: Color.fromARGB(255, 41, 179, 173),
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
-                  hintText: 'Username',
+                  hintText: 'Email',
                   hintStyle: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -119,6 +125,7 @@ class _SignInState extends State<SignIn> {
               //       width: 335,
               //       height: 58.98,
               child: TextField(
+                controller: _pass,
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   contentPadding:
@@ -168,8 +175,20 @@ class _SignInState extends State<SignIn> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/bottomnav');
+                  onPressed: () async {
+                    
+                   await User.login(_email.value.text, _pass.value.text);
+                      print(User.userAuth!.email);
+                          if (User.userAuth != null){
+
+                            if(User.userAuth!.email == _email.text){
+                             await User.setIDLogin();
+                              print(User.idlogin);
+                                Navigator.pushNamed(context, "/bottomnav");
+                                _email.dispose();
+                                _pass.dispose();
+                            }       
+                          }
                   },
                   child: const Text(
                     "Sign In",

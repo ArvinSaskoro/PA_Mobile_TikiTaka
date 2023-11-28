@@ -1,7 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
+import 'dart:html' as html;
+import 'dart:typed_data';
 
 class AddContent extends StatefulWidget {
   @override
@@ -10,12 +17,111 @@ class AddContent extends StatefulWidget {
 
 class _AddContentState extends State<AddContent> {
   late DropzoneViewController controller1;
-
   String message1 = 'Drop your image here';
-
   bool highlighted1 = false;
 
+  late List<String> imageUrls;
+  final storage = FirebaseStorage.instance;
+
   @override
+
+  void initState() {
+    super.initState();
+    imageUrls = [];
+    getImageUrls();
+  }
+
+  Future<void> getImageUrls() async {
+    final ref = storage.ref().child('test'); // Ganti '' dengan nama folder di Firebase Storage Anda
+    final result = await ref.listAll();
+
+    for (var item in result.items) {
+      final url = await item.getDownloadURL();
+      setState(() {
+        imageUrls.add(url);
+      });
+    }
+  }
+
+  Future<void> _uploadImage() async {
+    // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
+    final html.FileUploadInputElement input = html.FileUploadInputElement();
+    input.accept = 'image/*';
+    input.click();
+
+    input.onChange.listen((event) {
+      final files = input.files;
+      if (files != null && files.isNotEmpty) {
+        final file = files[0];
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onLoadEnd.listen((loadEndEvent) async {
+          final Uint8List data = reader.result as Uint8List;
+          String namafile = file.name;
+          final ref = storage.ref().child('images/$namafile');
+
+          await ref.putData(data);
+
+          // Setelah berhasil mengunggah, muat ulang daftar gambar
+          getImageUrls();
+        });
+      }
+    });
+  }
+
+//   Future<void> addMusic(String title, String artist, String genre, String audioUrl) async {
+//   try {
+//     await FirebaseFirestore.instance.collection('musics').add({
+//       'title': title,
+//       'artist': artist,
+//       'genre': genre,
+//       'audioUrl': audioUrl,
+//     });
+//     print('Music added successfully.');
+//   } catch (e) {
+//     print('Error adding music: $e');
+//   }
+// }
+Future<void> addMusic(String title, String audioUrl) async {
+  try {
+    await FirebaseFirestore.instance.collection('musics').add({
+      'title': title,
+      'audioUrl': audioUrl,
+    });
+    print('Music added successfully.');
+  } catch (e) {
+    print('Error adding music: $e');
+  }
+}
+
+Future<void> _pickMusic() async {
+  try {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
+      allowMultiple: false,
+    );
+
+    if (result != null) {
+      Uint8List bytes = result.files.single.bytes!;
+      String fileName = result.files.single.name!; // Gunakan nama file dari properti name
+
+      Reference storageReference = FirebaseStorage.instance.ref().child('musics/$fileName');
+      UploadTask uploadTask = storageReference.putData(bytes);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      String audioUrl = await taskSnapshot.ref.getDownloadURL();
+
+      await addMusic('Judul Lagu', audioUrl);
+      print('Audio uploaded successfully and music info added to Firestore.');
+    } else {
+      // Pengguna membatalkan pemilihan file.
+      print('File selection canceled.');
+    }
+  } catch (e) {
+    print('Error picking or uploading audio: $e');
+  }
+}
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -28,34 +134,6 @@ class _AddContentState extends State<AddContent> {
           },
         ),
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   height: 60,
-      //   color: Color.fromARGB(255, 29, 72, 106),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //     children: [
-      //       IconButton(
-      //         icon: Icon(Icons.home, color: Colors.white),
-      //         onPressed: () {
-      //           // Tambahkan logika untuk navigasi ke halaman beranda
-      //           Navigator.pushNamed(context, '/beranda');
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: Icon(Icons.add_circle, color: Colors.white),
-      //         onPressed: () {
-      //           // Tambahkan logika untuk menambahkan postingan
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: Icon(Icons.account_circle, color: Colors.white),
-      //         onPressed: () {
-      //           Navigator.pushNamed(context, '/profile');
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 25),
         child: Column(
@@ -142,11 +220,10 @@ class _AddContentState extends State<AddContent> {
             SizedBox(
               width: 140,
               child: ElevatedButton(
-                onPressed: () async {
+                onPressed: 
                   // print(await controller1.pickFiles(mime: ['assets/jpeg', 'assets/png']));
-                  await controller1
-                      .pickFiles(mime: ['assets/jpeg', 'assets/png']);
-                },
+                  _uploadImage
+                ,
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(20),
                   backgroundColor: Color.fromARGB(255, 29, 72, 106),
@@ -168,25 +245,17 @@ class _AddContentState extends State<AddContent> {
               ),
             ),
             SizedBox(height: 10),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Color.fromARGB(255, 18, 45, 66),
-                  ),
-                  color: highlighted1
-                      ? Colors.red
-                      : Color.fromARGB(255, 217, 217, 217),
-                ),
-                child: Stack(
-                  children: [
-                    buildZone1(context),
-                    Center(child: Text(message1)),
-                  ],
-                ),
-              ),
-            ),
+          //   Expanded(
+          //   child: ListView.builder(
+          //     itemCount: imageUrls.length,
+          //     itemBuilder: (context, index) {
+          //       return Padding(
+          //         padding: const EdgeInsets.all(8.0),
+          //         child: Image.network(imageUrls[index]),
+          //       );
+          //     },
+          //   ),
+          // ),
             SizedBox(height: 10),
             Row(
               children: [
@@ -194,7 +263,7 @@ class _AddContentState extends State<AddContent> {
                 SizedBox(
                   width: 140,
                   child: ElevatedButton(
-                    onPressed: () async {},
+                    onPressed: _pickMusic,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.all(20),
                       backgroundColor: Color.fromARGB(255, 29, 72, 106),

@@ -1,12 +1,21 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'Provider/user.dart';
+import 'editBio.dart';
 
 class ProfilePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    final User = Provider.of<UserProvider>(context, listen: false);
+    // User.setIDLogin();
+    
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: PreferredSize(
@@ -23,6 +32,8 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
+                  SizedBox(height: 20),
+
             Align(
               alignment: Alignment.center,
               child: Column(
@@ -34,22 +45,43 @@ class ProfilePage extends StatelessWidget {
                         NetworkImage('https://placekitten.com/100/100'),
                   ),
                   SizedBox(height: 10),
-                  Text('Nama Akun',
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Text('@username', style: TextStyle(color: Colors.white)),
+                  StreamBuilder<DocumentSnapshot>(
+                    stream:  User.users.doc(User.idlogin).snapshots(),
+                    builder: (_, snapshot) {
+                      return Text(snapshot.data!.get("username"),
+                          style: TextStyle(color: Colors.white, fontSize: 20));
+                    }
+                  ),
+                  StreamBuilder<DocumentSnapshot>(
+                    stream:  User.users.doc(User.idlogin).snapshots(),
+                    builder: (_, snapshot) {
+                      return Text(snapshot.data!.get("email"), style: TextStyle(color: Colors.white));
+                    }
+                  ),
+                  SizedBox(height: 10),
+
+                   GestureDetector(
+                    onTap: () {
+                      // Tambahkan logika untuk mengedit atau menambah bio
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EditBioPage(),
+                      ));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.edit, color: Colors.white, weight: 5,),
+                        Text(
+                          'Edit Bio',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            Positioned(
-              top: 0,
-              left: 0,
-              child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  // Tambahkan logika untuk kembali ke halaman sebelumnya
-                },
-              ),
-            ),
+           
             Positioned(
               top: 0,
               right: 0,
@@ -112,9 +144,14 @@ class ProfilePage extends StatelessWidget {
           // Bagian bio profile Anda
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Ini adalah bio profil Anda.',
-              style: TextStyle(fontSize: 18),
+            child: StreamBuilder<DocumentSnapshot>(
+               stream:  User.users.doc(User.idlogin).snapshots(),
+                builder: (_, snapshot) {
+                return Text(
+                  snapshot.data!.get("bio"),
+                  style: TextStyle(fontSize: 18),
+                );
+              }
             ),
           ),
           // Bagian daftar postingan

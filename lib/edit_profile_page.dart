@@ -1,10 +1,50 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class EditProfilePage extends StatelessWidget {
+import 'Provider/user.dart';
+
+class EditProfilePage extends StatefulWidget {
   @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+    TextEditingController _username = TextEditingController();
+   TextEditingController _pass = TextEditingController();
+   TextEditingController _conpass = TextEditingController();
+
+   
+
+   
+  Future<List<String>> fetchData() async {
+    final User = Provider.of<UserProvider>(context, listen: false);
+    
+
+    // Contoh penundaan untuk mensimulasikan operasi async
+    List<String> edit = [];
+    edit.add(await User.getFieldById("username", User.idlogin));
+    edit.add(await User.getFieldById("pass", User.idlogin));
+    return edit;
+  }
+  
+
+  @override
+  
   Widget build(BuildContext context) {
+    final User = Provider.of<UserProvider>(context, listen: false);
+
+    fetchData().then((result) {
+        _username.text = result.first;
+        _pass.text =result.last;
+    });
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    CollectionReference users = db.collection("users");
+    
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
@@ -64,6 +104,7 @@ class EditProfilePage extends StatelessWidget {
             child: Column(
               children: [
                 TextFormField(
+                  controller: _username,
                   decoration: InputDecoration(
                     labelText: 'New Username',
                     hintText: 'Enter your new username',
@@ -79,7 +120,9 @@ class EditProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: _pass,
                   decoration: InputDecoration(
+                    
                     labelText: 'New Password',
                     hintText: 'Enter your new password',
                     border: OutlineInputBorder(),
@@ -94,6 +137,7 @@ class EditProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: _conpass,
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
                     hintText: 'Confirm your new password',
@@ -109,8 +153,14 @@ class EditProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan logika untuk menyimpan perubahan
+                  onPressed: () async {
+                     if(_pass.text == _conpass.text){
+                          if (User.userAuth != null){
+                          await users.doc(User.idlogin).update({'username': _username.text, 'pass': _pass.text});
+                            Navigator.pop(context);
+                        }
+                         
+                      }
                   },
                   child: Text('Apply', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(
@@ -127,5 +177,6 @@ class EditProfilePage extends StatelessWidget {
         ],
       ),
     );
+   
   }
 }

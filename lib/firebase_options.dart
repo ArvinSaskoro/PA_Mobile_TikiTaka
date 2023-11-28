@@ -23,9 +23,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -44,38 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDRBTt2iquWNwuCCQC_CqTMcJJ_VxelZfg',
-    appId: '1:701670371020:web:767387276986366fef5c69',
-    messagingSenderId: '701670371020',
-    projectId: 'tikitaka-1684e',
-    authDomain: 'tikitaka-1684e.firebaseapp.com',
-    storageBucket: 'tikitaka-1684e.appspot.com',
-    measurementId: 'G-M2BDTFJ4WN',
+    apiKey: 'AIzaSyBdyWzRiW9PPCchYBL6XoMqO1AuDZmFxCU',
+    appId: '1:716239401584:web:037d1c51ef8f16684efab5',
+    messagingSenderId: '716239401584',
+    projectId: 'pa-tikitaka',
+    authDomain: 'pa-tikitaka.firebaseapp.com',
+    storageBucket: 'pa-tikitaka.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB9dswmNq0L_CqMrFgJ1vzVg4UfW2WZMtM',
-    appId: '1:701670371020:android:716fd88323ce29e0ef5c69',
-    messagingSenderId: '701670371020',
-    projectId: 'tikitaka-1684e',
-    storageBucket: 'tikitaka-1684e.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBe5M7Cs0XzGmfFypL9TzbbcUHIhzq5PGA',
-    appId: '1:701670371020:ios:c23b0a64a51e0a00ef5c69',
-    messagingSenderId: '701670371020',
-    projectId: 'tikitaka-1684e',
-    storageBucket: 'tikitaka-1684e.appspot.com',
-    iosBundleId: 'com.example.gambar',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBe5M7Cs0XzGmfFypL9TzbbcUHIhzq5PGA',
-    appId: '1:701670371020:ios:24fb88a88b99c677ef5c69',
-    messagingSenderId: '701670371020',
-    projectId: 'tikitaka-1684e',
-    storageBucket: 'tikitaka-1684e.appspot.com',
-    iosBundleId: 'com.example.gambar.RunnerTests',
+    apiKey: 'AIzaSyB5vuf5ecCvISRm_GUoldpq_sqfe4_UICo',
+    appId: '1:716239401584:android:7d452da6b1f9a4d14efab5',
+    messagingSenderId: '716239401584',
+    projectId: 'pa-tikitaka',
+    storageBucket: 'pa-tikitaka.appspot.com',
   );
 }

@@ -19,7 +19,7 @@ class _BerandaState extends State<Beranda> {
 
   Future<void> _loadImageUrls() async {
     // Mendapatkan referensi ke direktori di Firebase Storage
-    var ref = FirebaseStorage.instance.ref().child('test');
+    var ref = FirebaseStorage.instance.ref().child('postingan');
 
     // Mendapatkan daftar file dalam direktori
     var result = await ref.listAll();

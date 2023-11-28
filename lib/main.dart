@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:project_akhir/Provider/auth.dart';
+import 'package:project_akhir/Provider/user.dart';
 import 'package:project_akhir/add_content_page.dart';
 import 'package:project_akhir/beranda.dart';
 import 'package:project_akhir/bottomnav.dart';
@@ -12,20 +14,35 @@ import 'package:project_akhir/searching_page.dart';
 import 'package:project_akhir/signin_page.dart';
 import 'package:project_akhir/signup_page.dart';
 import 'package:project_akhir/splash_page.dart';
+import 'package:provider/provider.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+      MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        
+      ],
+       // Inisialisasi DataProvider
+      child: MyApp(),
+    ),
+  );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final User = Provider.of<UserProvider>(context, listen: false);
+    // User.setIDLogin();
+
     return MaterialApp(
       title: 'Tiki Taka',
       debugShowCheckedModeBanner: false,
@@ -48,6 +65,8 @@ class MyApp extends StatelessWidget {
       },
       initialRoute: '/',
     );
+
+    
   }
 }
 
