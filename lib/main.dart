@@ -50,9 +50,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      //home: const SignIn(),
+      //home: const SignIn(), SplashScreen
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => AddContent(),
         '/introduction': (context) => IntroductionPage(),
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
