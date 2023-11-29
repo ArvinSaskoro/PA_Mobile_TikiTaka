@@ -97,7 +97,7 @@ class postinganProvider extends ChangeNotifier{
   }
 
   Future<void> uploadlagu() async {
-    Reference storageReference = FirebaseStorage.instance.ref().child('postingan/musil/${judul_lagu}');
+    Reference storageReference = FirebaseStorage.instance.ref().child('postingan/musik/${judul_lagu}');
     UploadTask uploadTask = storageReference.putData(bytes!);
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     url_lagu = await taskSnapshot.ref.getDownloadURL();
