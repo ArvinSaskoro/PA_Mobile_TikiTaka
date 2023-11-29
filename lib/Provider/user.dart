@@ -10,7 +10,7 @@ class UserProvider extends ChangeNotifier{
   
   CollectionReference users = db.collection("users");
   String _idLogin = '';
-String get idlogin => _idLogin;
+  String get idlogin => _idLogin;
 
 
 

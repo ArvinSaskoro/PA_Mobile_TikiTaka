@@ -44,6 +44,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _uploadImage() async {
+    
     // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
     final html.FileUploadInputElement input = html.FileUploadInputElement();
     input.accept = 'user/*';

@@ -17,6 +17,8 @@ import 'package:project_akhir/splash_page.dart';
 import 'package:project_akhir/tes.dart';
 import 'package:provider/provider.dart';
 
+import 'Provider/postingan.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +29,8 @@ void main() async{
       MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        
+        ChangeNotifierProvider(create: (context) => postinganProvider()),
+ 
       ],
        // Inisialisasi DataProvider
       child: MyApp(),
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: const SignIn(), SplashScreen
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => ImageSlider(),
         '/introduction': (context) => IntroductionPage(),
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
@@ -63,7 +66,7 @@ class MyApp extends StatelessWidget {
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
         '/bottomnav': (context) => bottomnav(),
-        '/tes': (context) => MultipleImageUploadPage(),
+        '/tes': (context) => ImageSlider(),
 
       },
       initialRoute: '/',
