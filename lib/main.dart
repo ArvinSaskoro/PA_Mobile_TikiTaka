@@ -14,6 +14,7 @@ import 'package:project_akhir/searching_page.dart';
 import 'package:project_akhir/signin_page.dart';
 import 'package:project_akhir/signup_page.dart';
 import 'package:project_akhir/splash_page.dart';
+import 'package:project_akhir/tes.dart';
 import 'package:provider/provider.dart';
 
 
@@ -62,8 +63,10 @@ class MyApp extends StatelessWidget {
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
         '/bottomnav': (context) => bottomnav(),
+        '/tes': (context) => MultipleImageUploadPage(),
+
       },
-      initialRoute: '/',
+      initialRoute: '/tes',
     );
 
     

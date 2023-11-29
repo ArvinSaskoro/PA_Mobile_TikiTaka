@@ -1,8 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
+// import 'dart:html';
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:html' as html;
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
+
 
 import 'Provider/user.dart';
 
@@ -12,6 +21,10 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+    Uint8List? _image;
+    String namafile ="";
+
+
     TextEditingController _username = TextEditingController();
    TextEditingController _pass = TextEditingController();
    TextEditingController _conpass = TextEditingController();
@@ -29,10 +42,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
     edit.add(await User.getFieldById("pass", User.idlogin));
     return edit;
   }
+
+  Future<void> _uploadImage() async {
+    // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
+    final html.FileUploadInputElement input = html.FileUploadInputElement();
+    input.accept = 'user/*';
+    input.click();
+
+    input.onChange.listen((event) {
+      final files = input.files;
+      if (files != null && files.isNotEmpty) {
+        final file = files[0];
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onLoadEnd.listen((loadEndEvent) async {
+          final Uint8List data = reader.result as Uint8List;
+          _image = data;
+          namafile = file.name;
+          // print(namafile);
+          
+          
+        });
+      }
+    });
+  }
   
 
   @override
-  
   Widget build(BuildContext context) {
     final User = Provider.of<UserProvider>(context, listen: false);
 
@@ -65,21 +101,40 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon:
-                          Icon(Icons.camera_alt, color: Colors.blue, size: 50),
-                      onPressed: () {
-                        // Tambahkan logika untuk memilih foto profil
-                      },
-                    ),
-                  ),
+                  
+                    //  _image == null?
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon:
+                            Icon(Icons.camera_alt, color: Colors.blue, size: 50),
+                        onPressed: () {
+                          _uploadImage();
+                        },
+                      ),
+                      // child: Image(image: FileImage(_image!)),
+                    )
+                    // Container(
+                    //   width: 100,
+                    //   height: 100,
+                    //   decoration: BoxDecoration(
+                        
+                    //     color: Colors.white,
+                    //     shape: BoxShape.circle,
+                    //   ),
+                     
+                    //   child: Image(image: FileImage(_image!)),),
+                    //   ElevatedButton(onPressed: (){
+                    //     print(_image!);
+                    //   }, child: Text("data"))
+                  
+                  
                 ],
               ),
             ),
@@ -156,10 +211,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   onPressed: () async {
                      if(_pass.text == _conpass.text){
                           if (User.userAuth != null){
-                          await users.doc(User.idlogin).update({'username': _username.text, 'pass': _pass.text});
+                          final ref =  FirebaseStorage.instance.ref().child('user/$namafile');
+                          await ref.putData(_image!);
+                          String downloadUrl = await FirebaseStorage.instance.ref().child('user/$namafile').getDownloadURL();
+                          print(downloadUrl);
+                          await users.doc(User.idlogin).update({'username': _username.text, 'pass': _pass.text,'path_potoProfile':downloadUrl});
                             Navigator.pop(context);
                         }
-                         
                       }
                   },
                   child: Text('Apply', style: TextStyle(color: Colors.white)),

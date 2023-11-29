@@ -1,14 +1,22 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider/user.dart';
 import 'editBio.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +47,17 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        NetworkImage('https://placekitten.com/100/100'),
+                  // SizedBox(height: 10,),
+                  StreamBuilder<DocumentSnapshot>(
+                    stream:  User.users.doc(User.idlogin).snapshots(),
+                    builder: (_, snapshot) {
+                        return CircleAvatar(
+                          radius: 45,
+                          backgroundImage:
+                              NetworkImage(snapshot.data!.get("path_potoProfile")),
+                        );
+                      }
+                    
                   ),
                   SizedBox(height: 10),
                   StreamBuilder<DocumentSnapshot>(

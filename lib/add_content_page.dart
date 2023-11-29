@@ -19,6 +19,7 @@ class _AddContentState extends State<AddContent> {
   late DropzoneViewController controller1;
   String message1 = 'Drop your image here';
   bool highlighted1 = false;
+  List<html.File> _selectedFiles = [];
 
   late List<String> imageUrls;
   final storage = FirebaseStorage.instance;
@@ -44,27 +45,20 @@ class _AddContentState extends State<AddContent> {
   }
 
   Future<void> _uploadImage() async {
+    
     // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
-    final html.FileUploadInputElement input = html.FileUploadInputElement();
-    input.accept = 'image/*';
+    final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
     input.click();
 
     input.onChange.listen((event) {
       final files = input.files;
       if (files != null && files.isNotEmpty) {
-        final file = files[0];
-        final reader = html.FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onLoadEnd.listen((loadEndEvent) async {
-          final Uint8List data = reader.result as Uint8List;
-          String namafile = file.name;
-          final ref = storage.ref().child('images/$namafile');
-
-          await ref.putData(data);
-
-          // Setelah berhasil mengunggah, muat ulang daftar gambar
-          getImageUrls();
+        setState(() {
+          _selectedFiles = List.from(files);
         });
+
+        // Upload all selected files
+        // _uploadFiles();
       }
     });
   }
@@ -245,17 +239,6 @@ Future<void> _pickMusic() async {
               ),
             ),
             SizedBox(height: 10),
-          //   Expanded(
-          //   child: ListView.builder(
-          //     itemCount: imageUrls.length,
-          //     itemBuilder: (context, index) {
-          //       return Padding(
-          //         padding: const EdgeInsets.all(8.0),
-          //         child: Image.network(imageUrls[index]),
-          //       );
-          //     },
-          //   ),
-          // ),
             SizedBox(height: 10),
             Row(
               children: [
