@@ -13,6 +13,8 @@ class postinganProvider extends ChangeNotifier{
     String username,
     String judullagu,
     String urlpoto,
+    String judul,
+
     
     ) async {
     final CollectionReference postingan = db.collection('postingan');
@@ -27,6 +29,8 @@ class postinganProvider extends ChangeNotifier{
         'username' : username,
         'judul_lagu' : judullagu,
         'URlPotoProfile' : urlpoto,
+        'judulpostingan' : judul,
+
 
       });
       // Disini Anda bisa melakukan operasi lain yang memanfaatkan nilai docID
@@ -35,5 +39,47 @@ class postinganProvider extends ChangeNotifier{
     }
       notifyListeners();
 
+  }
+
+  void showMessageBox(BuildContext context) {
+  MessageBox msgBox = MessageBox(
+    title: "BERHASIL",
+    message: "postingan anda berhasil di unggah",
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return msgBox;
+    },
+  );
+}
+
+
+
+
+
+}
+
+class MessageBox extends StatelessWidget {
+  final String title;
+  final String message;
+
+  MessageBox({required this.title, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('OK'),
+        ),
+      ],
+    );
   }
 }

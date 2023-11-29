@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'Provider/user.dart';
 
 class SearchingPage extends StatefulWidget {
   const SearchingPage({super.key});
@@ -10,10 +13,12 @@ class SearchingPage extends StatefulWidget {
 }
 
 class _SearchingPageState extends State<SearchingPage> {
-  TextEditingController _textEditingController = TextEditingController();
-  bool isSearching = false;
+  TextEditingController _search = TextEditingController();
 
-  Widget createButton(String iconName, String text) {
+  bool isSearching = false;
+  String name = "";
+
+ Widget createButton(String text) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/otherProfile');
@@ -51,6 +56,8 @@ class _SearchingPageState extends State<SearchingPage> {
 
   @override
   Widget build(BuildContext context) {
+  final User = Provider.of<UserProvider>(context, listen: false);
+
     var lebar = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -102,7 +109,7 @@ class _SearchingPageState extends State<SearchingPage> {
                                       children: [
                                         Expanded(
                                           child: TextField(
-                                            controller: _textEditingController,
+                                            controller: _search,
                                             decoration: InputDecoration(
                                               hintText: 'Search...',
                                               border: InputBorder.none,
@@ -124,12 +131,12 @@ class _SearchingPageState extends State<SearchingPage> {
                               )
                             : SizedBox(),
                         // Tampilkan IconButton hanya jika TextField diisi
-                        if (_textEditingController.text.isNotEmpty)
+                        if (_search.text.isNotEmpty)
                           IconButton(
                             icon: Icon(Icons.clear),
                             onPressed: () {
                               setState(() {
-                                _textEditingController.clear();
+                                _search.clear();
                                 isSearching =
                                     false; 
                               });
@@ -142,8 +149,10 @@ class _SearchingPageState extends State<SearchingPage> {
               ),
               SizedBox(width: 20),
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/otherProfile');
+                onTap: () async {
+                  await User.searchFirestore(_search.text);
+                  // print("object");
+                 name = User.userSearch.username;
                 },
                 child: Text(
                   "Search",
@@ -171,6 +180,7 @@ class _SearchingPageState extends State<SearchingPage> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 10),
+            // if (User.searchh == true)
             Container(
               width: double.infinity,
               height: 360,
@@ -178,12 +188,7 @@ class _SearchingPageState extends State<SearchingPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  createButton("Select Point", "Nama Akun Profil"),
-                  createButton("Select Point", "Nama Akun Profil"),
-                  createButton("Select Point", "Nama Akun Profil"),
-                  createButton("Select Point", "Nama Akun Profil"),
-                  createButton("Select Point", "Nama Akun Profil"),
-                  createButton("Select Point", "Nama Akun Profil"),
+                  createButton(name),
                 ],
               ),
             ),

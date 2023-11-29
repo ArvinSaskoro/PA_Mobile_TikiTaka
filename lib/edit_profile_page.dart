@@ -26,8 +26,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
 
     TextEditingController _username = TextEditingController();
-   TextEditingController _pass = TextEditingController();
-   TextEditingController _conpass = TextEditingController();
+    TextEditingController _pass = TextEditingController();
+    TextEditingController _conpass = TextEditingController();
 
    
 

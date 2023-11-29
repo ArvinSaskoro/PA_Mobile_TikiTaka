@@ -1,12 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'Provider/user.dart';
 
 class OtherProfilePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+      final User = Provider.of<UserProvider>(context, listen: false);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: PreferredSize(
@@ -29,14 +34,14 @@ class OtherProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    radius: 50,
+                    radius: 45,
                     backgroundImage:
-                        NetworkImage('https://placekitten.com/100/100'),
+                        NetworkImage(User.userSearch.path_potoProfile),
                   ),
                   SizedBox(height: 10),
-                  Text('Nama Akun',
+                  Text(User.userSearch.username,
                       style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Text('@username', style: TextStyle(color: Colors.white)),
+                  Text(User.userSearch.email, style: TextStyle(color: Colors.white)),
                 ],
               ),
             ),
@@ -57,53 +62,13 @@ class OtherProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      endDrawer: Drawer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Center(
-                child: Text(
-                  'Settings',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text('Edit Profile'),
-              onTap: () {
-                // Tambahkan logika untuk navigasi ke halaman edit profil
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () {
-                // Tambahkan logika untuk logout
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.delete),
-              title: Text('Delete Account'),
-              onTap: () {
-                // Tambahkan logika untuk menghapus akun
-              },
-            ),
-          ],
-        ),
-      ),
       body: Column(
         children: [
           // Bagian bio profile Anda
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Ini adalah bio profil Anda.',
+              User.userSearch.bio,
               style: TextStyle(fontSize: 18),
             ),
           ),

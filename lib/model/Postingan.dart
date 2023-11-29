@@ -7,6 +7,8 @@ class Postingan {
   String username;
   String judul_lagu;
   String URlPotoProfile;
+  String judulPostingan;
+
 
 
   Postingan({
@@ -18,6 +20,8 @@ class Postingan {
     this.username ='',
     this.judul_lagu ='',
     this.URlPotoProfile ='',
+    this.judulPostingan ='',
+
 
 
   });

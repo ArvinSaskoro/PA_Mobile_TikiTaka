@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
       //home: const SignIn(), 
       routes: {
         // '/': (context) => ImageSlider(),
-        '/': (context) => SearchingPage(),
+        '/': (context) => AddContent(),
         '/introduction': (context) => IntroductionPage(),
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
         '/bottomnav': (context) => bottomnav(),
-        '/tes': (context) => ImageSlider(),
+        // '/tes': (context) => ImageSlider(),
 
       },
       initialRoute: '/',

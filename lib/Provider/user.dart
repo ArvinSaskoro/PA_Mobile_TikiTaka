@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_akhir/model/User.dart';
 
 
 FirebaseAuth _fireAuth = FirebaseAuth.instance;
@@ -11,6 +12,8 @@ class UserProvider extends ChangeNotifier{
   CollectionReference users = db.collection("users");
   String _idLogin = '';
   String get idlogin => _idLogin;
+  Userr userSearch = Userr();
+  bool searchh = false;
 
 
 
@@ -123,6 +126,34 @@ Future<void> AddUserToFirebase(String username, String email, String pass) async
     notifyListeners();
 
 }
+
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+
+Future<void> searchFirestore(String searchTerm) async {
+  var collectionReference = FirebaseFirestore.instance.collection('users');
+
+ await collectionReference
+      .where("username", isEqualTo: searchTerm)
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    querySnapshot.docs.forEach((doc) {
+      // Handle hasil pencarian di sini
+      print(doc['username']);
+      userSearch.id = doc.id;
+      userSearch.bio = doc['bio'];
+      userSearch.username = doc['username'];
+      userSearch.email = doc['email'];
+      userSearch.path_potoProfile = doc['path_potoProfile'];
+      // print(searchTerm);
+      searchh = true;
+    });
+  })
+  .catchError((error) {
+    print("Error: $error");
+  });
+}
+
 
 
 }

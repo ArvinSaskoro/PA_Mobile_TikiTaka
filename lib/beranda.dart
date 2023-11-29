@@ -43,7 +43,9 @@ class _BerandaState extends State<Beranda> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.grey[400],
+        backgroundColor: Colors.transparent, // Set the background color to transparent
+          elevation: 1,
+        
         title: Row(
           children: [
             Expanded(
@@ -75,13 +77,13 @@ class _BerandaState extends State<Beranda> {
               children: [
                 Container(
                   width: lebar,
-                  height: tinggi,
+                  height: tinggi-120,
                   color: Colors.grey[400],
                   child: Image.network(imageUrlList[index], fit: BoxFit.cover),
                 ),
                 Container(
                   width: lebar,
-                  height: 660,
+                  height: tinggi-120,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -125,11 +127,11 @@ class _BerandaState extends State<Beranda> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 20),
+                            padding: EdgeInsets.only(left: 20,top: 10),
                             child: Text("CAPTION"),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 20,top: 10),
                             child: Row(
                               children: [
                                 Icon(Icons.my_library_music_outlined),
