@@ -36,7 +36,7 @@ class _AddContentState extends State<AddContent> {
 
   // String fileNameImage = '';
   // String fileNameMusic = '';
-  bool isReady = true;
+  bool isReady = false;
 
 
   Future<void> _pickFiles() async {
@@ -52,12 +52,17 @@ class _AddContentState extends State<AddContent> {
 
         setState(() {
           post.selectedFiles = List.from(files);
+
         // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
 
         });
+        checkReadyState();
+
       }
     });
   }
+
+
 
   // postingan post = new postingan();
 
@@ -159,6 +164,7 @@ class _AddContentState extends State<AddContent> {
       if (result != null) {
         post.bytes = result.files.single.bytes!;
         post.judul_lagu = result.files.single.name!; // Gunakan nama file dari properti name
+        checkReadyState();
         // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
         print('Audio uploaded successfully and music info added to Firestore.');
       } else {
@@ -170,14 +176,14 @@ class _AddContentState extends State<AddContent> {
     }
   }
 
-  
+void checkReadyState() {
+  final post = Provider.of<postinganProvider>(context, listen: false);
 
-  // Fungsi untuk memeriksa apakah kedua variabel sudah terisi
-//   void checkReadyState() {
-//     setState(() {
-//      
-//     });
-//   }
+    setState(() {
+      isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
+    });
+  }
+
 
 Future<void> _upload() async {
   final post = Provider.of<postinganProvider>(context, listen: false);
@@ -185,11 +191,15 @@ Future<void> _upload() async {
     dynamic urlPoto = await User.getFieldById("path_potoProfile", User.idlogin);
     dynamic userName = await User.getFieldById("username", User.idlogin);
 
-
   await post.uploadFiles();
   await post.uploadlagu();
   await post.addPostingan(User.idlogin, post.url_lagu, _caption.text, 50, post.url, userName, post.judul_lagu, urlPoto, _judul.text);
-  Navigator.pushNamed(context, '/bottomnav');
+  post.showMessageBox(context);
+  setState(() {
+    post.judul_lagu ='';
+    post.selectedFiles= const [];
+  });
+  // Navigator.pushNamed(context, '/bottomnav');
 }
 
 

@@ -124,7 +124,7 @@ class MessageBox extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pushNamed(context, '/bottomnav');
           },
           child: Text('OK'),
         ),

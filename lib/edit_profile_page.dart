@@ -29,13 +29,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     TextEditingController _pass = TextEditingController();
     TextEditingController _conpass = TextEditingController();
 
-   
-
-   
   Future<List<String>> fetchData() async {
     final User = Provider.of<UserProvider>(context, listen: false);
-    
-
     // Contoh penundaan untuk mensimulasikan operasi async
     List<String> edit = [];
     edit.add(await User.getFieldById("username", User.idlogin));

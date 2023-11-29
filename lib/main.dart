@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
       //home: const SignIn(), 
       routes: {
         // '/': (context) => ImageSlider(),
-        '/': (context) => AddContent(),
+        '/': (context) => SplashScreen(),
         '/introduction': (context) => IntroductionPage(),
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
