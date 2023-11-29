@@ -79,7 +79,8 @@ class _SearchingPageState extends State<SearchingPage> {
                   });
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 2 / 3,
+
+                  width: MediaQuery.of(context).size.width / 1.8,
                   height: 40,
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 217, 217, 217),
@@ -187,7 +188,7 @@ class _SearchingPageState extends State<SearchingPage> {
               ),
             ),
             Container(
-              height: 180,
+              height: 153,
               width: lebar,
               child: Stack(
                 children: [
