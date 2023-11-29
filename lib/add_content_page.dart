@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,14 +14,11 @@ class AddContent extends StatefulWidget {
 }
 
 class _AddContentState extends State<AddContent> {
-<<<<<<< HEAD
-  late DropzoneViewController controller1;
+  // late DropzoneViewController controller1;
   String message1 = 'Drop your image here';
   bool highlighted1 = false;
   List<html.File> _selectedFiles = [];
 
-=======
->>>>>>> 3e8cc2d636c05234aabcb1097ac469eb8aa70554
   late List<String> imageUrls;
   final storage = FirebaseStorage.instance;
 
@@ -52,59 +48,54 @@ class _AddContentState extends State<AddContent> {
   }
 
   Future<void> _uploadImage() async {
-    
-    // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
-    final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
-    input.click();
+  final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
+  input.click();
 
-    input.onChange.listen((event) {
-      final files = input.files;
-      if (files != null && files.isNotEmpty) {
-<<<<<<< HEAD
+  input.onChange.listen((event) {
+    final files = input.files;
+    if (files != null && files.isNotEmpty) {
+      final file = files[0];
+      final reader = html.FileReader();
+
+      reader.onLoadEnd.listen((loadEndEvent) async {
+        // Convert result to Uint8List
+        final Uint8List data = Uint8List.fromList(reader.result as List<int>);
+        String namafile = file.name;
+
+        // Set state untuk menyimpan nama file
         setState(() {
-          _selectedFiles = List.from(files);
-=======
-        final file = files[0];
-        final reader = html.FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onLoadEnd.listen((loadEndEvent) async {
-          final Uint8List data = reader.result as Uint8List;
-          String namafile = file.name;
-
-          // Set state untuk menyimpan nama file
-          setState(() {
-            fileNameImage = namafile;
-            checkReadyState();
-          });
-
-          final ref = storage.ref().child('images/$namafile');
-
-          await ref.putData(data);
-
-          // Setelah berhasil mengunggah, muat ulang daftar gambar
-          getImageUrls();
->>>>>>> 3e8cc2d636c05234aabcb1097ac469eb8aa70554
+          fileNameImage = namafile;
+          checkReadyState();
         });
 
-        // Upload all selected files
-        // _uploadFiles();
-      }
-    });
-  }
+        final ref = storage.ref().child('images/$namafile');
 
-//   Future<void> addMusic(String title, String artist, String genre, String audioUrl) async {
-//   try {
-//     await FirebaseFirestore.instance.collection('musics').add({
-//       'title': title,
-//       'artist': artist,
-//       'genre': genre,
-//       'audioUrl': audioUrl,
-//     });
-//     print('Music added successfully.');
-//   } catch (e) {
-//     print('Error adding music: $e');
-//   }
-// }
+        await ref.putData(data);
+
+        // Setelah berhasil mengunggah, muat ulang daftar gambar
+        getImageUrls();
+      });
+
+      reader.readAsArrayBuffer(file);
+    }
+  });
+}
+
+  
+
+// //   Future<void> addMusic(String title, String artist, String genre, String audioUrl) async {
+// //   try {
+// //     await FirebaseFirestore.instance.collection('musics').add({
+// //       'title': title,
+// //       'artist': artist,
+// //       'genre': genre,
+// //       'audioUrl': audioUrl,
+// //     });
+// //     print('Music added successfully.');
+// //   } catch (e) {
+// //     print('Error adding music: $e');
+// //   }
+// // }
   Future<void> addMusic(String title, String audioUrl) async {
     try {
       await FirebaseFirestore.instance.collection('musics').add({
@@ -263,6 +254,8 @@ class _AddContentState extends State<AddContent> {
                     onPressed:
                         // print(await controller1.pickFiles(mime: ['assets/jpeg', 'assets/png']));
                         _uploadImage,
+                        // print("tes"),
+                        // 
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.all(20),
                       backgroundColor: Color.fromARGB(255, 29, 72, 106),

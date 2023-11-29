@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: const SignIn(), SplashScreen
       routes: {
-        '/': (context) => AddContent(),
+        '/': (context) => SplashScreen(),
         '/introduction': (context) => IntroductionPage(),
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
         '/tes': (context) => MultipleImageUploadPage(),
 
       },
-      initialRoute: '/tes',
+      initialRoute: '/',
     );
 
     
