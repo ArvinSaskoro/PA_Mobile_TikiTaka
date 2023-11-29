@@ -1,16 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'dart:io';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:project_akhir/Provider/user.dart';
 import 'dart:html' as html;
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
-import 'package:project_akhir/model/Postingan.dart';
+// import 'package:project_akhir/model/Postingan.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider/postingan.dart';
@@ -25,13 +25,9 @@ class _AddContentState extends State<AddContent> {
   TextEditingController _caption = TextEditingController();
 
   // late DropzoneViewController controller1;
-  String message1 = 'Drop your image here';
-  bool highlighted1 = false;
-  List<html.File> _selectedFiles = [];
-  List<String> url = [];
-  String judul_lagu = "";
-  String url_lagu = "";
-  Uint8List? bytes;
+  // String message1 = 'Drop your image here';
+  // bool highlighted1 = false;
+  
 
 
 
@@ -41,6 +37,27 @@ class _AddContentState extends State<AddContent> {
   // String fileNameImage = '';
   // String fileNameMusic = '';
   bool isReady = true;
+
+
+  Future<void> _pickFiles() async {
+  final post = Provider.of<postinganProvider>(context, listen: false);
+
+
+    final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
+    input.click();
+
+    input.onChange.listen((event) async {
+      final files = input.files;
+      if (files != null && files.isNotEmpty) {
+
+        setState(() {
+          post.selectedFiles = List.from(files);
+        // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
+
+        });
+      }
+    });
+  }
 
   // postingan post = new postingan();
 
@@ -65,52 +82,7 @@ class _AddContentState extends State<AddContent> {
   //   }
   // }
 
-  Future<void> _pickFiles() async {
-
-    final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
-    input.click();
-
-    input.onChange.listen((event) async {
-      final files = input.files;
-      if (files != null && files.isNotEmpty) {
-
-        setState(() {
-          _selectedFiles = List.from(files);
-        isReady = judul_lagu.isNotEmpty && _selectedFiles.isNotEmpty;
-
-        });
-      }
-    });
-  }
-
-  Future<void> _uploadFiles() async {
-    for (var file in _selectedFiles) {
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(file);
-
-      await reader.onLoadEnd.first;
-
-      // Convert result to Uint8List
-      final Uint8List data = Uint8List.fromList(reader.result as List<int>);
-
-      // Create a File object from Uint8List data
-      final blob = html.Blob([data]);
-      final html.File newFile = html.File([data], file.name);
-
-      // Upload the file to Firebase Storage
-      final ref = FirebaseStorage.instance.ref().child('postingan/gambar/${file.name}');
-      await ref.putBlob(blob);
-
-      // Get the download URL
-      String downloadUrl = await ref.getDownloadURL();
-
-      url.add(downloadUrl);
-
-      // Use the download URL as needed (store in Firestore, display in app, etc.)
-      print('File uploaded: $downloadUrl');
-    }
-    
-  }
+  
 
   // Future<void> _pickFiles() async {
 
@@ -176,6 +148,8 @@ class _AddContentState extends State<AddContent> {
 //   }
 
   Future<void> _pickMusic() async {
+  final post = Provider.of<postinganProvider>(context, listen: false);
+
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.audio,
@@ -183,9 +157,9 @@ class _AddContentState extends State<AddContent> {
       );
 
       if (result != null) {
-        bytes = result.files.single.bytes!;
-        judul_lagu = result.files.single.name!; // Gunakan nama file dari properti name
-        isReady = judul_lagu.isNotEmpty && _selectedFiles.isNotEmpty;
+        post.bytes = result.files.single.bytes!;
+        post.judul_lagu = result.files.single.name!; // Gunakan nama file dari properti name
+        // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
         print('Audio uploaded successfully and music info added to Firestore.');
       } else {
         // Pengguna membatalkan pemilihan file.
@@ -196,13 +170,7 @@ class _AddContentState extends State<AddContent> {
     }
   }
 
-  Future<void> uploadlagu() async {
-    Reference storageReference = FirebaseStorage.instance.ref().child('postingan/musil/${judul_lagu}');
-    UploadTask uploadTask = storageReference.putData(bytes!);
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-    url_lagu = await taskSnapshot.ref.getDownloadURL();
-    // addMusic(namamusik!, audioUrl!);
-  }
+  
 
   // Fungsi untuk memeriksa apakah kedua variabel sudah terisi
 //   void checkReadyState() {
@@ -218,10 +186,10 @@ Future<void> _upload() async {
     dynamic userName = await User.getFieldById("username", User.idlogin);
 
 
-  await _uploadFiles();
-  await uploadlagu();
-  await post.addPostingan(User.idlogin, url_lagu, _caption.text, 50, url, userName, judul_lagu, urlPoto, _judul.text);
-  Navigator.pushNamed(context, '/beranda');
+  await post.uploadFiles();
+  await post.uploadlagu();
+  await post.addPostingan(User.idlogin, post.url_lagu, _caption.text, 50, post.url, userName, post.judul_lagu, urlPoto, _judul.text);
+  Navigator.pushNamed(context, '/bottomnav');
 }
 
 

@@ -1,8 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'dart:html' as html;
+import 'dart:typed_data';
+
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 class postinganProvider extends ChangeNotifier{
+
+  List<html.File> selectedFiles = [];
+  List<String> url = [];
+  String judul_lagu = "";
+  String url_lagu = "";
+  Uint8List? bytes;
 
   Future<void> addPostingan(
      String iduser,
@@ -54,6 +64,45 @@ class postinganProvider extends ChangeNotifier{
     },
   );
 }
+
+
+
+  Future<void> uploadFiles() async {
+    for (var file in selectedFiles) {
+      final reader = html.FileReader();
+      reader.readAsArrayBuffer(file);
+
+      await reader.onLoadEnd.first;
+
+      // Convert result to Uint8List
+      final Uint8List data = Uint8List.fromList(reader.result as List<int>);
+
+      // Create a File object from Uint8List data
+      final blob = html.Blob([data]);
+      final html.File newFile = html.File([data], file.name);
+
+      // Upload the file to Firebase Storage
+      final ref = FirebaseStorage.instance.ref().child('postingan/gambar/${file.name}');
+      await ref.putBlob(blob);
+
+      // Get the download URL
+      String downloadUrl = await ref.getDownloadURL();
+
+      url.add(downloadUrl);
+
+      // Use the download URL as needed (store in Firestore, display in app, etc.)
+      print('File uploaded: $downloadUrl');
+    }
+    
+  }
+
+  Future<void> uploadlagu() async {
+    Reference storageReference = FirebaseStorage.instance.ref().child('postingan/musil/${judul_lagu}');
+    UploadTask uploadTask = storageReference.putData(bytes!);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    url_lagu = await taskSnapshot.ref.getDownloadURL();
+    // addMusic(namamusik!, audioUrl!);
+  }
 
 
 
