@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final User = Provider.of<UserProvider>(context, listen: false);
-    String userId = "XqEzdA0TqKQFlQft5WpD";
+    String userId = User.idlogin;
     // User.setIDLogin();
     
 

@@ -29,7 +29,7 @@ void main() async{
       MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        // ChangeNotifierProvider(create: (context) => postinganProvider()),
+        ChangeNotifierProvider(create: (context) => postinganProvider()),
  
       ],
        // Inisialisasi DataProvider
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
         '/beranda': (context) => Beranda(),
-        // '/addContent': (context) => AddContent(),
+        '/addContent': (context) => AddContent(),
         '/search': (context) => SearchingPage(),
         '/profile': (context) => ProfilePage(),
         '/editProfile': (context) => EditProfilePage(),

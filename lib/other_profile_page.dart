@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ class OtherProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       final User = Provider.of<UserProvider>(context, listen: false);
+       String userId = User.userSearch.id;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -74,24 +76,71 @@ class OtherProfilePage extends StatelessWidget {
           ),
           // Bagian daftar postingan
           Expanded(
-            child: ListView(
-              children: [
-                Container(
-                  // Container kosong untuk daftar postingan
-                  height: 200, // Atur tinggi container sesuai kebutuhan
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('postingan')
+            .where('id_user', isEqualTo: userId) 
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          List<DocumentSnapshot> documents = snapshot.data!.docs;
+
+          if (documents.isEmpty) {
+            return Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Center(
+                child: Text(
+                  'Anda belum membuat postingan.',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            );
+          }
+
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+            ),
+            itemCount: documents.length,
+            itemBuilder: (BuildContext context, int index) {
+              dynamic urlPostingan = documents[index]['urlpostingan'];
+
+              if (urlPostingan is List && urlPostingan.isNotEmpty) {
+                List<String> imageUrls = List<String>.from(urlPostingan);
+
+                return Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),
-                  child: Center(
-                    child: Text(
-                      'Daftar Postingan Anda Akan Muncul Di Sini', // Ganti dengan pesan yang sesuai
-                      style: TextStyle(fontSize: 16),
-                    ),
+                  child: Image.network(
+                    imageUrls[0],
+                    fit: BoxFit.cover,
                   ),
-                ),
-              ],
-            ),
-          ),
+                );
+              } else {
+                return Container(); // Handle empty or incorrect data format.
+              }
+            },
+          );
+        },
+      ),
+    ),
         ],
       ),
       // bottomNavigationBar: BottomAppBar(
