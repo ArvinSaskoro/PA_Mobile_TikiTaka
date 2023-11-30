@@ -13,7 +13,7 @@ class UserProvider extends ChangeNotifier{
   String _idLogin = '';
   String get idlogin => _idLogin;
   Userr userSearch = Userr();
-  bool searchh = false;
+  bool searchPage = false;
 
 
 
@@ -146,12 +146,40 @@ Future<void> searchFirestore(String searchTerm) async {
       userSearch.email = doc['email'];
       userSearch.path_potoProfile = doc['path_potoProfile'];
       // print(searchTerm);
-      searchh = true;
+      searchPage = true;
     });
   })
   .catchError((error) {
     print("Error: $error");
   });
+}
+
+Future<void> otherProfile(String id) async {
+  try {
+    // Mendapatkan referensi dokumen dengan ID tertentu
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+    // Memeriksa apakah dokumen ditemukan
+    if (documentSnapshot.exists) {
+      // Mendapatkan data dari dokumen
+      Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+
+      // Mendapatkan nilai field tertentu
+      userSearch.id = id;
+      userSearch.bio = data['bio'];
+      userSearch.username = data['username'];
+      userSearch.email = data['email'];
+      userSearch.path_potoProfile = data['path_potoProfile'];
+
+      // Mengembalikan nilai field
+    } else {
+      // Dokumen tidak ditemukan, bisa mengembalikan nilai default atau null sesuai kebutuhan
+      
+    }
+  } catch (e) {
+    // Menangani error, bisa mengembalikan nilai default atau null sesuai kebutuhan
+    
+  }
 }
 
 

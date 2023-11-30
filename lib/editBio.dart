@@ -38,10 +38,16 @@ class _EditBioPageState extends State<EditBioPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        NetworkImage('https://placekitten.com/100/100'),
+                 StreamBuilder<DocumentSnapshot>(
+                    stream:  User.users.doc(User.idlogin).snapshots(),
+                    builder: (_, snapshot) {
+                        return CircleAvatar(
+                          radius: 45,
+                          backgroundImage:
+                              NetworkImage(snapshot.data!.get("path_potoProfile")),
+                        );
+                      }
+                    
                   ),
                 ],
               ),

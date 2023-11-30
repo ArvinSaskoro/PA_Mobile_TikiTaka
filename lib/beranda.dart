@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
+
+import 'Provider/user.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({Key? key}) : super(key: key);
@@ -52,6 +55,8 @@ class _BerandaState extends State<Beranda> {
   Widget build(BuildContext context) {
     var lebar = MediaQuery.of(context).size.width;
     var tinggi = MediaQuery.of(context).size.height;
+    final User = Provider.of<UserProvider>(context, listen: false);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -100,7 +105,7 @@ class _BerandaState extends State<Beranda> {
           return ListView.builder(
             itemCount: documents.length,
             itemBuilder: (context, index) {
-              var namaAkun = documents[index]['id_user'];
+              var namaAkun = documents[index]['username'];
               var caption = documents[index]['caption'];
               var namaLagu = documents[index]['judul_lagu'];
 
@@ -109,15 +114,20 @@ class _BerandaState extends State<Beranda> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _audioPlayer.play(musicUrlList[index]);
+                        _audioPlayer.play(documents[index]['urlLagu']);
                       },
                       child: Container(
                         width: lebar,
                         height: tinggi - 120,
                         color: Colors.grey[400],
-                        child: Image.network(
-                          imageUrlList[index],
-                          fit: BoxFit.cover,
+                        child: PageView.builder(
+                          itemCount:documents[index]['urlpostingan'].length,
+                          itemBuilder: (context,idx) {
+                            return Image.network(
+                              documents[index]['urlpostingan'][idx],
+                              // fit: BoxFit.fill,
+                            );
+                          }
                         ),
                       ),
                     ),
@@ -134,14 +144,23 @@ class _BerandaState extends State<Beranda> {
                                 Padding(
                                   padding: EdgeInsets.only(top: 200, right: 10),
                                 ),
-                                CircleAvatar(
-                                  radius: 20,
-                                  child: Image.asset(""),
-                                  backgroundColor: Colors.black54,
+                                InkWell(
+                                  onTap: () async {
+                                    await User.otherProfile(documents[index]['id_user']);
+                                    User.searchPage = false;
+                                    Navigator.pushNamed(context, "/otherProfile");
+
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: const Color.fromARGB(137, 11, 9, 9),
+                                    backgroundImage: NetworkImage(documents[index]['URlPotoProfile']),
+                                  ),
                                 ),
                                 Padding(padding: EdgeInsets.only(top: 10)),
                                 IconButton(
                                   onPressed: () {
+                                    // print(documents[index]['urlpostingan'].length);
                                     setState(() {
                                     
                                     });
@@ -151,7 +170,7 @@ class _BerandaState extends State<Beranda> {
                                     color: Colors.red,
                                   ),
                                 ),
-                                Text("100"),
+                                Text(documents[index]['jumlaLike'].toString()),
                               ],
                             ),
                           ),

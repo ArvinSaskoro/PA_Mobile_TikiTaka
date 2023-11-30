@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Provider/postingan.dart';
 import 'Provider/user.dart';
 
 class OtherProfilePage extends StatelessWidget {
@@ -12,6 +13,8 @@ class OtherProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       final User = Provider.of<UserProvider>(context, listen: false);
+      final post = Provider.of<postinganProvider>(context, listen: false);
+
        String userId = User.userSearch.id;
 
     return Scaffold(
@@ -57,7 +60,26 @@ class OtherProfilePage extends StatelessWidget {
                   size: 30,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/search');
+                  if(User.searchPage == false){
+                     Navigator.pushNamed(context, '/bottomnav');
+                     User.userSearch.id = "";
+                    User.userSearch.bio = "";
+                    User.userSearch.email = "";
+                    User.userSearch.username= "";
+                    User.userSearch.path_potoProfile = "";
+                  }else{
+                    Navigator.pushNamed(context, '/search');
+                    User.userSearch.id = "";
+                    User.userSearch.bio = "";
+                    User.userSearch.email = "";
+                    User.userSearch.username= "";
+                    User.userSearch.path_potoProfile = "";
+
+                  }
+                  
+                  
+                  
+
                 },
               ),
             ),
