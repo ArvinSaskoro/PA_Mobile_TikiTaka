@@ -74,23 +74,16 @@ class postinganProvider extends ChangeNotifier{
 
       await reader.onLoadEnd.first;
 
-      // Convert result to Uint8List
       final Uint8List data = Uint8List.fromList(reader.result as List<int>);
-
-      // Create a File object from Uint8List data
       final blob = html.Blob([data]);
       final html.File newFile = html.File([data], file.name);
 
-      // Upload the file to Firebase Storage
       final ref = FirebaseStorage.instance.ref().child('postingan/gambar/${file.name}');
       await ref.putBlob(blob);
 
-      // Get the download URL
       String downloadUrl = await ref.getDownloadURL();
-
       url.add(downloadUrl);
 
-      // Use the download URL as needed (store in Firestore, display in app, etc.)
       print('File uploaded: $downloadUrl');
     }
     

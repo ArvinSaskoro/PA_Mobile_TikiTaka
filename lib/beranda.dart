@@ -1,5 +1,7 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({Key? key}) : super(key: key);
@@ -10,6 +12,9 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
   List<String> imageUrlList = [];
+  List<String> musicUrlList = [];
+  AudioPlayer _audioPlayer = AudioPlayer();
+
 
   @override
   void initState() {
@@ -18,22 +23,30 @@ class _BerandaState extends State<Beranda> {
   }
 
   Future<void> _loadImageUrls() async {
-    // Mendapatkan referensi ke direktori di Firebase Storage
-    var ref = FirebaseStorage.instance.ref().child('postingan');
+    var refGambar = FirebaseStorage.instance.ref().child('postingan/gambar');
+    var resultGambar = await refGambar.listAll();
 
-    // Mendapatkan daftar file dalam direktori
-    var result = await ref.listAll();
-
-    // Mengambil URL masing-masing file dan menyimpannya dalam daftar
-    for (var item in result.items) {
+    for (var item in resultGambar.items) {
       var url = await item.getDownloadURL();
       setState(() {
         imageUrlList.add(url);
       });
     }
+
+    var refMusik = FirebaseStorage.instance.ref().child('postingan/musik');
+    var resultMusik = await refMusik.listAll();
+
+    for (var item in resultMusik.items) {
+      var url = await item.getDownloadURL();
+      _audioPlayer.setUrl(url); // Simpan URL musik
+      musicUrlList.add(url);
+      
+    }
   }
 
-  int currentIndex = 0;
+  void _playMusic() {
+    _audioPlayer.play;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +56,8 @@ class _BerandaState extends State<Beranda> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent, // Set the background color to transparent
-          elevation: 1,
-        
+        backgroundColor: Colors.transparent,
+        elevation: 1,
         title: Row(
           children: [
             Expanded(
@@ -63,92 +75,125 @@ class _BerandaState extends State<Beranda> {
               icon: Icon(Icons.search),
               onPressed: () {
                 Navigator.pushNamed(context, '/search');
-                // Implement search functionality here
               },
             ),
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: imageUrlList.length,
-        itemBuilder: (context, index) {
-          return Center(
-            child: Stack(
-              children: [
-                Container(
-                  width: lebar,
-                  height: tinggi-120,
-                  color: Colors.grey[400],
-                  child: Image.network(imageUrlList[index], fit: BoxFit.cover),
-                ),
-                Container(
-                  width: lebar,
-                  height: tinggi-120,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Column(
-                          children: [
-                            Padding(padding: EdgeInsets.only(top: 200, right: 10)),
-                            CircleAvatar(
-                              radius: 20,
-                              child: Image.asset(""),
-                              backgroundColor: Colors.black54,
-                            ),
-                            Padding(padding: EdgeInsets.only(top: 10)),
-                            IconButton(
-                              onPressed: () {
-                                // Handle like button tap
-                                setState(() {
-                                  // Toggle between favorite and favorite_border icons
-                                  currentIndex = index;
-                                });
-                              },
-                              icon: currentIndex == index
-                                  ? Icon(Icons.favorite, color: Colors.red)
-                                  : Icon(Icons.favorite_border, color: Colors.red),
-                            ),
-                            Text("100"),
-                          ],
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('postingan').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          List<DocumentSnapshot> documents = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: documents.length,
+            itemBuilder: (context, index) {
+              var namaAkun = documents[index]['id_user'];
+              var caption = documents[index]['caption'];
+              var namaLagu = documents[index]['judul_lagu'];
+
+              return Center(
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _audioPlayer.play(musicUrlList[index]);
+                      },
+                      child: Container(
+                        width: lebar,
+                        height: tinggi - 120,
+                        color: Colors.grey[400],
+                        child: Image.network(
+                          imageUrlList[index],
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      Padding(padding: EdgeInsets.only(top: 0)),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    Container(
+                      width: lebar,
+                      height: tinggi - 120,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Padding(padding: EdgeInsets.only(top: 100)),
                           Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Text(
-                              "nama akun",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20,top: 10),
-                            child: Text("CAPTION"),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20,top: 10),
-                            child: Row(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Column(
                               children: [
-                                Icon(Icons.my_library_music_outlined),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Text("nama lagu"),
-                                )
+                                  padding: EdgeInsets.only(top: 200, right: 10),
+                                ),
+                                CircleAvatar(
+                                  radius: 20,
+                                  child: Image.asset(""),
+                                  backgroundColor: Colors.black54,
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 10)),
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                    
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                Text("100"),
                               ],
                             ),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 0)),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(padding: EdgeInsets.only(top: 100)),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Text(
+                                  namaAkun ?? '',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, top: 10),
+                                child: Text(caption ?? ''),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20, top: 10),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.my_library_music_outlined),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Text(namaLagu ?? ''),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
                           )
                         ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
           );
         },
       ),
@@ -157,109 +202,181 @@ class _BerandaState extends State<Beranda> {
 }
 
 
-
-// // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:flutter/material.dart';
 
-// class beranda extends StatefulWidget {
-//   const beranda({super.key});
+// class Beranda extends StatefulWidget {
+//   const Beranda({Key? key}) : super(key: key);
 
 //   @override
-//   State<beranda> createState() => _berandaState();
+//   _BerandaState createState() => _BerandaState();
 // }
-//     Icon icon1 = Icon(Icons.favorite_border,color: Colors.red,);
-//     Icon icon2 = Icon(Icons.favorite,color: Colors.red,);
-//     Icon icon3 = icon1;
 
-// class _berandaState extends State<beranda> {
-  
+// class _BerandaState extends State<Beranda> {
+//   List<String> imageUrlList = [];
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _loadImageUrls();
+//   }
+
+//   Future<void> _loadImageUrls() async {
+//     var ref = FirebaseStorage.instance.ref().child('postingan');
+//     var result = await ref.listAll();
+
+//     for (var item in result.items) {
+//       var url = await item.getDownloadURL();
+//       setState(() {
+//         imageUrlList.add(url);
+//       });
+//     }
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     var lebar = MediaQuery.of(context).size.width;
 //     var tinggi = MediaQuery.of(context).size.height;
+
 //     return Scaffold(
 //       appBar: AppBar(
 //         automaticallyImplyLeading: false,
-//         backgroundColor: Colors.grey[400],
+//         backgroundColor: Colors.transparent,
+//         elevation: 1,
 //         title: Row(
-//         children: [
-//           Expanded( 
-//             child: TextButton(onPressed: (){Navigator.pushNamed(context, '/search');}, child:Text("SEARCH",style: TextStyle(color: Colors.black),))
-//           ),
-//           IconButton(
-//             icon: Icon(Icons.search),
-//             onPressed: () {
-//               Navigator.pushNamed(context, '/search');
-//               // Implement search functionality here
-//             },
-//           ),
-//         ],
-//       ),
-//       ),
-//       body: ListView(
-//         children: [
-//           Center(
-//             child: Stack(
-//               children: [
-//                 Container(
-//                   width: lebar,
-//                   height: tinggi,
-//                   color: Colors.grey[400],
-//                   //gambar
+//           children: [
+//             Expanded(
+//               child: TextButton(
+//                 onPressed: () {
+//                   Navigator.pushNamed(context, '/search');
+//                 },
+//                 child: Text(
+//                   "SEARCH",
+//                   style: TextStyle(color: Colors.black),
 //                 ),
-//                 Container(
-//                   width: lebar,
-//                   height: 660,
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.end,
-//                     children: [
-//                       Padding(
-//                         padding: const EdgeInsets.only(right: 10),
-//                         child: Column(
-                          
-//                           children: [
-//                             Padding(padding: EdgeInsets.only(top: 200,right: 10)),
-//                             CircleAvatar(radius: 20,child: Image.asset(""),backgroundColor: Colors.black54,),
-//                             Padding(padding: EdgeInsets.only(top: 10)),
-//                             IconButton(onPressed: (){
-//                               setState(() {
-//                                 if(icon3 == icon1){
-//                                 icon3 = icon2;
-//                               }
-//                               else{icon3 = icon1;}
-//                               });
-                              
-//                             }, icon: icon3,),
-//                             Text("100"),
-//                           ],
-//                         ),
-//                       ),
-//                       Padding(padding: EdgeInsets.only(top: 0)),
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Padding(padding: EdgeInsets.only(top: 100)),
-//                           Padding(padding: EdgeInsets.only(left: 20),child: Text("nama akun",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),),
-//                           Padding(padding: EdgeInsets.only(left: 20),child: Text("CAPTION"),),
-//                         Padding(
-//                           padding: const EdgeInsets.only(left: 20),
-//                           child: Row(
-//                             children: [
-//                               Icon(Icons.my_library_music_outlined),
-//                               Padding(padding: EdgeInsets.only(left: 20),child: Text("nama lagu"),)
-//                             ],
-//                           ),
-//                         )
-//                         ],
-//                       )
-//                     ],
-//                   ),
-//                 )
-//               ],
+//               ),
 //             ),
-//           ),
-//         ],
+//             IconButton(
+//               icon: Icon(Icons.search),
+//               onPressed: () {
+//                 Navigator.pushNamed(context, '/search');
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//       body: StreamBuilder(
+//         stream: FirebaseFirestore.instance.collection('postingan').snapshots(),
+//         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+//           if (snapshot.hasError) {
+//             return Center(
+//               child: Text('Error: ${snapshot.error}'),
+//             );
+//           }
+
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           }
+
+//           List<DocumentSnapshot> documents = snapshot.data!.docs;
+
+//           return ListView.builder(
+//             itemCount: documents.length,
+//             itemBuilder: (context, index) {
+//               var namaAkun = documents[index]['id_user'];
+//               var caption = documents[index]['caption'];
+//               var namaLagu = documents[index]['judul_lagu'];
+
+//               return Center(
+//                 child: Stack(
+//                   children: [
+//                     Container(
+//                       width: lebar,
+//                       height: tinggi - 120,
+//                       color: Colors.grey[400],
+//                       child: Image.network(
+//                         imageUrlList[index],
+//                         fit: BoxFit.cover,
+//                       ),
+//                     ),
+//                     Container(
+//                       width: lebar,
+//                       height: tinggi - 120,
+//                       child: Column(
+//                         crossAxisAlignment: CrossAxisAlignment.end,
+//                         children: [
+//                           Padding(
+//                             padding: const EdgeInsets.only(right: 10),
+//                             child: Column(
+//                               children: [
+//                                 Padding(
+//                                     padding:
+//                                         EdgeInsets.only(top: 200, right: 10)),
+//                                 CircleAvatar(
+//                                   radius: 20,
+//                                   child: Image.asset(""),
+//                                   backgroundColor: Colors.black54,
+//                                 ),
+//                                 Padding(padding: EdgeInsets.only(top: 10)),
+//                                 IconButton(
+//                                   onPressed: () {
+//                                     setState(() {
+//                                       // Handle like button tap
+//                                     });
+//                                   },
+//                                   icon: Icon(
+//                                     Icons.favorite_border,
+//                                     color: Colors.red,
+//                                   ),
+//                                 ),
+//                                 Text("100"),
+//                               ],
+//                             ),
+//                           ),
+//                           Padding(padding: EdgeInsets.only(top: 0)),
+//                           Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Padding(padding: EdgeInsets.only(top: 100)),
+//                               Padding(
+//                                 padding: EdgeInsets.only(left: 20),
+//                                 child: Text(
+//                                   namaAkun ?? '',
+//                                   style: TextStyle(
+//                                       fontWeight: FontWeight.bold,
+//                                       fontSize: 16),
+//                                 ),
+//                               ),
+//                               Padding(
+//                                 padding: EdgeInsets.only(left: 20, top: 10),
+//                                 child: Text(caption ?? ''),
+//                               ),
+//                               Padding(
+//                                 padding: const EdgeInsets.only(left: 20, top: 10),
+//                                 child: Row(
+//                                   children: [
+//                                     Icon(Icons.my_library_music_outlined),
+//                                     Padding(
+//                                       padding: EdgeInsets.only(left: 20),
+//                                       child: Text(namaLagu ?? ''),
+//                                     )
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           )
+//                         ],
+//                       ),
+//                     )
+//                   ],
+//                 ),
+//               );
+//             },
+//           );
+//         },
 //       ),
 //     );
 //   }

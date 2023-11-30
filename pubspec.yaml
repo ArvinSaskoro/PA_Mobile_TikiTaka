@@ -38,6 +38,8 @@ dependencies:
   image_picker_web: ^2.0.4
   file_picker: ^4.0.10
   path: ^1.8.0
+  # audioplayers: ^5.2.1
+  audioplayers: ^0.20.1
 
 
   # The following adds the Cupertino Icons font to your application.
