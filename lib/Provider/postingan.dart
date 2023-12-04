@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 import 'dart:typed_data';
 
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 class postinganProvider extends ChangeNotifier{
 
-  List<html.File> selectedFiles = [];
+  // List<html.File> selectedFiles = [];
   List<String> url = [];
   String judul_lagu = "";
   String url_lagu = "";
@@ -68,24 +68,24 @@ class postinganProvider extends ChangeNotifier{
 
 
   Future<void> uploadFiles() async {
-    for (var file in selectedFiles) {
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(file);
+    // for (var file in selectedFiles) {
+    //   final reader = html.FileReader();
+    //   reader.readAsArrayBuffer(file);
 
-      await reader.onLoadEnd.first;
+    //   await reader.onLoadEnd.first;
 
-      final Uint8List data = Uint8List.fromList(reader.result as List<int>);
-      final blob = html.Blob([data]);
-      final html.File newFile = html.File([data], file.name);
+    //   final Uint8List data = Uint8List.fromList(reader.result as List<int>);
+    //   final blob = html.Blob([data]);
+    //   final html.File newFile = html.File([data], file.name);
 
-      final ref = FirebaseStorage.instance.ref().child('postingan/gambar/${file.name}');
-      await ref.putBlob(blob);
+    //   final ref = FirebaseStorage.instance.ref().child('postingan/gambar/${file.name}');
+    //   await ref.putBlob(blob);
 
-      String downloadUrl = await ref.getDownloadURL();
-      url.add(downloadUrl);
+    //   String downloadUrl = await ref.getDownloadURL();
+    //   url.add(downloadUrl);
 
-      print('File uploaded: $downloadUrl');
-    }
+    //   print('File uploaded: $downloadUrl');
+    // }
     
   }
 

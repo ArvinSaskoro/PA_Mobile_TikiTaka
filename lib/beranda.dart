@@ -41,7 +41,8 @@ class _BerandaState extends State<Beranda> {
 
     for (var item in resultMusik.items) {
       var url = await item.getDownloadURL();
-      _audioPlayer.setUrl(url); // Simpan URL musik
+      // _audioPlayer.play(url); // Simpan URL musik
+      _audioPlayer.setSourceUrl(url);
       musicUrlList.add(url);
       
     }

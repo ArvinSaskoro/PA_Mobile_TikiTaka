@@ -6,8 +6,8 @@ import 'package:file_picker/file_picker.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:project_akhir/Provider/user.dart';
-import 'dart:html' as html;
+import 'package:tikitaka/Provider/user.dart';
+// import 'dart:html' as html;
 // import 'dart:typed_data';
 
 // import 'package:project_akhir/model/Postingan.dart';
@@ -40,26 +40,26 @@ class _AddContentState extends State<AddContent> {
 
 
   Future<void> _pickFiles() async {
-  final post = Provider.of<postinganProvider>(context, listen: false);
+  // final post = Provider.of<postinganProvider>(context, listen: false);
 
 
-    final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
-    input.click();
+  //   final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
+  //   input.click();
 
-    input.onChange.listen((event) async {
-      final files = input.files;
-      if (files != null && files.isNotEmpty) {
+  //   input.onChange.listen((event) async {
+  //     final files = input.files;
+  //     if (files != null && files.isNotEmpty) {
 
-        setState(() {
-          post.selectedFiles = List.from(files);
+  //       setState(() {
+  //         post.selectedFiles = List.from(files);
 
-        // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
+  //       // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
 
-        });
-        checkReadyState();
+  //       });
+  //       checkReadyState();
 
-      }
-    });
+  //     }
+  //   });
   }
 
   Future<void> _pickMusic() async {
@@ -90,7 +90,7 @@ void checkReadyState() {
   final post = Provider.of<postinganProvider>(context, listen: false);
 
     setState(() {
-      isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
+      // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
     });
   }
 
@@ -107,7 +107,7 @@ Future<void> _upload() async {
   post.showMessageBox(context);
   setState(() {
     post.judul_lagu ='';
-    post.selectedFiles= const [];
+    // post.selectedFiles= const [];
   });
   // Navigator.pushNamed(context, '/bottomnav');
 }

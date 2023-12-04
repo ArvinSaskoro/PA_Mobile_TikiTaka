@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_akhir/add_content_page.dart';
-import 'package:project_akhir/beranda.dart';
-import 'package:project_akhir/profile_page.dart';
-import 'package:project_akhir/searching_page.dart';
+import 'package:tikitaka/add_content_page.dart';
+import 'package:tikitaka/beranda.dart';
+import 'package:tikitaka/profile_page.dart';
+import 'package:tikitaka/searching_page.dart';
 
 class bottomnav extends StatefulWidget {
   const bottomnav({super.key});
