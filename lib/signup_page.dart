@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:tikitaka/Provider/user.dart';
+import 'package:project_akhir/Provider/user.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {

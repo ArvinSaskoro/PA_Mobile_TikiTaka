@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tikitaka/model/User.dart';
+import 'package:project_akhir/model/User.dart';
 
 
 FirebaseAuth _fireAuth = FirebaseAuth.instance;
