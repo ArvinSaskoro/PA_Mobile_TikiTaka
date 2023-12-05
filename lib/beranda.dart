@@ -17,9 +17,7 @@ class _BerandaState extends State<Beranda> {
   List<String> imageUrlList = [];
   List<String> musicUrlList = [];
   AudioPlayer _audioPlayer = AudioPlayer();
-  List <bool> currentIndex = [];
-  int indexfav = 0;
-  
+
 
   @override
   void initState() {
@@ -80,18 +78,11 @@ class _BerandaState extends State<Beranda> {
               ),
             ),
             IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  if(currentIndex[indexfav] == false){
-                                    currentIndex[indexfav] = true;
-                                  }
-                                  else{currentIndex[indexfav] = false;}
-                                });
-                              },
-                              icon: currentIndex[indexfav] == true
-                                  ? Icon(Icons.favorite, color: Colors.red)
-                                  : Icon(Icons.favorite_border, color: Colors.red),
-                            ),
+              icon: Icon(Icons.search,color: Colors.white,),
+              onPressed: () {
+                Navigator.pushNamed(context, '/search');
+              },
+            ),
           ],
         ),
       ),
@@ -118,7 +109,6 @@ class _BerandaState extends State<Beranda> {
               var namaAkun = documents[index]['username'];
               var caption = documents[index]['caption'];
               var namaLagu = documents[index]['judul_lagu'];
-              currentIndex[index] = false;
 
               return Center(
                 child: Stack(
@@ -210,7 +200,7 @@ class _BerandaState extends State<Beranda> {
                                 padding: const EdgeInsets.only(left: 20, top: 10),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.my_library_music_outlined),
+                                    Icon(Icons.my_library_music_outlined,color: Colors.white,),
                                     Padding(
                                       padding: EdgeInsets.only(left: 20),
                                       child: Text(namaLagu ?? '',style: TextStyle(
