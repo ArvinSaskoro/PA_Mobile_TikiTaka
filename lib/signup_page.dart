@@ -30,7 +30,7 @@ class _SignUpState extends State<SignUp> {
           children: [
             // backgorund atas
             Container(
-              height: 240,
+              height: 260,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 29, 72, 106),

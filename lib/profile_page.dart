@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:project_akhir/Provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider/user.dart';
@@ -16,14 +17,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  
-
   @override
   Widget build(BuildContext context) {
     final User = Provider.of<UserProvider>(context, listen: false);
     String userId = User.idlogin;
     // User.setIDLogin();
-    
 
     return Scaffold(
       key: _scaffoldKey,
@@ -41,8 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-                  SizedBox(height: 20),
-
+            SizedBox(height: 20),
             Align(
               alignment: Alignment.center,
               child: Column(
@@ -50,33 +47,31 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   // SizedBox(height: 10,),
                   StreamBuilder<DocumentSnapshot>(
-                    stream:  User.users.doc(User.idlogin).snapshots(),
-                    builder: (_, snapshot) {
+                      stream: User.users.doc(User.idlogin).snapshots(),
+                      builder: (_, snapshot) {
                         return CircleAvatar(
                           radius: 45,
-                          backgroundImage:
-                              NetworkImage(snapshot.data!.get("path_potoProfile")),
+                          backgroundImage: NetworkImage(
+                              snapshot.data!.get("path_potoProfile")),
                         );
-                      }
-                    
-                  ),
+                      }),
                   SizedBox(height: 10),
                   StreamBuilder<DocumentSnapshot>(
-                    stream:  User.users.doc(User.idlogin).snapshots(),
-                    builder: (_, snapshot) {
-                      return Text(snapshot.data!.get("username"),
-                          style: TextStyle(color: Colors.white, fontSize: 20));
-                    }
-                  ),
+                      stream: User.users.doc(User.idlogin).snapshots(),
+                      builder: (_, snapshot) {
+                        return Text(snapshot.data!.get("username"),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20));
+                      }),
                   StreamBuilder<DocumentSnapshot>(
-                    stream:  User.users.doc(User.idlogin).snapshots(),
-                    builder: (_, snapshot) {
-                      return Text(snapshot.data!.get("email"), style: TextStyle(color: Colors.white));
-                    }
-                  ),
+                      stream: User.users.doc(User.idlogin).snapshots(),
+                      builder: (_, snapshot) {
+                        return Text(snapshot.data!.get("email"),
+                            style: TextStyle(color: Colors.white));
+                      }),
                   SizedBox(height: 10),
 
-                   GestureDetector(
+                  GestureDetector(
                     onTap: () {
                       // Tambahkan logika untuk mengedit atau menambah bio
                       Navigator.of(context).push(MaterialPageRoute(
@@ -86,7 +81,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.edit, color: Colors.white, weight: 5,),
+                        Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          weight: 5,
+                        ),
                         Text(
                           'Edit Bio',
                           style: TextStyle(color: Colors.white),
@@ -97,7 +96,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-           
             Positioned(
               top: 0,
               right: 0,
@@ -117,8 +115,9 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             DrawerHeader(
-              decoration:
-                  BoxDecoration(color: Color.fromARGB(255, 29, 72, 106)),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
               child: Center(
                 child: Text(
                   'Settings',
@@ -133,16 +132,16 @@ class _ProfilePageState extends State<ProfilePage> {
               leading: Icon(Icons.edit),
               title: Text('Edit Profile'),
               onTap: () {
-                // Tambahkan logika untuk navigasi ke halaman edit profil
                 Navigator.pushNamed(context, '/editProfile');
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              leading: Icon(Icons.brightness_6), // Icon untuk mengganti tema
+              title: Text('Toggle Theme'),
               onTap: () {
-                // Tambahkan logika untuk logout
-                Navigator.pushNamed(context, '/signIn');
+                final themeProvider =
+                    Provider.of<ThemeProvider>(context, listen: false);
+                themeProvider.toggleTheme();
               },
             ),
             ListTile(
@@ -150,6 +149,13 @@ class _ProfilePageState extends State<ProfilePage> {
               title: Text('Delete Account'),
               onTap: () {
                 // Tambahkan logika untuk menghapus akun
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () {
+                Navigator.pushNamed(context, '/signIn');
               },
             ),
           ],
@@ -161,14 +167,13 @@ class _ProfilePageState extends State<ProfilePage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: StreamBuilder<DocumentSnapshot>(
-               stream:  User.users.doc(User.idlogin).snapshots(),
+                stream: User.users.doc(User.idlogin).snapshots(),
                 builder: (_, snapshot) {
-                return Text(
-                  snapshot.data!.get("bio"),
-                  style: TextStyle(fontSize: 18),
-                );
-              }
-            ),
+                  return Text(
+                    snapshot.data!.get("bio"),
+                    style: TextStyle(fontSize: 18),
+                  );
+                }),
           ),
           // Bagian daftar postingan
           // Expanded(
@@ -191,72 +196,73 @@ class _ProfilePageState extends State<ProfilePage> {
           //   ),
           // ),
 
-           Expanded(
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('postingan')
-            .where('id_user', isEqualTo: userId) 
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
+          Expanded(
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('postingan')
+                  .where('id_user', isEqualTo: userId)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-          List<DocumentSnapshot> documents = snapshot.data!.docs;
+                List<DocumentSnapshot> documents = snapshot.data!.docs;
 
-          if (documents.isEmpty) {
-            return Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Text(
-                  'Anda belum membuat postingan.',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            );
-          }
+                if (documents.isEmpty) {
+                  return Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Anda belum membuat postingan.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  );
+                }
 
-          return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-            ),
-            itemCount: documents.length,
-            itemBuilder: (BuildContext context, int index) {
-              dynamic urlPostingan = documents[index]['urlpostingan'];
-
-              if (urlPostingan is List && urlPostingan.isNotEmpty) {
-                List<String> imageUrls = List<String>.from(urlPostingan);
-
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
                   ),
-                  child: Image.network(
-                    imageUrls[0],
-                    fit: BoxFit.cover,
-                  ),
+                  itemCount: documents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    dynamic urlPostingan = documents[index]['urlpostingan'];
+
+                    if (urlPostingan is List && urlPostingan.isNotEmpty) {
+                      List<String> imageUrls = List<String>.from(urlPostingan);
+
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Image.network(
+                          imageUrls[0],
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    } else {
+                      return Container(); // Handle empty or incorrect data format.
+                    }
+                  },
                 );
-              } else {
-                return Container(); // Handle empty or incorrect data format.
-              }
-            },
-          );
-        },
-      ),
-    ),
+              },
+            ),
+          ),
         ],
       ),
     );
