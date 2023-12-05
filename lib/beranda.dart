@@ -41,7 +41,8 @@ class _BerandaState extends State<Beranda> {
 
     for (var item in resultMusik.items) {
       var url = await item.getDownloadURL();
-      _audioPlayer.setUrl(url); // Simpan URL musik
+      // _audioPlayer.play(url); // Simpan URL musik
+      _audioPlayer.setSourceUrl(url);
       musicUrlList.add(url);
       
     }
@@ -61,7 +62,7 @@ class _BerandaState extends State<Beranda> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color.fromARGB(255, 29, 72, 106),
         elevation: 1,
         title: Row(
           children: [
@@ -72,12 +73,12 @@ class _BerandaState extends State<Beranda> {
                 },
                 child: Text(
                   "SEARCH",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                 ),
               ),
             ),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: Icon(Icons.search,color: Colors.white,),
               onPressed: () {
                 Navigator.pushNamed(context, '/search');
               },
@@ -114,12 +115,12 @@ class _BerandaState extends State<Beranda> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _audioPlayer.play(documents[index]['urlLagu']);
+                        _audioPlayer.play(UrlSource( documents[index]['urlLagu']));
                       },
                       child: Container(
                         width: lebar,
                         height: tinggi - 120,
-                        color: Colors.grey[400],
+                        color: Color.fromARGB(255, 0, 0, 0),
                         child: PageView.builder(
                           itemCount:documents[index]['urlpostingan'].length,
                           itemBuilder: (context,idx) {
@@ -153,7 +154,7 @@ class _BerandaState extends State<Beranda> {
                                   },
                                   child: CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: const Color.fromARGB(137, 11, 9, 9),
+                                    backgroundColor: Color.fromARGB(136, 145, 145, 145),
                                     backgroundImage: NetworkImage(documents[index]['URlPotoProfile']),
                                   ),
                                 ),
@@ -170,7 +171,8 @@ class _BerandaState extends State<Beranda> {
                                     color: Colors.red,
                                   ),
                                 ),
-                                Text(documents[index]['jumlaLike'].toString()),
+                                Text(documents[index]['jumlaLike'].toString(),style: TextStyle(
+                                    color: Colors.white,)),
                               ],
                             ),
                           ),
@@ -184,22 +186,25 @@ class _BerandaState extends State<Beranda> {
                                 child: Text(
                                   namaAkun ?? '',
                                   style: TextStyle(
+                                    color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: 20, top: 10),
-                                child: Text(caption ?? ''),
+                                child: Text(caption ?? '',style: TextStyle(
+                                    color: Colors.white,)),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 20, top: 10),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.my_library_music_outlined),
+                                    Icon(Icons.my_library_music_outlined,color: Colors.white,),
                                     Padding(
                                       padding: EdgeInsets.only(left: 20),
-                                      child: Text(namaLagu ?? ''),
+                                      child: Text(namaLagu ?? '',style: TextStyle(
+                                    color: Colors.white,)),
                                     )
                                   ],
                                 ),

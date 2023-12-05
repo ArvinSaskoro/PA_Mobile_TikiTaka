@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 class postinganProvider extends ChangeNotifier{
 
-  List<html.File> selectedFiles = [];
+  // List<html.File> selectedFiles = [];
+  List<Uint8List> selectedFiles = [];
   List<String> url = [];
   String judul_lagu = "";
   String url_lagu = "";
@@ -43,7 +46,6 @@ class postinganProvider extends ChangeNotifier{
 
 
       });
-      // Disini Anda bisa melakukan operasi lain yang memanfaatkan nilai docID
     } catch (error) {
       print('Error: $error');
     }
@@ -68,23 +70,23 @@ class postinganProvider extends ChangeNotifier{
 
 
   Future<void> uploadFiles() async {
-    for (var file in selectedFiles) {
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(file);
+    try {
+      final storage = FirebaseStorage.instance;
 
-      await reader.onLoadEnd.first;
+      for (var byteData in selectedFiles) {
+        // Convert Uint8List to File
+        final file = File.fromRawPath(byteData);
 
-      final Uint8List data = Uint8List.fromList(reader.result as List<int>);
-      final blob = html.Blob([data]);
-      final html.File newFile = html.File([data], file.name);
+        final ref = storage.ref().child('postingan/gambar/${file.path}');
+        await ref.putFile(file);
 
-      final ref = FirebaseStorage.instance.ref().child('postingan/gambar/${file.name}');
-      await ref.putBlob(blob);
+        String downloadUrl = await ref.getDownloadURL();
+        url.add(downloadUrl);
 
-      String downloadUrl = await ref.getDownloadURL();
-      url.add(downloadUrl);
-
-      print('File uploaded: $downloadUrl');
+        print('File uploaded: $downloadUrl');
+      }
+    } catch (error) {
+      print('Error uploading image: $error');
     }
     
   }

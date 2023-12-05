@@ -1,4 +1,4 @@
-package com.example.project_akhir
+package com.example.tikitaka
 
 import io.flutter.embedding.android.FlutterActivity
 

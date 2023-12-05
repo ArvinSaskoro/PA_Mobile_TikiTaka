@@ -17,7 +17,6 @@ import 'package:project_akhir/signup_page.dart';
 import 'package:project_akhir/splash_page.dart';
 //import 'package:project_akhir/tes.dart';
 import 'package:provider/provider.dart';
-
 import 'Provider/postingan.dart';
 
 void main() async{

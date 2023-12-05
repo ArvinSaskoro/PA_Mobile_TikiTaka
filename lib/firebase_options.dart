@@ -23,10 +23,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -60,9 +57,18 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB5vuf5ecCvISRm_GUoldpq_sqfe4_UICo',
-    appId: '1:716239401584:android:7d452da6b1f9a4d14efab5',
+    appId: '1:716239401584:android:06562bb8af8d24b14efab5',
     messagingSenderId: '716239401584',
     projectId: 'pa-tikitaka',
     storageBucket: 'pa-tikitaka.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBNlMLrILKzz0JIn9D15puOWeOxi9amm9U',
+    appId: '1:716239401584:ios:0842c45eb4c73fdd4efab5',
+    messagingSenderId: '716239401584',
+    projectId: 'pa-tikitaka',
+    storageBucket: 'pa-tikitaka.appspot.com',
+    iosBundleId: 'com.example.tikitaka',
   );
 }

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:project_akhir/Provider/user.dart';
+import 'package:tikitaka/Provider/user.dart';
 import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
@@ -180,7 +180,7 @@ class _SignInState extends State<SignIn> {
                    await User.login(_email.value.text, _pass.value.text);
                       print(User.userAuth!.email);
                           if (User.userAuth != null){
-
+        
                             if(User.userAuth!.email == _email.text){
                              await User.setIDLogin();
                               print(User.idlogin);

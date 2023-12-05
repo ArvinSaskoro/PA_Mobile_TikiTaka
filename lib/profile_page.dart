@@ -47,28 +47,54 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   // SizedBox(height: 10,),
                   StreamBuilder<DocumentSnapshot>(
-                      stream: User.users.doc(User.idlogin).snapshots(),
-                      builder: (_, snapshot) {
-                        return CircleAvatar(
-                          radius: 45,
-                          backgroundImage: NetworkImage(
-                              snapshot.data!.get("path_potoProfile")),
-                        );
-                      }),
-                  SizedBox(height: 10),
+  stream: User.users.doc(User.idlogin).snapshots(),
+  builder: (_, snapshot) {
+    if (snapshot.hasData && snapshot.data != null) {
+      String pathToProfile = snapshot.data!.get("path_potoProfile") ?? "";
+      String username = snapshot.data!.get("username") ?? "";
+
+      return Column(
+        children: [
+          CircleAvatar(
+            radius: 45,
+            backgroundImage: pathToProfile.isNotEmpty
+                ? NetworkImage(pathToProfile) as ImageProvider<Object>?
+                : AssetImage("path/to/placeholder_image.jpg") as ImageProvider<Object>?, // Ganti dengan path gambar placeholder
+          ),
+          SizedBox(height: 10),
+          Text(
+            username,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+        ],
+      );
+    } else if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    } else {
+      return Text("Unable to fetch user data");
+    }
+  },
+),
+
                   StreamBuilder<DocumentSnapshot>(
-                      stream: User.users.doc(User.idlogin).snapshots(),
-                      builder: (_, snapshot) {
-                        return Text(snapshot.data!.get("username"),
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20));
-                      }),
-                  StreamBuilder<DocumentSnapshot>(
-                      stream: User.users.doc(User.idlogin).snapshots(),
-                      builder: (_, snapshot) {
-                        return Text(snapshot.data!.get("email"),
-                            style: TextStyle(color: Colors.white));
-                      }),
+  stream: User.users.doc(User.idlogin).snapshots(),
+  builder: (_, snapshot) {
+    if (snapshot.hasData && snapshot.data != null) {
+      String email = snapshot.data!.get("email") ?? "";
+
+      return Text(
+        email,
+        style: TextStyle(color: Colors.white),
+      );
+    } else if (snapshot.connectionState == ConnectionState.waiting) {
+      // Tampilkan sesuatu ketika data masih dimuat
+      return CircularProgressIndicator();
+    } else {
+      // Tampilkan pesan atau widget lain jika tidak ada data atau ada kesalahan
+      return Text("Unable to fetch user email");
+    }
+  },
+),
                   SizedBox(height: 10),
 
                   GestureDetector(
@@ -167,13 +193,23 @@ class _ProfilePageState extends State<ProfilePage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: StreamBuilder<DocumentSnapshot>(
-                stream: User.users.doc(User.idlogin).snapshots(),
-                builder: (_, snapshot) {
-                  return Text(
-                    snapshot.data!.get("bio"),
-                    style: TextStyle(fontSize: 18),
-                  );
-                }),
+  stream: User.users.doc(User.idlogin).snapshots(),
+  builder: (_, snapshot) {
+    if (snapshot.hasData && snapshot.data != null) {
+      return Text(
+        snapshot.data!.get("bio") ?? "Bio not available",
+        style: TextStyle(fontSize: 18),
+      );
+    } else if (snapshot.connectionState == ConnectionState.waiting) {
+      // Tampilkan sesuatu ketika data masih dimuat
+      return CircularProgressIndicator();
+    } else {
+      // Tampilkan pesan atau widget lain jika tidak ada data atau ada kesalahan
+      return Text("Unable to fetch bio");
+    }
+  },
+),
+
           ),
           // Bagian daftar postingan
           // Expanded(

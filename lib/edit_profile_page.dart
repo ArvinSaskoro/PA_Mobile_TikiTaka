@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 
@@ -40,27 +40,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<void> _uploadImage() async {
     
-    // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
-    final html.FileUploadInputElement input = html.FileUploadInputElement();
-    input.accept = 'user/*';
-    input.click();
+    // // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
+    // final html.FileUploadInputElement input = html.FileUploadInputElement();
+    // input.accept = 'user/*';
+    // input.click();
 
-    input.onChange.listen((event) {
-      final files = input.files;
-      if (files != null && files.isNotEmpty) {
-        final file = files[0];
-        final reader = html.FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onLoadEnd.listen((loadEndEvent) async {
-          final Uint8List data = reader.result as Uint8List;
-          _image = data;
-          namafile = file.name;
-          // print(namafile);
+    // input.onChange.listen((event) {
+    //   final files = input.files;
+    //   if (files != null && files.isNotEmpty) {
+    //     final file = files[0];
+    //     final reader = html.FileReader();
+    //     reader.readAsArrayBuffer(file);
+    //     reader.onLoadEnd.listen((loadEndEvent) async {
+    //       final Uint8List data = reader.result as Uint8List;
+    //       _image = data;
+    //       namafile = file.name;
+    //       // print(namafile);
           
           
-        });
-      }
-    });
+    //     });
+    //   }
+    // });
   }
   
 
