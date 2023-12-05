@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-// import 'dart:io';
+import 'dart:io';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -8,7 +8,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tikitaka/Provider/user.dart';
 // import 'dart:html' as html;
-// import 'dart:typed_data';
+import 'dart:typed_data';
+
 
 // import 'package:project_akhir/model/Postingan.dart';
 import 'package:provider/provider.dart';
@@ -40,26 +41,27 @@ class _AddContentState extends State<AddContent> {
 
 
   Future<void> _pickFiles() async {
-  // final post = Provider.of<postinganProvider>(context, listen: false);
+  final post = Provider.of<postinganProvider>(context, listen: false);
 
+  try {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+    );
 
-  //   final html.FileUploadInputElement input = html.FileUploadInputElement()..multiple = true;
-  //   input.click();
+    if (result != null) {
+      post.selectedFiles = result.files.map((file) => file.bytes!).toList();
 
-  //   input.onChange.listen((event) async {
-  //     final files = input.files;
-  //     if (files != null && files.isNotEmpty) {
+      setState(() {
+      });
 
-  //       setState(() {
-  //         post.selectedFiles = List.from(files);
-
-  //       // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
-
-  //       });
-  //       checkReadyState();
-
-  //     }
-  //   });
+      checkReadyState();
+    } else {
+      print('File selection canceled.');
+    }
+  } catch (e) {
+    print('Error picking or uploading images: $e');
+  }
   }
 
   Future<void> _pickMusic() async {
@@ -129,216 +131,218 @@ Future<void> _upload() async {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Title',
-              style: TextStyle(
-                color: Color.fromARGB(255, 18, 45, 66),
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 5),
-            SizedBox(
-              height: 50,
-              child: TextField(
-                controller: _judul,
-                decoration: InputDecoration(
-                  hintText: 'Title',
-                  hintStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 204, 204, 204),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 18, 45, 66),
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 18, 45, 66),
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Title',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 18, 45, 66),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-
-            Text(
-              'Caption',
-              style: TextStyle(
-                color: Color.fromARGB(255, 18, 45, 66),
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 5),
-            SizedBox(
-              //height: 150,
-              child: TextField(
-                controller: _caption,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  hintText: 'Caption',
-                  hintStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 204, 204, 204),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 18, 45, 66),
-                      width: 2,
+              SizedBox(height: 5),
+              SizedBox(
+                height: 50,
+                child: TextField(
+                  controller: _judul,
+                  decoration: InputDecoration(
+                    hintText: 'Title',
+                    hintStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 204, 204, 204),
                     ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 18, 45, 66),
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 50),
-            Row(
-              children: [
-                SizedBox(
-                  width: 140,
-                  child: ElevatedButton(
-                    onPressed:
-                        // await _pickFiles();
-                        _pickFiles,
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(20),
-                      backgroundColor: Color.fromARGB(255, 29, 72, 106),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 18, 45, 66),
+                        width: 2,
                       ),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_circle, color: Colors.white),
-                        SizedBox(width: 5),
-                        Text(
-                          'Add Image',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Flexible(
-                  child: Text(
-                    'File Name:',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            SizedBox(height: 10),
-            SizedBox(height: 20),
-            //   Expanded(
-            //   child: ListView.builder(
-            //     itemCount: imageUrls.length,
-            //     itemBuilder: (context, index) {
-            //       return Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Image.network(imageUrls[index]),
-            //       );
-            //     },
-            //   ),
-            // ),
-            
-            Row(
-              children: [
-                // Tombol pertama
-                SizedBox(
-                  width: 140,
-                  child: ElevatedButton(
-                    onPressed: _pickMusic,
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(20),
-                      backgroundColor: Color.fromARGB(255, 29, 72, 106),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 18, 45, 66),
+                        width: 1,
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_circle, color: Colors.white),
-                        SizedBox(width: 5),
-                        Text(
-                          'Add Music',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Flexible(
-                  child: Text(
-                    'File Name: ',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
-            Center(
-              child: SizedBox(
-                width: 100,
-                child: ElevatedButton(
-                  onPressed: isReady
-                      ? _upload
-                      : null, // nonaktifkan tombol jika belum terisi
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(20),
-                    backgroundColor: isReady
-                        ? Color.fromARGB(255, 29, 72, 106)
-                        : Colors.white,
-                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: isReady
-                          ? BorderSide.none
-                          : BorderSide(
-                              color: Color.fromARGB(255, 18, 45, 66), width: 1),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 5),
-                      Text(
-                        'Post !',
-                        style: TextStyle(
-                          color: isReady
-                              ? Colors.white
-                              : Color.fromARGB(255, 29, 72, 106),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 20),
+        
+              Text(
+                'Caption',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 18, 45, 66),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 5),
+              SizedBox(
+                //height: 150,
+                child: TextField(
+                  controller: _caption,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    hintText: 'Caption',
+                    hintStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 204, 204, 204),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 18, 45, 66),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 18, 45, 66),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 50),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 140,
+                    child: ElevatedButton(
+                      onPressed:
+                          // await _pickFiles();
+                          _pickFiles,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(20),
+                        backgroundColor: Color.fromARGB(255, 29, 72, 106),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_circle, color: Colors.white),
+                          SizedBox(width: 5),
+                          Text(
+                            'Add Image',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Flexible(
+                    child: Text(
+                      'File Name:',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              SizedBox(height: 10),
+              SizedBox(height: 20),
+              //   Expanded(
+              //   child: ListView.builder(
+              //     itemCount: imageUrls.length,
+              //     itemBuilder: (context, index) {
+              //       return Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Image.network(imageUrls[index]),
+              //       );
+              //     },
+              //   ),
+              // ),
+              
+              Row(
+                children: [
+                  // Tombol pertama
+                  SizedBox(
+                    width: 140,
+                    child: ElevatedButton(
+                      onPressed: _pickMusic,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(20),
+                        backgroundColor: Color.fromARGB(255, 29, 72, 106),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_circle, color: Colors.white),
+                          SizedBox(width: 5),
+                          Text(
+                            'Add Music',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Flexible(
+                    child: Text(
+                      'File Name: ',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 50),
+              Center(
+                child: SizedBox(
+                  width: 100,
+                  child: ElevatedButton(
+                    onPressed: isReady
+                        ? _upload
+                        : null, // nonaktifkan tombol jika belum terisi
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(20),
+                      backgroundColor: isReady
+                          ? Color.fromARGB(255, 29, 72, 106)
+                          : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: isReady
+                            ? BorderSide.none
+                            : BorderSide(
+                                color: Color.fromARGB(255, 18, 45, 66), width: 1),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 5),
+                        Text(
+                          'Post !',
+                          style: TextStyle(
+                            color: isReady
+                                ? Colors.white
+                                : Color.fromARGB(255, 29, 72, 106),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

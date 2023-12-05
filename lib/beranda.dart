@@ -17,7 +17,9 @@ class _BerandaState extends State<Beranda> {
   List<String> imageUrlList = [];
   List<String> musicUrlList = [];
   AudioPlayer _audioPlayer = AudioPlayer();
-
+  List <bool> currentIndex = [];
+  int indexfav = 0;
+  
 
   @override
   void initState() {
@@ -62,7 +64,7 @@ class _BerandaState extends State<Beranda> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color.fromARGB(255, 29, 72, 106),
         elevation: 1,
         title: Row(
           children: [
@@ -73,16 +75,23 @@ class _BerandaState extends State<Beranda> {
                 },
                 child: Text(
                   "SEARCH",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                 ),
               ),
             ),
             IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                Navigator.pushNamed(context, '/search');
-              },
-            ),
+                              onPressed: () {
+                                setState(() {
+                                  if(currentIndex[indexfav] == false){
+                                    currentIndex[indexfav] = true;
+                                  }
+                                  else{currentIndex[indexfav] = false;}
+                                });
+                              },
+                              icon: currentIndex[indexfav] == true
+                                  ? Icon(Icons.favorite, color: Colors.red)
+                                  : Icon(Icons.favorite_border, color: Colors.red),
+                            ),
           ],
         ),
       ),
@@ -109,18 +118,19 @@ class _BerandaState extends State<Beranda> {
               var namaAkun = documents[index]['username'];
               var caption = documents[index]['caption'];
               var namaLagu = documents[index]['judul_lagu'];
+              currentIndex[index] = false;
 
               return Center(
                 child: Stack(
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _audioPlayer.play(documents[index]['urlLagu']);
+                        _audioPlayer.play(UrlSource( documents[index]['urlLagu']));
                       },
                       child: Container(
                         width: lebar,
                         height: tinggi - 120,
-                        color: Colors.grey[400],
+                        color: Color.fromARGB(255, 0, 0, 0),
                         child: PageView.builder(
                           itemCount:documents[index]['urlpostingan'].length,
                           itemBuilder: (context,idx) {
@@ -154,7 +164,7 @@ class _BerandaState extends State<Beranda> {
                                   },
                                   child: CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: const Color.fromARGB(137, 11, 9, 9),
+                                    backgroundColor: Color.fromARGB(136, 145, 145, 145),
                                     backgroundImage: NetworkImage(documents[index]['URlPotoProfile']),
                                   ),
                                 ),
@@ -171,7 +181,8 @@ class _BerandaState extends State<Beranda> {
                                     color: Colors.red,
                                   ),
                                 ),
-                                Text(documents[index]['jumlaLike'].toString()),
+                                Text(documents[index]['jumlaLike'].toString(),style: TextStyle(
+                                    color: Colors.white,)),
                               ],
                             ),
                           ),
@@ -185,13 +196,15 @@ class _BerandaState extends State<Beranda> {
                                 child: Text(
                                   namaAkun ?? '',
                                   style: TextStyle(
+                                    color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: 20, top: 10),
-                                child: Text(caption ?? ''),
+                                child: Text(caption ?? '',style: TextStyle(
+                                    color: Colors.white,)),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 20, top: 10),
@@ -200,7 +213,8 @@ class _BerandaState extends State<Beranda> {
                                     Icon(Icons.my_library_music_outlined),
                                     Padding(
                                       padding: EdgeInsets.only(left: 20),
-                                      child: Text(namaLagu ?? ''),
+                                      child: Text(namaLagu ?? '',style: TextStyle(
+                                    color: Colors.white,)),
                                     )
                                   ],
                                 ),
