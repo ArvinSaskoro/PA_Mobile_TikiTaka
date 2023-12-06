@@ -164,8 +164,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               leading: Icon(Icons.logout),
               title: Text('Logout'),
-              onTap: () {
-                // Tambahkan logika untuk logout
+              onTap: () async {
+                await User.signOut();
                 Navigator.pushNamed(context, '/signIn');
               },
             ),
