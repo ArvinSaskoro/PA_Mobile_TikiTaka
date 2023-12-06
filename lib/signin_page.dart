@@ -14,6 +14,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,7 @@ class _SignInState extends State<SignIn> {
             ),
             SizedBox(height: 50),
 
-            // Username & Password
+            // Username
             SingleChildScrollView(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 25),
@@ -100,7 +101,7 @@ class _SignInState extends State<SignIn> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
                         color: Color.fromARGB(255, 41, 179, 173),
-                        width: 2,
+                        width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -116,6 +117,8 @@ class _SignInState extends State<SignIn> {
               ),
             ),
             SizedBox(height: 20),
+
+            // Password
             SingleChildScrollView(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 25),
@@ -123,6 +126,7 @@ class _SignInState extends State<SignIn> {
                 height: 70,
                 child: TextField(
                   controller: _pass,
+                  obscureText: _obscureText,
                   decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     contentPadding:
@@ -142,7 +146,7 @@ class _SignInState extends State<SignIn> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color.fromARGB(255, 41, 179, 173),
-                        width: 2,
+                        width: 1.5,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
@@ -152,13 +156,23 @@ class _SignInState extends State<SignIn> {
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        color: Color.fromARGB(255, 41, 179, 173),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30, ),
+
             // button bawah
             Expanded(
               child: Align(
@@ -197,6 +211,7 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
+
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

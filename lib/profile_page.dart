@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tikitaka/Provider/theme_provider.dart';
@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.3),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.25),
         child: Stack(
           children: <Widget>[
             Container(
@@ -39,62 +39,68 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            //SizedBox(height: 50),
             Align(
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // SizedBox(height: 10,),
+                  SizedBox(height: 40),
                   StreamBuilder<DocumentSnapshot>(
-  stream: User.users.doc(User.idlogin).snapshots(),
-  builder: (_, snapshot) {
-    if (snapshot.hasData && snapshot.data != null) {
-      String pathToProfile = snapshot.data!.get("path_potoProfile") ?? "";
-      String username = snapshot.data!.get("username") ?? "";
+                    stream: User.users.doc(User.idlogin).snapshots(),
+                    builder: (_, snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        String pathToProfile =
+                            snapshot.data!.get("path_potoProfile") ?? "";
+                        String username = snapshot.data!.get("username") ?? "";
 
-      return Column(
-        children: [
-          CircleAvatar(
-            radius: 45,
-            backgroundImage: pathToProfile.isNotEmpty
-                ? NetworkImage(pathToProfile) as ImageProvider<Object>?
-                : AssetImage("path/to/placeholder_image.jpg") as ImageProvider<Object>?, // Ganti dengan path gambar placeholder
-          ),
-          SizedBox(height: 10),
-          Text(
-            username,
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-        ],
-      );
-    } else if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator();
-    } else {
-      return Text("Unable to fetch user data");
-    }
-  },
-),
+                        return Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 45,
+                              backgroundImage: pathToProfile.isNotEmpty
+                                  ? NetworkImage(pathToProfile)
+                                      as ImageProvider<Object>?
+                                  : AssetImage("path/to/placeholder_image.jpg")
+                                      as ImageProvider<Object>?,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              username,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else {
+                        return Text("Unable to fetch user data");
+                      }
+                    },
+                  ),
 
                   StreamBuilder<DocumentSnapshot>(
-  stream: User.users.doc(User.idlogin).snapshots(),
-  builder: (_, snapshot) {
-    if (snapshot.hasData && snapshot.data != null) {
-      String email = snapshot.data!.get("email") ?? "";
+                    stream: User.users.doc(User.idlogin).snapshots(),
+                    builder: (_, snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        String email = snapshot.data!.get("email") ?? "";
 
-      return Text(
-        email,
-        style: TextStyle(color: Colors.white),
-      );
-    } else if (snapshot.connectionState == ConnectionState.waiting) {
-      // Tampilkan sesuatu ketika data masih dimuat
-      return CircularProgressIndicator();
-    } else {
-      // Tampilkan pesan atau widget lain jika tidak ada data atau ada kesalahan
-      return Text("Unable to fetch user email");
-    }
-  },
-),
+                        return Text(
+                          email,
+                          style: TextStyle(color: Colors.white),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        // Tampilkan sesuatu ketika data masih dimuat
+                        return CircularProgressIndicator();
+                      } else {
+                        // Tampilkan pesan atau widget lain jika tidak ada data atau ada kesalahan
+                        return Text("Unable to fetch user email");
+                      }
+                    },
+                  ),
                   SizedBox(height: 10),
 
                   GestureDetector(
@@ -107,14 +113,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Text(
+                          'Edit Bio',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         Icon(
                           Icons.edit,
                           color: Colors.white,
                           weight: 5,
-                        ),
-                        Text(
-                          'Edit Bio',
-                          style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
@@ -123,8 +129,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Positioned(
-              top: 0,
-              right: 0,
+              top: 30,
+              right: 10,
               child: IconButton(
                 icon: Icon(Icons.settings, color: Colors.white),
                 onPressed: () {
@@ -186,44 +192,24 @@ class _ProfilePageState extends State<ProfilePage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: StreamBuilder<DocumentSnapshot>(
-  stream: User.users.doc(User.idlogin).snapshots(),
-  builder: (_, snapshot) {
-    if (snapshot.hasData && snapshot.data != null) {
-      return Text(
-        snapshot.data!.get("bio") ?? "Bio not available",
-        style: TextStyle(fontSize: 18),
-      );
-    } else if (snapshot.connectionState == ConnectionState.waiting) {
-      // Tampilkan sesuatu ketika data masih dimuat
-      return CircularProgressIndicator();
-    } else {
-      // Tampilkan pesan atau widget lain jika tidak ada data atau ada kesalahan
-      return Text("Unable to fetch bio");
-    }
-  },
-),
-
+              stream: User.users.doc(User.idlogin).snapshots(),
+              builder: (_, snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  return Text(
+                    snapshot.data!.get("bio") ?? "Bio not available",
+                    style: TextStyle(fontSize: 18),
+                  );
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  // Tampilkan sesuatu ketika data masih dimuat
+                  return CircularProgressIndicator();
+                } else {
+                  // Tampilkan pesan atau widget lain jika tidak ada data atau ada kesalahan
+                  return Text("Unable to fetch bio");
+                }
+              },
+            ),
           ),
-          // Bagian daftar postingan
-          // Expanded(
-          //   child: ListView(
-          //     children: [
-          //       Container(
-          //         // Container kosong untuk daftar postingan
-          //         height: 200, // Atur tinggi container sesuai kebutuhan
-          //         decoration: BoxDecoration(
-          //           color: Colors.white,
-          //         ),
-          //         child: Center(
-          //           child: Text(
-          //             'Daftar Postingan Anda Akan Muncul Di Sini', // Ganti dengan pesan yang sesuai
-          //             style: TextStyle(fontSize: 16),
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
 
           Expanded(
             child: StreamBuilder(
@@ -277,7 +263,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       return InkWell(
                         onTap: () {
-                            Navigator.pushNamed(context, "/contenMe");
+                          Navigator.pushNamed(context, "/contenMe");
                         },
                         child: Container(
                           decoration: BoxDecoration(

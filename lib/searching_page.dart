@@ -14,7 +14,7 @@ class SearchingPage extends StatefulWidget {
 }
 
 class _SearchingPageState extends State<SearchingPage> {
-  TextEditingController _search = TextEditingController();
+  final TextEditingController _search = TextEditingController();
 
   bool isSearching = false;
   String name = "";
@@ -117,7 +117,7 @@ class _SearchingPageState extends State<SearchingPage> {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    //margin: EdgeInsets.symmetric(vertical: 10),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -125,7 +125,7 @@ class _SearchingPageState extends State<SearchingPage> {
                                             controller: _search,
                                             decoration: InputDecoration(
                                               hintText: 'Search...',
-                                              fillColor: Colors.black,
+                                              hintStyle: TextStyle(color: Colors.black),
                                               border: InputBorder.none,
                                             ),
                                             onChanged: (String value) {
@@ -162,7 +162,7 @@ class _SearchingPageState extends State<SearchingPage> {
                 ),
               ),
               SizedBox(width: 20),
-              InkWell(
+              GestureDetector(
                 onTap: () async {
                   await User.searchFirestore(_search.text);
                   setState(() {});
@@ -228,6 +228,7 @@ class _SearchingPageState extends State<SearchingPage> {
                             child: ListView.builder(
                               itemCount: 0,
                               itemBuilder: (context, index) {
+                                return null;
                                 // return createButton(User.listUser[index]);
                               },
                             ),
@@ -235,7 +236,7 @@ class _SearchingPageState extends State<SearchingPage> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 153,
                 width: lebar,
                 child: Stack(

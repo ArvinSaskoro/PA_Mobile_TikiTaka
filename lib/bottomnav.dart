@@ -33,8 +33,8 @@ class _bottomnavState extends State<bottomnav> {
   
   @override
   Widget build(BuildContext context) {
-    var lebar = MediaQuery.of(context).size.width;
-    var tinggi = MediaQuery.of(context).size.height;
+    //var lebar = MediaQuery.of(context).size.width;
+    //var tinggi = MediaQuery.of(context).size.height;
     return Scaffold(
       body: IndexedStack(
         index: currentIndex,
@@ -69,7 +69,7 @@ class _bottomnavState extends State<bottomnav> {
           //   }
           // });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Beranda',

@@ -38,17 +38,15 @@ class _EditBioPageState extends State<EditBioPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                 StreamBuilder<DocumentSnapshot>(
-                    stream:  User.users.doc(User.idlogin).snapshots(),
-                    builder: (_, snapshot) {
+                  StreamBuilder<DocumentSnapshot>(
+                      stream: User.users.doc(User.idlogin).snapshots(),
+                      builder: (_, snapshot) {
                         return CircleAvatar(
                           radius: 45,
-                          backgroundImage:
-                              NetworkImage(snapshot.data!.get("path_potoProfile")),
+                          backgroundImage: NetworkImage(
+                              snapshot.data!.get("path_potoProfile")),
                         );
-                      }
-                    
-                  ),
+                      }),
                 ],
               ),
             ),
@@ -90,13 +88,11 @@ class _EditBioPageState extends State<EditBioPage> {
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
-                   onPressed: () async {
-                        if (User.userAuth != null){
-                          await users.doc(User.idlogin).update({'bio': _bio.text});
-                            Navigator.pop(context);
-                        }
-                         
-                      
+                  onPressed: () async {
+                    if (User.userAuth != null) {
+                      await users.doc(User.idlogin).update({'bio': _bio.text});
+                      Navigator.pop(context);
+                    }
                   },
                   child: Text('Apply', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(

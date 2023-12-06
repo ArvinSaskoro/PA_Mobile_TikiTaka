@@ -101,7 +101,7 @@ class _SignUpState extends State<SignUp> {
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(
                       color: Color.fromARGB(255, 41, 179, 173),
-                      width: 2,
+                      width: 1.5,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -141,7 +141,7 @@ class _SignUpState extends State<SignUp> {
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(
                       color: Color.fromARGB(255, 41, 179, 173),
-                      width: 2,
+                      width: 1.5,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),

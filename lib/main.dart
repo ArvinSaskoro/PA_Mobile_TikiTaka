@@ -19,19 +19,19 @@ import 'package:tikitaka/splash_page.dart';
 //import 'package:tikitaka/tes.dart';
 import 'Provider/postingan.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-      MultiProvider(
+    MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => postinganProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
-       // Inisialisasi DataProvider
+      // Inisialisasi DataProvider
       child: MyApp(),
     ),
   );
@@ -59,17 +59,16 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
-        '/bottomnav': (context) => bottomnav(idx:0),
-        '/bottomnav1': (context) => bottomnav(idx:1),
-        '/bottomnav2': (context) => bottomnav(idx:2),
-        '/contenOther': (context) => ContenOther(id: User.userSearch.id, profile: false),
+        '/bottomnav': (context) => bottomnav(idx: 0),
+        '/bottomnav1': (context) => bottomnav(idx: 1),
+        '/bottomnav2': (context) => bottomnav(idx: 2),
+        '/contenOther': (context) =>
+            ContenOther(id: User.userSearch.id, profile: false),
         '/contenMe': (context) => ContenOther(id: User.idlogin, profile: true),
 
-
         //'/tes': (context) => tessW(),
-
       },
-      initialRoute: '/search',
+      initialRoute: '/',
     );
   }
 }

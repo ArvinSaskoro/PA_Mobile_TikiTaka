@@ -135,12 +135,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
             Positioned(
-              top: 0,
-              left: 0,
+              top: 50,
+              left: 10,
               child: IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
-                  // Tambahkan logika untuk kembali ke halaman sebelumnya (ProfilePage)
                   Navigator.of(context).pop();
                 },
               ),

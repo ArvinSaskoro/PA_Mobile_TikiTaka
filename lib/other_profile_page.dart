@@ -21,7 +21,7 @@ class OtherProfilePage extends StatelessWidget {
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.2),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.25),
         child: Stack(
           children: <Widget>[
             Container(
@@ -38,16 +38,18 @@ class OtherProfilePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 50),
                   CircleAvatar(
                     radius: 45,
                     backgroundImage:
                         NetworkImage(User.userSearch.path_potoProfile),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Text(User.userSearch.username,
                       style: TextStyle(color: Colors.white, fontSize: 20)),
                   Text(User.userSearch.email,
                       style: TextStyle(color: Colors.white)),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
