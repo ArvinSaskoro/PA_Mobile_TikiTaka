@@ -97,3 +97,39 @@
 // //   }
 // // }
 
+
+import 'package:flutter/material.dart';
+
+// class Tess {
+  void testing() {
+  String mainString = "toyota allion 260 2010";
+  String substring = "allion";
+
+  bool containsSubstring = mainString.contains(substring);
+
+  print(containsSubstring);
+  
+  String tes = "toyota allion 260 2010";
+  String tess = "to";
+
+  bool hmm = tes.contains(tess);
+
+  print(hmm); // Output: true if contains, false otherwise
+}
+// Output: true if contains, false otherwise
+// }
+
+class tessW extends StatelessWidget {
+  const tessW({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ElevatedButton(onPressed:() {
+        testing();
+        
+      }, child: Text("data")),
+    );
+  }
+}
+

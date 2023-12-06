@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider/user.dart';
+import 'model/User.dart';
 
 class SearchingPage extends StatefulWidget {
   const SearchingPage({super.key});
@@ -18,9 +19,19 @@ class _SearchingPageState extends State<SearchingPage> {
   bool isSearching = false;
   String name = "";
 
- Widget createButton(String text) {
+ Widget createButton(Userr search) {
+  final User = Provider.of<UserProvider>(context, listen: false);
+
     return InkWell(
       onTap: () {
+        User.userSearch.id = search.id;
+        User.userSearch.email = search.email;
+        User.userSearch.username = search.username;
+        User.userSearch.pass = search.pass;
+        User.userSearch.path_potoProfile = search.path_potoProfile;
+        User.userSearch.bio = search.bio;
+
+
         Navigator.pushNamed(context, '/otherProfile');
       },
       child: Container(
@@ -41,7 +52,7 @@ class _SearchingPageState extends State<SearchingPage> {
             ),
             SizedBox(width: 30),
             Text(
-              text,
+              search.username,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -57,6 +68,10 @@ class _SearchingPageState extends State<SearchingPage> {
   @override
   Widget build(BuildContext context) {
   final User = Provider.of<UserProvider>(context, listen: false);
+
+    if(_search.text.isEmpty){
+      User.listUser.clear();
+    }
 
     var lebar = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -137,8 +152,8 @@ class _SearchingPageState extends State<SearchingPage> {
                             onPressed: () {
                               setState(() {
                                 _search.clear();
-                                isSearching =
-                                    false; 
+                                isSearching =false; 
+                                User.listUser = [];
                               });
                             },
                           ),
@@ -151,8 +166,24 @@ class _SearchingPageState extends State<SearchingPage> {
               InkWell(
                 onTap: () async {
                   await User.searchFirestore(_search.text);
-                  // print("object");
-                 name = User.userSearch.username;
+                  setState(() {
+                    
+                  });
+                  // setState(() {
+                  //   User.searchPage;
+                  // });
+                  // print(userrr.toString());
+                //   print(User.listUser.length);
+                //   User.listUser.forEach((user) {
+                //   print("ID: ${user.id}");
+                //   print("Username: ${user.username}");
+                //   print("Email: ${user.email}");
+                //   print("Bio: ${user.bio}");
+                //   print("Path to Profile: ${user.path_potoProfile}");
+                //   print("Password: ${user.pass}");
+                //   print("\n");
+                // });
+                 
                 },
                 child: Text(
                   "Search",
@@ -180,7 +211,7 @@ class _SearchingPageState extends State<SearchingPage> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 10),
-            // if (User.searchh == true)
+            
             Container(
               width: double.infinity,
               height: 360,
@@ -188,10 +219,27 @@ class _SearchingPageState extends State<SearchingPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  createButton(name),
+                 _search.text.isNotEmpty ?
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: User.listUser.length,
+                      itemBuilder:(context, index) {
+                        return createButton(User.listUser[index]);
+                        
+                      },),
+                  ):
+                    Expanded(
+                    child: ListView.builder(
+                      itemCount: 0,
+                      itemBuilder:(context, index) {
+                        // return createButton(User.listUser[index]);
+                        
+                      },),
+                  )
                 ],
               ),
             ),
+           
             Container(
               height: 153,
               width: lebar,
@@ -200,6 +248,7 @@ class _SearchingPageState extends State<SearchingPage> {
                   Center(
                     child: Positioned(
                       top: 100,
+                      bottom: 0,
                       child: Container(
                         margin: EdgeInsets.only(top: 60),
                         height: 120,

@@ -13,6 +13,7 @@ import 'dart:typed_data';
 
 // import 'package:project_akhir/model/Postingan.dart';
 import 'package:provider/provider.dart';
+import 'package:tikitaka/model/Postingan.dart';
 
 import 'Provider/postingan.dart';
 
@@ -51,6 +52,7 @@ class _AddContentState extends State<AddContent> {
 
     if (result != null) {
       post.selectedFiles = result.files.map((file) => file.bytes!).toList();
+      // post.selectedFiles = List.from(result.files)
 
       setState(() {
       });
@@ -118,6 +120,8 @@ Future<void> _upload() async {
 
 
   Widget build(BuildContext context)  {
+  final post = Provider.of<postinganProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -245,7 +249,7 @@ Future<void> _upload() async {
                   SizedBox(width: 10),
                   Flexible(
                     child: Text(
-                      'File Name:',
+                      post.selectedFiles.toString(),
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
@@ -296,7 +300,7 @@ Future<void> _upload() async {
                   SizedBox(width: 10),
                   Flexible(
                     child: Text(
-                      'File Name: ',
+                      post.judul_lagu,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),

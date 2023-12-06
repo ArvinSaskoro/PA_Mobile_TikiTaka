@@ -13,7 +13,7 @@ class IntroductionPage extends StatelessWidget {
       done: Text("Selesai"),
       onDone: () {
         Navigator.of(context).pop();
-        Navigator.pushNamed(context, '/signIn');
+        Navigator.pushNamed(context, '/');
       },
       pages: [
         PageViewModel(

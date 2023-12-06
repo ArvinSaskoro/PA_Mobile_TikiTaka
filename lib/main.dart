@@ -66,10 +66,10 @@ class MyApp extends StatelessWidget {
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
         '/bottomnav': (context) => bottomnav(),
-        // '/tes': (context) => ImageSlider(),
+        '/tes': (context) => tessW(),
 
       },
-      initialRoute: '/',
+      initialRoute: '/search',
     );
 
     
