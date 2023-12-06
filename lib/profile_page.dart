@@ -3,8 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:project_akhir/Provider/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:tikitaka/Provider/theme_provider.dart';
 
 import 'Provider/user.dart';
 import 'editBio.dart';

@@ -12,16 +12,16 @@ class OtherProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final User = Provider.of<UserProvider>(context, listen: false);
-      final post = Provider.of<postinganProvider>(context, listen: false);
+    final User = Provider.of<UserProvider>(context, listen: false);
+    final post = Provider.of<postinganProvider>(context, listen: false);
 
-       String userId = User.userSearch.id;
+    String userId = User.userSearch.id;
 
     return Scaffold(
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.3),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.2),
         child: Stack(
           children: <Widget>[
             Container(
@@ -46,12 +46,13 @@ class OtherProfilePage extends StatelessWidget {
                   SizedBox(height: 10),
                   Text(User.userSearch.username,
                       style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Text(User.userSearch.email, style: TextStyle(color: Colors.white)),
+                  Text(User.userSearch.email,
+                      style: TextStyle(color: Colors.white)),
                 ],
               ),
             ),
             Positioned(
-              top: 10,
+              top: 40,
               left: 10,
               child: IconButton(
                 icon: Icon(
@@ -60,26 +61,21 @@ class OtherProfilePage extends StatelessWidget {
                   size: 30,
                 ),
                 onPressed: () {
-                  if(User.searchPage == false){
-                     Navigator.pushNamed(context, '/bottomnav');
-                     User.userSearch.id = "";
+                  if (User.searchPage == false) {
+                    Navigator.pushNamed(context, '/bottomnav');
+                    User.userSearch.id = "";
                     User.userSearch.bio = "";
                     User.userSearch.email = "";
-                    User.userSearch.username= "";
+                    User.userSearch.username = "";
                     User.userSearch.path_potoProfile = "";
-                  }else{
+                  } else {
                     Navigator.pushNamed(context, '/search');
                     User.userSearch.id = "";
                     User.userSearch.bio = "";
                     User.userSearch.email = "";
-                    User.userSearch.username= "";
+                    User.userSearch.username = "";
                     User.userSearch.path_potoProfile = "";
-
                   }
-                  
-                  
-                  
-
                 },
               ),
             ),
@@ -98,71 +94,72 @@ class OtherProfilePage extends StatelessWidget {
           ),
           // Bagian daftar postingan
           Expanded(
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('postingan')
-            .where('id_user', isEqualTo: userId) 
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('postingan')
+                  .where('id_user', isEqualTo: userId)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-          List<DocumentSnapshot> documents = snapshot.data!.docs;
+                List<DocumentSnapshot> documents = snapshot.data!.docs;
 
-          if (documents.isEmpty) {
-            return Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Text(
-                  'Anda belum membuat postingan.',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            );
-          }
+                if (documents.isEmpty) {
+                  return Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Anda belum membuat postingan.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  );
+                }
 
-          return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-            ),
-            itemCount: documents.length,
-            itemBuilder: (BuildContext context, int index) {
-              dynamic urlPostingan = documents[index]['urlpostingan'];
-
-              if (urlPostingan is List && urlPostingan.isNotEmpty) {
-                List<String> imageUrls = List<String>.from(urlPostingan);
-
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
                   ),
-                  child: Image.network(
-                    imageUrls[0],
-                    fit: BoxFit.cover,
-                  ),
+                  itemCount: documents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    dynamic urlPostingan = documents[index]['urlpostingan'];
+
+                    if (urlPostingan is List && urlPostingan.isNotEmpty) {
+                      List<String> imageUrls = List<String>.from(urlPostingan);
+
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Image.network(
+                          imageUrls[0],
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    } else {
+                      return Container(); // Handle empty or incorrect data format.
+                    }
+                  },
                 );
-              } else {
-                return Container(); // Handle empty or incorrect data format.
-              }
-            },
-          );
-        },
-      ),
-    ),
+              },
+            ),
+          ),
         ],
       ),
       // bottomNavigationBar: BottomAppBar(

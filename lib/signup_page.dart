@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:project_akhir/Provider/user.dart';
 import 'package:provider/provider.dart';
+import 'package:tikitaka/Provider/user.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -24,6 +24,11 @@ class _SignUpState extends State<SignUp> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 0,
+        backgroundColor: Color.fromARGB(255, 29, 72, 106),
+      ),
       body: Center(
         child: ListView(
           // mainAxisAlignment: MainAxisAlignment.center,

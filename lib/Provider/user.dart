@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project_akhir/model/User.dart';
+import 'package:tikitaka/model/User.dart';
 
 
 FirebaseAuth _fireAuth = FirebaseAuth.instance;
@@ -13,6 +13,8 @@ class UserProvider extends ChangeNotifier{
   String _idLogin = '';
   String get idlogin => _idLogin;
   Userr userSearch = Userr();
+  List<Userr> listUser = [];
+
   bool searchPage = false;
 
 
@@ -131,27 +133,34 @@ Future<void> AddUserToFirebase(String username, String email, String pass) async
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> searchFirestore(String searchTerm) async {
+  // searchPage = false;
   var collectionReference = FirebaseFirestore.instance.collection('users');
-
- await collectionReference
-      .where("username", isEqualTo: searchTerm)
-      .get()
-      .then((QuerySnapshot querySnapshot) {
+  
+  listUser.clear();
+ await collectionReference.get().then((QuerySnapshot querySnapshot) {
     querySnapshot.docs.forEach((doc) {
-      // Handle hasil pencarian di sini
-      print(doc['username']);
-      userSearch.id = doc.id;
-      userSearch.bio = doc['bio'];
-      userSearch.username = doc['username'];
-      userSearch.email = doc['email'];
-      userSearch.path_potoProfile = doc['path_potoProfile'];
-      // print(searchTerm);
+       if (doc['username'].toString().toLowerCase().contains(searchTerm.toLowerCase())){
+          listUser.add(Userr(
+          bio : doc['bio'],
+          username : doc['username'],
+          email : doc['email'],
+          path_potoProfile : doc['path_potoProfile'],
+          pass : doc['pass'],
+          id : doc.id,
+      ));
       searchPage = true;
+    }
+
     });
   })
   .catchError((error) {
     print("Error: $error");
   });
+
+  
+
+
+
 }
 
 Future<void> otherProfile(String id) async {

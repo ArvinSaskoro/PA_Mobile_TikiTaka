@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:project_akhir/Provider/user.dart';
 import 'package:provider/provider.dart';
+import 'package:tikitaka/Provider/user.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -14,13 +14,6 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
-  // bool signinPressed = false;
-
-  // void navigateToSignUp() {
-  //   if (signinPressed) {
-  //     Navigator.pushNamed(context, '/signUp[]');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +21,14 @@ class _SignInState extends State<SignIn> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 0,
+        backgroundColor: Color.fromARGB(255, 29, 72, 106),
+      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // background atas
             Container(
@@ -45,7 +43,7 @@ class _SignInState extends State<SignIn> {
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   Container(
                     width: 150,
                     height: 150,
@@ -74,92 +72,92 @@ class _SignInState extends State<SignIn> {
               ),
             ),
             SizedBox(height: 50),
+
             // Username & Password
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25),
-              width: double.infinity,
-              height: 70,
-              child: TextField(
-                controller: _email,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                  labelText: 'Email',
-                  labelStyle: const TextStyle(
-                    color: Color.fromARGB(255, 41, 179, 173),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  hintText: 'Email',
-                  hintStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 204, 204, 204),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
+            SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 25),
+                width: double.infinity,
+                height: 70,
+                child: TextField(
+                  controller: _email,
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    labelText: 'Email',
+                    labelStyle: const TextStyle(
                       color: Color.fromARGB(255, 41, 179, 173),
-                      width: 2,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
                     ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 41, 179, 173),
-                      width: 1,
+                    hintText: 'Email',
+                    hintStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 204, 204, 204),
                     ),
-                    borderRadius: BorderRadius.circular(10),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 41, 179, 173),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 41, 179, 173),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
             ),
             SizedBox(height: 20),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25),
-              width: double.infinity,
-              height: 70,
-              // child: Stack(
-              //   children: [
-              //     SizedBox(
-              //       width: 335,
-              //       height: 58.98,
-              child: TextField(
-                controller: _pass,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                  labelText: 'Password',
-                  labelStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 41, 179, 173),
-                  ),
-                  hintText: 'Password',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 204, 204, 204),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+            SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 25),
+                width: double.infinity,
+                height: 70,
+                child: TextField(
+                  controller: _pass,
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    labelText: 'Password',
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                       color: Color.fromARGB(255, 41, 179, 173),
-                      width: 2,
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 41, 179, 173),
-                      width: 1,
+                    hintText: 'Password',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 204, 204, 204),
                     ),
-                    borderRadius: BorderRadius.circular(10),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 41, 179, 173),
+                        width: 2,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 41, 179, 173),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
-              //    ),
-              //  ],
-              //),
+            ),
+            SizedBox(
+              height: 30,
             ),
             // button bawah
             Expanded(
@@ -176,19 +174,17 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   onPressed: () async {
-                    
-                   await User.login(_email.value.text, _pass.value.text);
-                      print(User.userAuth!.email);
-                          if (User.userAuth != null){
-        
-                            if(User.userAuth!.email == _email.text){
-                             await User.setIDLogin();
-                              print(User.idlogin);
-                                Navigator.pushNamed(context, "/bottomnav");
-                                _email.dispose();
-                                _pass.dispose();
-                            }       
-                          }
+                    await User.login(_email.value.text, _pass.value.text);
+                    print(User.userAuth!.email);
+                    if (User.userAuth != null) {
+                      if (User.userAuth!.email == _email.text) {
+                        await User.setIDLogin();
+                        print(User.idlogin);
+                        Navigator.pushNamed(context, "/bottomnav");
+                        _email.dispose();
+                        _pass.dispose();
+                      }
+                    }
                   },
                   child: const Text(
                     "Sign In",
@@ -226,22 +222,6 @@ class _SignInState extends State<SignIn> {
                       decoration: TextDecoration.underline,
                     ),
                   ),
-                  // onTap: () {
-                  //   setState(() {
-                  //     signinPressed = !signinPressed;
-                  //   });
-                  // },
-                  // child: Text(
-                  //   "Sign Up",
-                  //   style: TextStyle(
-                  //     fontFamily: 'Raleway',
-                  //     color: signinPressed
-                  //         ? Color.fromARGB(255, 41, 179, 173)
-                  //         : Color.fromARGB(255, 29, 72, 106),
-                  //     fontSize: 13,
-                  //     decoration: TextDecoration.underline,
-                  //   ),
-                  // ),
                 )
               ],
             ),

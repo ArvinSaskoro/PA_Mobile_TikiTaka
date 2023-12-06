@@ -6,12 +6,14 @@ import 'package:file_picker/file_picker.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:project_akhir/Provider/user.dart';
-import 'dart:html' as html;
+import 'package:path/path.dart';
+//import 'dart:html' as html;
 import 'dart:typed_data';
 
 // import 'package:project_akhir/model/Postingan.dart';
 import 'package:provider/provider.dart';
+import 'package:tikitaka/Provider/user.dart';
+import 'package:tikitaka/model/Postingan.dart';
 
 import 'Provider/postingan.dart';
 
@@ -24,6 +26,13 @@ class _AddContentState extends State<AddContent> {
   TextEditingController _judul = TextEditingController();
   TextEditingController _caption = TextEditingController();
 
+  // late DropzoneViewController controller1;
+  // String message1 = 'Drop your image here';
+  // bool highlighted1 = false;
+  
+
+
+
   // late List<String> imageUrls;
   // final storage = FirebaseStorage.instance;
 
@@ -31,28 +40,49 @@ class _AddContentState extends State<AddContent> {
   // String fileNameMusic = '';
   bool isReady = false;
 
-  Future<void> _pickFiles() async {
-    final post = Provider.of<postinganProvider>(context, listen: false);
 
-    final html.FileUploadInputElement input = html.FileUploadInputElement()
-      ..multiple = true;
-    input.click();
+  
 
-    input.onChange.listen((event) async {
-      final files = input.files;
-      if (files != null && files.isNotEmpty) {
-        setState(() {
-          post.selectedFiles = List.from(files);
 
-          // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
-        });
-        checkReadyState();
-      }
+
+
+  Widget build(BuildContext context)  {
+  final post = Provider.of<postinganProvider>(context, listen: false);
+  void checkReadyState() {
+  final post = Provider.of<postinganProvider>(context, listen: false);
+
+    setState(() {
+      // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
     });
   }
 
+  Future<void> _pickFiles() async {
+  final post = Provider.of<postinganProvider>(context, listen: false);
+
+  try {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+    );
+
+    if (result != null) {
+      post.selectedFiles = result.files.map((file) => file.bytes!).toList();
+      // post.selectedFiles = List.from(result.files)
+
+      setState(() {
+      });
+
+      checkReadyState();
+    } else {
+      print('File selection canceled.');
+    }
+  } catch (e) {
+    print('Error picking or uploading images: $e');
+  }
+  }
+
   Future<void> _pickMusic() async {
-    final post = Provider.of<postinganProvider>(context, listen: false);
+  final post = Provider.of<postinganProvider>(context, listen: false);
 
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -62,8 +92,7 @@ class _AddContentState extends State<AddContent> {
 
       if (result != null) {
         post.bytes = result.files.single.bytes!;
-        post.judul_lagu =
-            result.files.single.name!; // Gunakan nama file dari properti name
+        post.judul_lagu = result.files.single.name!; // Gunakan nama file dari properti name
         checkReadyState();
         // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
         print('Audio uploaded successfully and music info added to Firestore.');
@@ -76,62 +105,40 @@ class _AddContentState extends State<AddContent> {
     }
   }
 
-  void checkReadyState() {
-    final post = Provider.of<postinganProvider>(context, listen: false);
 
-    setState(() {
-      isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
-    });
-  }
 
-  Future<void> _upload() async {
-    final post = Provider.of<postinganProvider>(context, listen: false);
+
+Future<void> _upload() async {
+  final post = Provider.of<postinganProvider>(context, listen: false);
     final User = Provider.of<UserProvider>(context, listen: false);
     dynamic urlPoto = await User.getFieldById("path_potoProfile", User.idlogin);
     dynamic userName = await User.getFieldById("username", User.idlogin);
 
-    await post.uploadFiles();
-    await post.uploadlagu();
-    await post.addPostingan(User.idlogin, post.url_lagu, _caption.text, 50,
-        post.url, userName, post.judul_lagu, urlPoto, _judul.text);
-    post.showMessageBox(context);
-    // setState(() {
-    //   post.judul_lagu = '';
-    //   post.selectedFiles = const [];
-    // });
+  await post.uploadFiles();
+  await post.uploadlagu();
+  await post.addPostingan(User.idlogin, post.url_lagu, _caption.text, 50, post.url, userName, post.judul_lagu, urlPoto, _judul.text);
+  post.showMessageBox(context);
+  setState(() {
+    post.judul_lagu ='';
+    // post.selectedFiles= const [];
+  });
+  // Navigator.pushNamed(context, '/bottomnav');
+}
 
-    _clearInputs();
-    // Navigator.pushNamed(context, '/bottomnav');
-  }
-
-  void _clearInputs() {
-    setState(() {
-      _judul.clear();
-      _caption.clear();
-      // Jika Anda ingin mengosongkan inputan lainnya, tambahkan di sini.
-    });
-
-    final post = Provider.of<postinganProvider>(context, listen: false);
-    post.selectedFiles = [];
-    post.judul_lagu = '';
-    post.bytes = Uint8List(0);
-  }
-
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            _clearInputs();
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 25),
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,6 +181,7 @@ class _AddContentState extends State<AddContent> {
                 ),
               ),
               SizedBox(height: 20),
+        
               Text(
                 'Caption',
                 style: TextStyle(
@@ -244,12 +252,14 @@ class _AddContentState extends State<AddContent> {
                   SizedBox(width: 10),
                   Flexible(
                     child: Text(
-                      'File Name:',
+                      post.selectedFiles.toString(),
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
                 ],
               ),
+              SizedBox(height: 10),
+              SizedBox(height: 10),
               SizedBox(height: 20),
               //   Expanded(
               //   child: ListView.builder(
@@ -262,7 +272,7 @@ class _AddContentState extends State<AddContent> {
               //     },
               //   ),
               // ),
-
+              
               Row(
                 children: [
                   // Tombol pertama
@@ -293,7 +303,7 @@ class _AddContentState extends State<AddContent> {
                   SizedBox(width: 10),
                   Flexible(
                     child: Text(
-                      'File Name: ',
+                      post.judul_lagu,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
@@ -317,8 +327,7 @@ class _AddContentState extends State<AddContent> {
                         side: isReady
                             ? BorderSide.none
                             : BorderSide(
-                                color: Color.fromARGB(255, 18, 45, 66),
-                                width: 1),
+                                color: Color.fromARGB(255, 18, 45, 66), width: 1),
                       ),
                     ),
                     child: Row(

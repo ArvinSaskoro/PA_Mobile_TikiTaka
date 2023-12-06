@@ -1,22 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:project_akhir/Provider/auth.dart';
-import 'package:project_akhir/Provider/theme_provider.dart';
-import 'package:project_akhir/Provider/user.dart';
-import 'package:project_akhir/add_content_page.dart';
-import 'package:project_akhir/beranda.dart';
-import 'package:project_akhir/bottomnav.dart';
-import 'package:project_akhir/edit_profile_page.dart';
-import 'package:project_akhir/firebase_options.dart';
-import 'package:project_akhir/introduction_page.dart';
-import 'package:project_akhir/other_profile_page.dart';
-import 'package:project_akhir/profile_page.dart';
-import 'package:project_akhir/searching_page.dart';
-import 'package:project_akhir/signin_page.dart';
-import 'package:project_akhir/signup_page.dart';
-import 'package:project_akhir/splash_page.dart';
-//import 'package:project_akhir/tes.dart';
 import 'package:provider/provider.dart';
+import 'package:tikitaka/Provider/theme_provider.dart';
+import 'package:tikitaka/Provider/user.dart';
+import 'package:tikitaka/add_content_page.dart';
+import 'package:tikitaka/beranda.dart';
+import 'package:tikitaka/bottomnav.dart';
+import 'package:tikitaka/edit_profile_page.dart';
+import 'package:tikitaka/firebase_options.dart';
+import 'package:tikitaka/introduction_page.dart';
+import 'package:tikitaka/other_profile_page.dart';
+import 'package:tikitaka/profile_page.dart';
+import 'package:tikitaka/searching_page.dart';
+import 'package:tikitaka/signin_page.dart';
+import 'package:tikitaka/signup_page.dart';
+import 'package:tikitaka/splash_page.dart';
+//import 'package:tikitaka/tes.dart';
 import 'Provider/postingan.dart';
 
 void main() async{
@@ -60,6 +59,8 @@ class MyApp extends StatelessWidget {
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
         '/bottomnav': (context) => bottomnav(),
+        //'/tes': (context) => tessW(),
+
       },
       initialRoute: '/',
     );
