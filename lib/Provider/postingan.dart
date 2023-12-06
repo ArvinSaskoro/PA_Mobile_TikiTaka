@@ -53,10 +53,10 @@ class postinganProvider extends ChangeNotifier{
 
   }
 
-  void showMessageBox(BuildContext context) {
+  void showMessageBox(BuildContext context, String titlle, String msg) {
   MessageBox msgBox = MessageBox(
-    title: "BERHASIL",
-    message: "postingan anda berhasil di unggah",
+    title: titlle,
+    message: msg,
   );
 
   showDialog(
@@ -98,6 +98,21 @@ class postinganProvider extends ChangeNotifier{
     url_lagu = await taskSnapshot.ref.getDownloadURL();
     // addMusic(namamusik!, audioUrl!);
   }
+
+  Future<void> deleteDocumentById(String documentId) async {
+  try {
+    // Mendapatkan referensi dokumen berdasarkan ID
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('postingan').doc(documentId);
+
+    // Menghapus dokumen dari Firestore
+    await documentReference.delete();
+
+    print('Dokumen dengan ID $documentId berhasil dihapus.');
+  } catch (error) {
+    print('Error: $error');
+  }
+}
 
 
 

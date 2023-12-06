@@ -117,7 +117,7 @@ Future<void> _upload() async {
   await post.uploadFiles();
   await post.uploadlagu();
   await post.addPostingan(User.idlogin, post.url_lagu, _caption.text, 50, post.url, userName, post.judul_lagu, urlPoto, _judul.text);
-  post.showMessageBox(context);
+  post.showMessageBox(context, 'BERHASIL', 'Postingan anda berhasil di unggah');
   setState(() {
     post.judul_lagu ='';
     // post.selectedFiles= const [];

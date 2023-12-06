@@ -7,14 +7,15 @@ import 'package:tikitaka/profile_page.dart';
 
 
 class bottomnav extends StatefulWidget {
-  const bottomnav({super.key});
+  final int idx;
+  const bottomnav({super.key, required this.idx});
 
   @override
   State<bottomnav> createState() => _bottomnavState();
 }
 
 class _bottomnavState extends State<bottomnav> {
-  int currentIndex = 0;
+  late int currentIndex;
   final List<Widget> _children = [
     Beranda(),
     AddContent(),
@@ -23,6 +24,13 @@ class _bottomnavState extends State<bottomnav> {
     // inputan(),
     // profile(),
   ];
+
+   @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.idx;
+  }
+  
   @override
   Widget build(BuildContext context) {
     var lebar = MediaQuery.of(context).size.width;

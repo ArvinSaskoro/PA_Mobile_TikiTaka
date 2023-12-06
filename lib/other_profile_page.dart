@@ -123,7 +123,7 @@ class OtherProfilePage extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'Anda belum membuat postingan.',
+                        'Tidak ada postingan',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -143,13 +143,18 @@ class OtherProfilePage extends StatelessWidget {
                     if (urlPostingan is List && urlPostingan.isNotEmpty) {
                       List<String> imageUrls = List<String>.from(urlPostingan);
 
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Image.network(
-                          imageUrls[0],
-                          fit: BoxFit.cover,
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/contenOther");
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: Image.network(
+                            imageUrls[0],
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       );
                     } else {

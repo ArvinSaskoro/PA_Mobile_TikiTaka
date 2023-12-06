@@ -171,13 +171,6 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.delete),
-              title: Text('Delete Account'),
-              onTap: () {
-                // Tambahkan logika untuk menghapus akun
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
@@ -282,13 +275,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (urlPostingan is List && urlPostingan.isNotEmpty) {
                       List<String> imageUrls = List<String>.from(urlPostingan);
 
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Image.network(
-                          imageUrls[0],
-                          fit: BoxFit.cover,
+                      return InkWell(
+                        onTap: () {
+                            Navigator.pushNamed(context, "/contenMe");
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: Image.network(
+                            imageUrls[0],
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       );
                     } else {

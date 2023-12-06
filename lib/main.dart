@@ -6,6 +6,7 @@ import 'package:tikitaka/Provider/user.dart';
 import 'package:tikitaka/add_content_page.dart';
 import 'package:tikitaka/beranda.dart';
 import 'package:tikitaka/bottomnav.dart';
+import 'package:tikitaka/contentOther.dart';
 import 'package:tikitaka/edit_profile_page.dart';
 import 'package:tikitaka/firebase_options.dart';
 import 'package:tikitaka/introduction_page.dart';
@@ -58,11 +59,17 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/editProfile': (context) => EditProfilePage(),
         '/otherProfile': (context) => OtherProfilePage(),
-        '/bottomnav': (context) => bottomnav(),
+        '/bottomnav': (context) => bottomnav(idx:0),
+        '/bottomnav1': (context) => bottomnav(idx:1),
+        '/bottomnav2': (context) => bottomnav(idx:2),
+        '/contenOther': (context) => ContenOther(id: User.userSearch.id, profile: false),
+        '/contenMe': (context) => ContenOther(id: User.idlogin, profile: true),
+
+
         //'/tes': (context) => tessW(),
 
       },
-      initialRoute: '/',
+      initialRoute: '/search',
     );
   }
 }
