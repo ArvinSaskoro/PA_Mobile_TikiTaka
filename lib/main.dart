@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         '/tes': (context) => tessW(),
 
       },
-      initialRoute: '/search',
+      initialRoute: '/',
     );
 
     
