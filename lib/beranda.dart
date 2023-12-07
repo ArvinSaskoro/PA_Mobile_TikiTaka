@@ -19,7 +19,6 @@ class _BerandaState extends State<Beranda> {
   AudioPlayer _audioPlayer = AudioPlayer();
   bool playmusic = false;
 
-
   @override
   void initState() {
     super.initState();

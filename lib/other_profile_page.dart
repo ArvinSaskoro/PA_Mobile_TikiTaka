@@ -21,7 +21,7 @@ class OtherProfilePage extends StatelessWidget {
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.25),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.4),
         child: Stack(
           children: <Widget>[
             Container(
