@@ -171,6 +171,8 @@ class _ContenOtherState extends State<ContenOther> {
                                  if(widget.profile == true)
                                    IconButton(
                                   onPressed: () async {
+                                    MessageBox msg = new MessageBox(title: "HAPUS KONTEN", message: "apa anda ingin manghapus konten ?");
+                                    if(msg.message == "yes")
                                     await post.deleteDocumentById(documents[index].id);
                                     Navigator.pushNamed(context, '/bottomnav2');
 

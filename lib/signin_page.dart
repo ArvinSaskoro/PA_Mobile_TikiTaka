@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tikitaka/Provider/user.dart';
+import 'package:tikitaka/model/snackbar.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -190,6 +191,9 @@ class _SignInState extends State<SignIn> {
                   onPressed: () async {
                     await User.login(_email.value.text, _pass.value.text);
                     print(User.userAuth!.email);
+                    if (_email.text == "" || _pass.text == ""){
+                      Snackbarup.showSnackbar(context, "username dan password harus terisi");
+                    }
                     if (User.userAuth != null) {
                       if (User.userAuth!.email == _email.text) {
                         await User.setIDLogin();
