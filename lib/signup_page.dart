@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tikitaka/Provider/user.dart';
+import 'package:tikitaka/model/snackbar.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -276,7 +277,10 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   onPressed: () async {
-                    if(_pass.text == _conpass.text){
+                    if(_email.text == "" || _username.text == "" || _pass.text == ""|| _conpass.text ==""){
+                      Snackbarup.showSnackbar(context, "kolom tidak boleh kosong");
+                    }
+                    else if(_pass.text == _conpass.text){
                         User.signUp(_email.text, _pass.text);
                         if (User.userAuth != null){
                           User.setIDLogin();

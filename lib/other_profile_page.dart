@@ -116,6 +116,7 @@ class OtherProfilePage extends StatelessWidget {
                 }
 
                 List<DocumentSnapshot> documents = snapshot.data!.docs;
+                
 
                 if (documents.isEmpty) {
                   return Container(
