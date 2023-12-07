@@ -5,13 +5,16 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:tikitaka/Provider/postingan.dart';
 import 'package:tikitaka/model/Postingan.dart';
+import 'package:tikitaka/Provider/postingan.dart';
+import 'package:tikitaka/model/msgbox.dart';
 
 import 'Provider/user.dart';
 
 class ContenOther extends StatefulWidget {
   final String id;
   final bool profile;
-  const ContenOther({Key? key, required this.id, required this.profile}) : super(key: key);
+  const ContenOther({Key? key, required this.id, required this.profile})
+      : super(key: key);
 
   @override
   _ContenOtherState createState() => _ContenOtherState();
@@ -21,9 +24,8 @@ class _ContenOtherState extends State<ContenOther> {
   List<String> imageUrlList = [];
   List<String> musicUrlList = [];
   AudioPlayer _audioPlayer = AudioPlayer();
-  
-  
-
+  bool playmusic = false;
+  List<bool> isLikedList = [];
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _ContenOtherState extends State<ContenOther> {
       var url = await item.getDownloadURL();
       setState(() {
         imageUrlList.add(url);
+        isLikedList = List.filled(imageUrlList.length, false);
       });
     }
 
@@ -50,7 +53,6 @@ class _ContenOtherState extends State<ContenOther> {
       // _audioPlayer.play(url); // Simpan URL musik
       _audioPlayer.setSourceUrl(url);
       musicUrlList.add(url);
-      
     }
   }
 
@@ -64,24 +66,27 @@ class _ContenOtherState extends State<ContenOther> {
     var tinggi = MediaQuery.of(context).size.height;
     final User = Provider.of<UserProvider>(context, listen: false);
     final post = Provider.of<postinganProvider>(context, listen: false);
-
-
+    bool playmusic = false;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: IconButton(onPressed:() {
-          if( widget.profile == true){
-            Navigator.pushNamed(context, "/bottomnav2");
-
-          }
-          else{
-            Navigator.pushNamed(context, "/otherProfile");
-          }
-        }, icon: Icon(Icons.arrow_back, color: Colors.white),),
+        leading: IconButton(
+          onPressed: () {
+            if (widget.profile == true) {
+              Navigator.pushNamed(context, "/bottomnav2");
+            } else {
+              Navigator.pushNamed(context, "/otherProfile");
+            }
+          },
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+        ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('postingan').where('id_user', isEqualTo: widget.id).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('postingan')
+            .where('id_user', isEqualTo: widget.id)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -96,10 +101,12 @@ class _ContenOtherState extends State<ContenOther> {
           }
 
           List<DocumentSnapshot> documents = snapshot.data!.docs;
+          List<DocumentSnapshot> documents2 = snapshot.data!.docs;
 
           return ListView.builder(
             itemCount: documents.length,
             itemBuilder: (context, index) {
+              var idPostingan = documents2[index].id;
               var namaAkun = documents[index]['username'];
               var caption = documents[index]['caption'];
               var namaLagu = documents[index]['judul_lagu'];
@@ -109,21 +116,29 @@ class _ContenOtherState extends State<ContenOther> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _audioPlayer.play(UrlSource( documents[index]['urlLagu']));
+                       if(playmusic == false){
+                          playmusic = true;
+                          _audioPlayer.play(UrlSource( documents[index]['urlLagu']));
+                          
+                        }
+                       else if(playmusic == true){
+                        playmusic = false;
+                        _audioPlayer.stop();
+                       }
+                        
                       },
                       child: Container(
                         width: lebar,
-                        height: tinggi - 120,
+                        height: tinggi,
                         color: Color.fromARGB(255, 0, 0, 0),
                         child: PageView.builder(
-                          itemCount:documents[index]['urlpostingan'].length,
-                          itemBuilder: (context,idx) {
-                            return Image.network(
-                              documents[index]['urlpostingan'][idx],
-                              // fit: BoxFit.fill,
-                            );
-                          }
-                        ),
+                            itemCount: documents[index]['urlpostingan'].length,
+                            itemBuilder: (context, idx) {
+                              return Image.network(
+                                documents[index]['urlpostingan'][idx],
+                                // fit: BoxFit.fill,
+                              );
+                            }),
                       ),
                     ),
                     Container(
@@ -141,57 +156,91 @@ class _ContenOtherState extends State<ContenOther> {
                                 ),
                                 InkWell(
                                   onTap: () async {
-                                    await User.otherProfile(documents[index]['id_user']);
+                                    await User.otherProfile(
+                                        documents[index]['id_user']);
                                     User.searchPage = false;
-                                    Navigator.pushNamed(context, "/otherProfile");
-
+                                    Navigator.pushNamed(
+                                        context, "/otherProfile");
                                   },
                                   child: CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: Color.fromARGB(136, 145, 145, 145),
-                                    backgroundImage: NetworkImage(documents[index]['URlPotoProfile']),
+                                    backgroundColor:
+                                        Color.fromARGB(136, 145, 145, 145),
+                                    backgroundImage: NetworkImage(
+                                        documents[index]['URlPotoProfile']),
                                   ),
                                 ),
                                 Padding(padding: EdgeInsets.only(top: 10)),
-                                IconButton(
-                                  onPressed: () {
-                                    // print(documents[index]['urlpostingan'].length);
-                                    setState(() {
-                                    
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.favorite_border,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                Text(documents[index]['jumlaLike'].toString(),style: TextStyle(
-                                    color: Colors.white,)),
+//                                 IconButton(
+//                                   onPressed: () {
+//                                     // print(documents[index]['urlpostingan'].length);
+//                                     bool isLiked = isLikedList[index];
+
+// //                           // Perbarui status suka dan simpan ke Firestore
+//                           FirebaseFirestore.instance
+//                               .collection('postingan')
+//                               .doc(idPostingan)
+//                               .update({'isLiked': !isLiked});
+
+//                           setState(() {
+//                             isLikedList[index] = !isLiked;
+//                           });
+//                         },
+//                         icon: Icon(
+//                           isLikedList[index]
+//                               ? Icons.favorite
+//                               : Icons.favorite_border,
+//                           color: isLikedList[index] ? Colors.red : null,
+//                         ),
+//                       ),
+//                                 Text(documents[index]['jumlaLike'].toString(),
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                     )),
                                 // Padding(padding: EdgeInsets.only(top: 10)),
-                                 if(widget.profile == true)
-                                   IconButton(
-                                  onPressed: () async {
-                                    MessageBox msg = new MessageBox(title: "HAPUS KONTEN", message: "apa anda ingin manghapus konten ?");
-                                    if(msg.message == "yes")
-                                    await post.deleteDocumentById(documents[index].id);
-                                    Navigator.pushNamed(context, '/bottomnav2');
+                                if (widget.profile == true)
+                                  IconButton(
+                                    onPressed: () async {
+                                      msgbox msgbox1 = new msgbox();
+                                      bool? userChoice =
+                                          await msgbox1.showMessageBox(
+                                        context,
+                                        'HAPUS KONTEN',
+                                        'INGIN MENGHAPUS KONTEN',
+                                      );
 
-                                    
-                                    // print(documents[index]['urlpostingan'].length);
-                                    setState(() {
-                                      
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                )
-                                
-                               
+                                      if (userChoice != null) {
+                                        if (userChoice) {
+                                          setState(() async{
+                                            await post.deleteDocumentById(
+                                          documents[index].id);
+                                      Navigator.pushNamed(
+                                          context, '/bottomnav2');
+                                          print('User pressed OK');
+                                          });
+                                          
 
-                                
-                          
+                                          // User pressed OK
+                                          
+                                        } else {
+                                          // User pressed Cancel
+                                          print('User pressed Cancel');
+                                        }
+                                      }
+
+                                      // await post.deleteDocumentById(
+                                      //     documents[index].id);
+                                      // Navigator.pushNamed(
+                                      //     context, '/bottomnav2');
+
+                                      // print(documents[index]['urlpostingan'].length);
+                                      setState(() {});
+                                    },
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  )
                               ],
                             ),
                           ),
@@ -205,25 +254,33 @@ class _ContenOtherState extends State<ContenOther> {
                                 child: Text(
                                   namaAkun ?? '',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: 20, top: 10),
-                                child: Text(caption ?? '',style: TextStyle(
-                                    color: Colors.white,)),
+                                child: Text(caption ?? '',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    )),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 20, top: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 20, top: 10),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.my_library_music_outlined,color: Colors.white,),
+                                    Icon(
+                                      Icons.my_library_music_outlined,
+                                      color: Colors.white,
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 20),
-                                      child: Text(namaLagu ?? '',style: TextStyle(
-                                    color: Colors.white,)),
+                                      child: Text(namaLagu ?? '',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          )),
                                     )
                                   ],
                                 ),
