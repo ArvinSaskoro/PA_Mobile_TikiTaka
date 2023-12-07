@@ -33,6 +33,7 @@ class _AddContentState extends State<AddContent> {
 
   // String fileNameImage = '';
   // String fileNameMusic = '';
+  
   bool isReady = false;
   FilePickerResult? selectedResult;
   FilePickerResult? selectedMusicResult;
@@ -46,12 +47,13 @@ class _AddContentState extends State<AddContent> {
         // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
       });
     }
+    
 
     void _readytopost(){
       if (_judul.text != "" && _caption.text != "" && imagefilled == true && musicfilled == true  ) {
         isReady = true;
         setState(() {
-          
+          post.selectedFiles;
         });
       }
       else{print("data belum lengkap diisi");
@@ -270,9 +272,7 @@ class _AddContentState extends State<AddContent> {
                   Flexible(
                     child: Text(
                       selectedResult != null
-                          ? selectedResult!.files
-                              .map((file) => file.name)
-                              .join(', ')
+                          ? post.selectedFiles.join(', ')
                           : 'No files selected',
                       style: TextStyle(fontSize: 14),
                     ),
