@@ -125,7 +125,8 @@ class _SearchingPageState extends State<SearchingPage> {
                                             controller: _search,
                                             decoration: InputDecoration(
                                               hintText: 'Search...',
-                                              hintStyle: TextStyle(color: Colors.black),
+                                              hintStyle: TextStyle(
+                                                  color: Colors.black),
                                               border: InputBorder.none,
                                             ),
                                             onChanged: (String value) {
@@ -166,20 +167,6 @@ class _SearchingPageState extends State<SearchingPage> {
                 onTap: () async {
                   await User.searchFirestore(_search.text);
                   setState(() {});
-                  // setState(() {
-                  //   User.searchPage;
-                  // });
-                  // print(userrr.toString());
-                  //   print(User.listUser.length);
-                  //   User.listUser.forEach((user) {
-                  //   print("ID: ${user.id}");
-                  //   print("Username: ${user.username}");
-                  //   print("Email: ${user.email}");
-                  //   print("Bio: ${user.bio}");
-                  //   print("Path to Profile: ${user.path_potoProfile}");
-                  //   print("Password: ${user.pass}");
-                  //   print("\n");
-                  // });
                 },
                 child: Text(
                   "Search",
