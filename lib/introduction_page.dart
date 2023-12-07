@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'splash_page.dart';
@@ -12,24 +14,25 @@ class IntroductionPage extends StatelessWidget {
       globalBackgroundColor: Color.fromARGB(255, 29, 72, 106),
       next: Text(
         "Selanjutnya",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
       ),
       done: Text(
         "Selesai",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
       ),
       onDone: () {
         Navigator.of(context).pop();
         Navigator.pushNamed(context, '/');
         Navigator.pushNamed(context, '/splash');
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) {
-        //       return SplashScreen();
-        //     },
-        //   ),
-        // );
       },
+      dotsDecorator: DotsDecorator(
+        color: Color.fromARGB(255, 18, 45, 66), // Warna titik penunjuk
+        activeColor:
+            Colors.white,
+        size: Size(10.0, 10.0), // Ukuran titik penunjuk
+        activeSize: Size(12.0, 12.0), // Ukuran titik penunjuk aktif
+        spacing: EdgeInsets.all(3.0), // Jarak antar titik penunjuk
+      ),
       pages: [
         PageViewModel(
           titleWidget: Text(
