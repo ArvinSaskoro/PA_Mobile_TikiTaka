@@ -21,7 +21,8 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     final User = Provider.of<UserProvider>(context, listen: false);
-
+    final Size size = MediaQuery.of(context).size;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -35,7 +36,7 @@ class _SignUpState extends State<SignUp> {
           children: [
             // backgorund atas
             Container(
-              height: 260,
+              height: size.height * 0.3,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 29, 72, 106),

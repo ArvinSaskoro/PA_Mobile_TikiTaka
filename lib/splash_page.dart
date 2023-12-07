@@ -10,6 +10,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -20,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 100,
+                width: screenWidth * 0.5,
                 child: Image.asset(
                   "assets/logo.png",
                 ),
@@ -30,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 'New Experience',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 24,
+                  fontSize: screenWidth * 0.06,
                   color: Color.fromARGB(255, 18, 45, 66),
                 ),
               ),
@@ -39,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 'Make Your Day Happier With',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: screenWidth * 0.05,
                   color: Color.fromARGB(255, 18, 45, 66),
                 ),
                 textAlign: TextAlign.center,
@@ -49,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 'TikiTaka',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: screenWidth * 0.05,
                   color: Colors.black,
                 ),
                 textAlign: TextAlign.center,
@@ -67,6 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Text('Get Started',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.04,
                       color: Colors.white,
                     )),
               ),
@@ -78,6 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Text(
                   'Sign In To My Account',
                   style: TextStyle(
+                    fontSize: screenWidth * 0.04,
                     color: Color.fromARGB(255, 41, 179, 173),
                   ),
                 ),

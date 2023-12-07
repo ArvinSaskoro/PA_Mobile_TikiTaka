@@ -68,11 +68,9 @@ class MyApp extends StatelessWidget {
         '/contenMe': (context) => ContenOther(id: User.idlogin, profile: true),
         '/tes': (context) => MyHomePage(),
 
-
-
         //'/tes': (context) => tessW(),
       },
-      initialRoute: '/',
+      initialRoute: '/introduction',
     );
   }
 }

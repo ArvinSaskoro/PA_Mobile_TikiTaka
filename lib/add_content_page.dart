@@ -338,39 +338,6 @@ class _AddContentState extends State<AddContent> {
                     SizedBox(
                       width: 100,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Aksi untuk tombol "Discard" di sini
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(20),
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: Color.fromARGB(255, 18, 45, 66),
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(width: 5),
-                            Text(
-                              'Discard',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 18, 45, 66),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Spacer(),
-                    SizedBox(
-                      width: 100,
-                      child: ElevatedButton(
                         onPressed: isReady ? _upload : null,
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.all(20),
