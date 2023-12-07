@@ -20,6 +20,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     final User = Provider.of<UserProvider>(context, listen: false);
+    final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -34,7 +35,7 @@ class _SignInState extends State<SignIn> {
           children: [
             // background atas
             Container(
-              height: 260,
+              height: size.height * 0.35,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 29, 72, 106),
@@ -47,8 +48,8 @@ class _SignInState extends State<SignIn> {
                 children: [
                   SizedBox(height: 20),
                   Container(
-                    width: 150,
-                    height: 150,
+                    width: size.width * 0.45,
+                    height: size.width * 0.45,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
@@ -59,12 +60,12 @@ class _SignInState extends State<SignIn> {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15),
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                     child: Text(
                       "Take Your Creativity to the Next Level with Tiki Taka.",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: size.width * 0.05,
                         fontFamily: 'Raleway',
                       ),
                       textAlign: TextAlign.center,
@@ -73,14 +74,14 @@ class _SignInState extends State<SignIn> {
                 ],
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: size.height * 0.05),
 
             // Username
             SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25),
+                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 width: double.infinity,
-                height: 70,
+                height: size.height * 0.09,
                 child: TextField(
                   controller: _email,
                   decoration: InputDecoration(
@@ -122,9 +123,9 @@ class _SignInState extends State<SignIn> {
             // Password
             SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25),
+                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 width: double.infinity,
-                height: 70,
+                height: size.height * 0.09,
                 child: TextField(
                   controller: _pass,
                   obscureText: _obscureText,
@@ -172,7 +173,9 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
-            SizedBox(height: 30, ),
+            SizedBox(
+              height: 30,
+            ),
 
             // button bawah
             Expanded(
@@ -216,7 +219,7 @@ class _SignInState extends State<SignIn> {
               ),
             ),
 
-            SizedBox(height: 10),
+            SizedBox(height: size.height * 0.01),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -244,7 +247,7 @@ class _SignInState extends State<SignIn> {
                 )
               ],
             ),
-            SizedBox(height: 100),
+            SizedBox(height: size.height * 0.1),
           ],
         ),
       ),

@@ -50,7 +50,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).getTheme(),
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => IntroductionPage(),
+        '/splash': (context) => SplashScreen(),
         '/introduction': (context) => IntroductionPage(),
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
@@ -63,16 +64,13 @@ class MyApp extends StatelessWidget {
         '/bottomnav': (context) => bottomnav(idx: 0),
         '/bottomnav1': (context) => bottomnav(idx: 1),
         '/bottomnav2': (context) => bottomnav(idx: 2),
-        '/contenOther': (context) =>
-            ContenOther(id: User.userSearch.id, profile: false),
+        '/contenOther': (context) => ContenOther(id: User.userSearch.id, profile: false),
         '/contenMe': (context) => ContenOther(id: User.idlogin, profile: true),
         '/tes': (context) => MyHomePage(),
 
-
-
         //'/tes': (context) => tessW(),
       },
-      initialRoute: '/',
+      initialRoute: '/introduction',
     );
   }
 }

@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 
-
 import 'Provider/user.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -22,16 +21,16 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-    File? _image;
-    String? _namafile;
+  File? _image;
+  String? _namafile;
 
-
-    TextEditingController _username = TextEditingController();
-    TextEditingController _pass = TextEditingController();
-    TextEditingController _conpass = TextEditingController();
+  TextEditingController _username = TextEditingController();
+  TextEditingController _pass = TextEditingController();
+  TextEditingController _conpass = TextEditingController();
 
   Future<List<String>> fetchData() async {
-    final User = Provider.of<UserProvider>(context as BuildContext, listen: false);
+    final User =
+        Provider.of<UserProvider>(context as BuildContext, listen: false);
     // Contoh penundaan untuk mensimulasikan operasi async
     List<String> edit = [];
     edit.add(await User.getFieldById("username", User.idlogin));
@@ -40,24 +39,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _uploadImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
 
-FilePickerResult? result = await FilePicker.platform.pickFiles(
-    type: FileType.image,
-  );
+    if (result != null) {
+      String? filePath = result.paths.isNotEmpty ? result.paths.first : null;
 
-  if (result != null) {
-    String? filePath = result.paths.isNotEmpty ? result.paths.first : null;
-
-    if (filePath != null) {
-      File pickedFile = File(filePath);
-      setState(() {
-        _image = pickedFile;
-        _namafile = basename(filePath);
-      });
+      if (filePath != null) {
+        File pickedFile = File(filePath);
+        setState(() {
+          _image = pickedFile;
+          _namafile = basename(filePath);
+        });
+      }
     }
   }
-  }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -66,17 +63,14 @@ FilePickerResult? result = await FilePicker.platform.pickFiles(
     //     _username.text = result.first;
     //     _pass.text =result.last;
     // });
-    
-    
 
     FirebaseFirestore db = FirebaseFirestore.instance;
     CollectionReference users = db.collection("users");
-    
 
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.3),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.4),
         child: Stack(
           children: <Widget>[
             Container(
@@ -93,40 +87,36 @@ FilePickerResult? result = await FilePicker.platform.pickFiles(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  
-                    //  _image == null?
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon:
-                            Icon(Icons.camera_alt, color: Colors.blue, size: 50),
-                        onPressed: () {
-                          _uploadImage();
-                        },
-                      ),
-                      // child: Image(image: FileImage(_image!)),
-                    )
-                    // Container(
-                    //   width: 100,
-                    //   height: 100,
-                    //   decoration: BoxDecoration(
-                        
-                    //     color: Colors.white,
-                    //     shape: BoxShape.circle,
-                    //   ),
-                     
-                    //   child: Image(image: FileImage(_image!)),),
-                    //   ElevatedButton(onPressed: (){
-                    //     print(_image!);
-                    //   }, child: Text("data"))
-                  
-                  
+                  //  _image == null?
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon:
+                          Icon(Icons.camera_alt, color: Colors.blue, size: 50),
+                      onPressed: () {
+                        _uploadImage();
+                      },
+                    ),
+                    // child: Image(image: FileImage(_image!)),
+                  )
+                  // Container(
+                  //   width: 100,
+                  //   height: 100,
+                  //   decoration: BoxDecoration(
+
+                  //     color: Colors.white,
+                  //     shape: BoxShape.circle,
+                  //   ),
+
+                  //   child: Image(image: FileImage(_image!)),),
+                  //   ElevatedButton(onPressed: (){
+                  //     print(_image!);
+                  //   }, child: Text("data"))
                 ],
               ),
             ),
@@ -164,11 +154,10 @@ FilePickerResult? result = await FilePicker.platform.pickFiles(
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: _pass,
                   decoration: InputDecoration(
-                    
                     labelText: 'New Password',
                     hintText: 'Enter your new password',
                     border: OutlineInputBorder(),
@@ -181,7 +170,7 @@ FilePickerResult? result = await FilePicker.platform.pickFiles(
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: _conpass,
                   decoration: InputDecoration(
@@ -197,27 +186,34 @@ FilePickerResult? result = await FilePicker.platform.pickFiles(
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
-                     if(_pass.text == _conpass.text){
-                        
-                          if (User.userAuth != null){
-                            if(_image != null){
-                              final ref =  FirebaseStorage.instance.ref().child('user/$_namafile');
-                              await ref.putFile(_image!);
-                              String downloadUrl = await FirebaseStorage.instance.ref().child('user/$_namafile').getDownloadURL();
-                              print(downloadUrl);
-                              await users.doc(User.idlogin).update({'username': _username.text, 'pass': _pass.text,'path_potoProfile':downloadUrl});
-                            }
-                            else{
-                              await users.doc(User.idlogin).update({'username': _username.text, 'pass': _pass.text});
-
-                            }
-                          
-                            Navigator.pop(context);
+                    if (_pass.text == _conpass.text) {
+                      if (User.userAuth != null) {
+                        if (_image != null) {
+                          final ref = FirebaseStorage.instance
+                              .ref()
+                              .child('user/$_namafile');
+                          await ref.putFile(_image!);
+                          String downloadUrl = await FirebaseStorage.instance
+                              .ref()
+                              .child('user/$_namafile')
+                              .getDownloadURL();
+                          print(downloadUrl);
+                          await users.doc(User.idlogin).update({
+                            'username': _username.text,
+                            'pass': _pass.text,
+                            'path_potoProfile': downloadUrl
+                          });
+                        } else {
+                          await users.doc(User.idlogin).update(
+                              {'username': _username.text, 'pass': _pass.text});
                         }
+
+                        Navigator.pop(context);
                       }
+                    }
                   },
                   child: Text('Apply', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(
@@ -234,6 +230,5 @@ FilePickerResult? result = await FilePicker.platform.pickFiles(
         ],
       ),
     );
-   
   }
 }
