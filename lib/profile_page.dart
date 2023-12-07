@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.5),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.4),
         child: Stack(
           children: <Widget>[
             Container(

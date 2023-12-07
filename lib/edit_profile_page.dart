@@ -70,7 +70,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.3),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.4),
         child: Stack(
           children: <Widget>[
             Container(
@@ -154,7 +154,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: _pass,
                   decoration: InputDecoration(
@@ -170,7 +170,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: _conpass,
                   decoration: InputDecoration(
@@ -186,7 +186,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
                     if (_pass.text == _conpass.text) {

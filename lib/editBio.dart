@@ -21,7 +21,7 @@ class _EditBioPageState extends State<EditBioPage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.3),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.4),
         child: Stack(
           children: <Widget>[
             Container(
@@ -69,7 +69,7 @@ class _EditBioPageState extends State<EditBioPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: _bio,
                   maxLines: 3, // Jumlah baris untuk textfield
@@ -86,7 +86,7 @@ class _EditBioPageState extends State<EditBioPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
                     if (User.userAuth != null) {
