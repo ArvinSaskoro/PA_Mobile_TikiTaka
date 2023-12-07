@@ -13,8 +13,11 @@ import 'dart:typed_data';
 import 'package:provider/provider.dart';
 import 'package:tikitaka/Provider/user.dart';
 import 'package:tikitaka/model/Postingan.dart';
+import 'dart:io';
 
 import 'Provider/postingan.dart';
+bool imagefilled = false;
+bool musicfilled = false;
 
 class AddContent extends StatefulWidget {
   @override
@@ -44,19 +47,34 @@ class _AddContentState extends State<AddContent> {
       });
     }
 
+    void _readytopost(){
+      if (_judul.text != "" && _caption.text != "" && imagefilled == true && musicfilled == true  ) {
+        isReady = true;
+        setState(() {
+          
+        });
+      }
+      else{print("data belum lengkap diisi");
+      }
+      setState(() {});
+    }
+
+  
+  
     Future<void> _pickFiles() async {
       final post = Provider.of<postinganProvider>(context, listen: false);
 
       try {
+        imagefilled = true;
         FilePickerResult? result = await FilePicker.platform.pickFiles(
           type: FileType.image,
           allowMultiple: true,
         );
 
         if (result != null) {
-          post.selectedFiles = result.files.map((file) => file.bytes!).toList();
+          post.selectedFiles = result.paths.map((path) => File(path!)).toList();
           FilePickerResult? selectedResult;
-
+          print(post.selectedFiles);
           // post.selectedFiles = List.from(result.files)
 
           setState(() {});
@@ -68,22 +86,25 @@ class _AddContentState extends State<AddContent> {
       } catch (e) {
         print('Error picking or uploading images: $e');
       }
+      _readytopost();
     }
 
     Future<void> _pickMusic() async {
       final post = Provider.of<postinganProvider>(context, listen: false);
 
       try {
+         musicfilled = true;
         FilePickerResult? result = await FilePicker.platform.pickFiles(
           type: FileType.audio,
           allowMultiple: false,
         );
 
         if (result != null) {
-          post.bytes = result.files.single.bytes!;
+          post.bytes = File(result.files.single.path!);
           post.judul_lagu =
               result.files.single.name!; // Gunakan nama file dari properti name
           selectedMusicResult = result;
+          print(post.bytes);
           checkReadyState();
           // isReady = post.judul_lagu.isNotEmpty && post.selectedFiles.isNotEmpty;
           print(
@@ -95,6 +116,7 @@ class _AddContentState extends State<AddContent> {
       } catch (e) {
         print('Error picking or uploading audio: $e');
       }
+      _readytopost();
     }
 
     Future<void> _upload() async {
@@ -112,6 +134,10 @@ class _AddContentState extends State<AddContent> {
           context, 'BERHASIL', 'Postingan anda berhasil di unggah');
       setState(() {
         post.judul_lagu = '';
+        post.selectedFiles = [];
+        post.bytes = null;
+        post.url_lagu = "";
+        post.url =[];
         // post.selectedFiles= const [];
       });
       // Navigator.pushNamed(context, '/bottomnav');
@@ -212,7 +238,7 @@ class _AddContentState extends State<AddContent> {
                     width: 140,
                     child: ElevatedButton(
                       onPressed:
-                          // await _pickFiles();
+                        
                           _pickFiles,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.all(20),

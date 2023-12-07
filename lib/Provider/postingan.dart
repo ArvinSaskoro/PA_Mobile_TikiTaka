@@ -1,24 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-// import 'dart:html' as html;
 import 'dart:typed_data';
-import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
-
 FirebaseFirestore db = FirebaseFirestore.instance;
-class postinganProvider extends ChangeNotifier{
 
-  // List<html.File> selectedFiles = [];
-  List<Uint8List> selectedFiles = [];
+class postinganProvider extends ChangeNotifier {
+  List<File> selectedFiles = [];
   List<String> url = [];
   String judul_lagu = "";
   String url_lagu = "";
-  Uint8List? bytes;
+  File? bytes;
 
   Future<void> addPostingan(
-     String iduser,
+    String iduser,
     String urlLagu,
     String caption,
     int jumlaLike,
@@ -27,97 +23,102 @@ class postinganProvider extends ChangeNotifier{
     String judullagu,
     String urlpoto,
     String judul,
-
-    
-    ) async {
+  ) async {
     final CollectionReference postingan = db.collection('postingan');
 
     try {
-      DocumentReference doc = await postingan.add({
-        'id_user' : iduser,
-        'urlLagu' : urlLagu,
-        'caption'  : caption,
-        'jumlaLike' : jumlaLike,
-        'urlpostingan' : urlpostingan,
-        'username' : username,
-        'judul_lagu' : judullagu,
-        'URlPotoProfile' : urlpoto,
-        'judulpostingan' : judul,
-
-
+      await postingan.add({
+        'id_user': iduser,
+        'urlLagu': urlLagu,
+        'caption': caption,
+        'jumlaLike': jumlaLike,
+        'urlpostingan': urlpostingan,
+        'username': username,
+        'judul_lagu': judullagu,
+        'URlPotoProfile': urlpoto,
+        'judulpostingan': judul,
       });
     } catch (error) {
-      print('Error: $error');
+      print('Error adding postingan: $error');
     }
-      notifyListeners();
-
+    notifyListeners();
   }
 
-  void showMessageBox(BuildContext context, String titlle, String msg) {
-  MessageBox msgBox = MessageBox(
-    title: titlle,
-    message: msg,
-  );
+  void showMessageBox(BuildContext context, String title, String msg) {
+    MessageBox msgBox = MessageBox(
+      title: title,
+      message: msg,
+    );
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return msgBox;
-    },
-  );
-}
-
-
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return msgBox;
+      },
+    );
+  }
 
   Future<void> uploadFiles() async {
-    try {
-      final storage = FirebaseStorage.instance;
+  try {
+    final storage = FirebaseStorage.instance;
 
-      for (var byteData in selectedFiles) {
-        // Convert Uint8List to File
-        final file = File.fromRawPath(byteData);
+    for (var file in selectedFiles) {
+      if (file != null) {
+        String fileName = 'gambar_${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-        final ref = storage.ref().child('postingan/gambar/${file.path}');
-        await ref.putFile(file);
+        Uint8List byteData = await file.readAsBytes();
 
-        String downloadUrl = await ref.getDownloadURL();
+        Reference storageReference =
+            storage.ref().child('postingan/gambar/$fileName');
+        await storageReference.putData(byteData);
+
+        String downloadUrl = await storageReference.getDownloadURL();
         url.add(downloadUrl);
 
         print('File uploaded: $downloadUrl');
       }
-    } catch (error) {
-      print('Error uploading image: $error');
     }
-    
-  }
-
-  Future<void> uploadlagu() async {
-    Reference storageReference = FirebaseStorage.instance.ref().child('postingan/musik/${judul_lagu}');
-    UploadTask uploadTask = storageReference.putData(bytes!);
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-    url_lagu = await taskSnapshot.ref.getDownloadURL();
-    // addMusic(namamusik!, audioUrl!);
-  }
-
-  Future<void> deleteDocumentById(String documentId) async {
-  try {
-    // Mendapatkan referensi dokumen berdasarkan ID
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('postingan').doc(documentId);
-
-    // Menghapus dokumen dari Firestore
-    await documentReference.delete();
-
-    print('Dokumen dengan ID $documentId berhasil dihapus.');
   } catch (error) {
-    print('Error: $error');
+    print('Error uploading image: $error');
   }
 }
 
+  Future<void> uploadlagu() async {
+    try {
+      if (bytes != null && judul_lagu.isNotEmpty) {
+        String fileName =
+            'musik_${DateTime.now().millisecondsSinceEpoch}.mp3';
 
+        Reference storageReference =
+            FirebaseStorage.instance.ref().child('postingan/musik/$fileName');
 
+        UploadTask uploadTask = storageReference.putFile(bytes!);
 
+        TaskSnapshot taskSnapshot = await uploadTask;
 
+        url_lagu = await taskSnapshot.ref.getDownloadURL();
+
+        print('Upload successful. Download URL: $url_lagu');
+      } else {
+        print('Error: bytes is null or judul_lagu is empty');
+      }
+    } catch (error) {
+      print('Error during music upload: $error');
+    }
+  }
+
+  Future<void> deleteDocumentById(String documentId) async {
+    try {
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('postingan').doc(documentId);
+
+      await documentReference.delete();
+
+      print('Document with ID $documentId successfully deleted.');
+    } catch (error) {
+      print('Error deleting document: $error');
+    }
+  }
 }
 
 class MessageBox extends StatelessWidget {
