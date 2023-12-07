@@ -341,7 +341,7 @@ class _AddContentState extends State<AddContent> {
                         ),
                       ),
                     ),
-                    Spacer(), 
+                    Spacer(),
                     SizedBox(
                       width: 100,
                       child: ElevatedButton(

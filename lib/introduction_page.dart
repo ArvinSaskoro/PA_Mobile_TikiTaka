@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'splash_page.dart';
 
 class IntroductionPage extends StatelessWidget {
   const IntroductionPage({super.key});
@@ -14,6 +13,13 @@ class IntroductionPage extends StatelessWidget {
       onDone: () {
         Navigator.of(context).pop();
         Navigator.pushNamed(context, '/');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return SplashScreen();
+            },
+          ),
+        );
       },
       pages: [
         PageViewModel(
@@ -25,28 +31,30 @@ class IntroductionPage extends StatelessWidget {
             ),
           ),
           bodyWidget: Text(
-            "A Place Where You Can Express Yourself",
+            "TikiTaka Is A Mobile Video Music Platform Where You Can Express Yourself Through Pictures And Musics With Other People",
             style: TextStyle(
               color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
-          image: Image.network("https://picsum.photos/800/500"),
+          image: Image.asset('assets/logo.png'),
         ),
         PageViewModel(
           titleWidget: Text(
-            "Find Yourself",
+            "Interact With Others",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
           bodyWidget: Text(
-            "Discover What It Means To Be Yourself",
+            "Discover Other People And Interact With Them Using Our App",
             style: TextStyle(
               color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
-          image: Image.network("https://picsum.photos/800/600"),
+          image: Image.asset('assets/nongki.png'),
         ),
         PageViewModel(
           titleWidget: Text(
@@ -57,12 +65,13 @@ class IntroductionPage extends StatelessWidget {
             ),
           ),
           bodyWidget: Text(
-            "Go And Feel It Yourself",
+            "Go And Feel It Yourself, Get Started Now And Discover What It Meant To Be You",
             style: TextStyle(
               color: Colors.white, // Ganti warna teks body ke putih di sini
             ),
+            textAlign: TextAlign.center,
           ),
-          image: Image.network("https://picsum.photos/900/700"),
+          image: Image.asset('assets/img3.png'),
         ),
       ],
     );
