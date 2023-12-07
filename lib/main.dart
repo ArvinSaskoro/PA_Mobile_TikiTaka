@@ -16,6 +16,7 @@ import 'package:tikitaka/searching_page.dart';
 import 'package:tikitaka/signin_page.dart';
 import 'package:tikitaka/signup_page.dart';
 import 'package:tikitaka/splash_page.dart';
+import 'package:tikitaka/tes.dart';
 //import 'package:tikitaka/tes.dart';
 import 'Provider/postingan.dart';
 
@@ -65,6 +66,9 @@ class MyApp extends StatelessWidget {
         '/contenOther': (context) =>
             ContenOther(id: User.userSearch.id, profile: false),
         '/contenMe': (context) => ContenOther(id: User.idlogin, profile: true),
+        '/tes': (context) => MyHomePage(),
+
+
 
         //'/tes': (context) => tessW(),
       },

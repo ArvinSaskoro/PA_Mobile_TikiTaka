@@ -1,135 +1,61 @@
-// // import 'dart:js';
-// import 'dart:typed_data';
-// import 'dart:html' as html;
-// import 'package:flutter/material.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:provider/provider.dart';
-
-// import 'Provider/postingan.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: MultipleImageUploadPage(),
-//     );
-//   }
-// }
-
-// class MultipleImageUploadPage extends StatefulWidget {
-
-//   @override
-//   _MultipleImageUploadPageState createState() => _MultipleImageUploadPageState();
-// }
-
-// class _MultipleImageUploadPageState extends State<MultipleImageUploadPage> {
-  
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Multiple File Upload'),
-//       ),
-//       body: Column(
-//         children: [
-//           ElevatedButton(
-//             onPressed: _pickFiles,
-//             child: Text('Pick Files'),
-//           ),
-//           SizedBox(height: 20),
-//           Expanded(
-//             child: ListView.builder(
-//               itemCount: _selectedFiles.length,
-//               itemBuilder: (context, index) {
-//                 return Text(_selectedFiles[index].name);
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// // import 'package:flutter/material.dart';
-
-// // void main() {
-// //   runApp(MyApp());
-// // }
-
-// // class MyApp extends StatelessWidget {
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return MaterialApp(
-// //       home: ImageSlider(),
-// //     );
-// //   }
-// // }
-
-// // class ImageSlider extends StatelessWidget {
-// //   final List<String> imageUrls = [
-// //     'https://example.com/image1.jpg',
-// //     'https://example.com/image2.jpg',
-// //     'https://example.com/image3.jpg',
-// //     // Tambahkan URL gambar lainnya
-// //   ];
-
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Scaffold(
-// //       appBar: AppBar(
-// //         title: Text('Image Slider'),
-// //       ),
-// //       body: PageView.builder(
-// //         itemCount: imageUrls.length,
-// //         itemBuilder: (context, index) {
-// //           return Image.network(
-// //             imageUrls[index],
-// //             fit: BoxFit.cover,
-// //           );
-// //         },
-// //       ),
-// //     );
-// //   }
-// // }
-
-
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 
-// class Tess {
-  void testing() {
-  String mainString = "toyota allion 260 2010";
-  String substring = "allion";
-
-  bool containsSubstring = mainString.contains(substring);
-
-  print(containsSubstring);
-  
-  String tes = "toyota allion 260 2010";
-  String tess = "to";
-
-  bool hmm = tes.contains(tess);
-
-  print(hmm); // Output: true if contains, false otherwise
+void main() {
+  runApp(MyApp());
 }
-// Output: true if contains, false otherwise
-// }
 
-class tessW extends StatelessWidget {
-  const tessW({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ElevatedButton(onPressed:() {
-        testing();
-        
-      }, child: Text("data")),
+    return MaterialApp(
+      home: MyHomePage(),
     );
   }
 }
 
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<File> _files = [];
+
+  Future _pickFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+    );
+
+    if (result != null) {
+      List<File> pickedFiles = result.paths.map((path) => File(path!)).toList();
+      setState(() {
+        _files = pickedFiles;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('File Picker Example'),
+      ),
+      body: Center(
+        child: _files.isEmpty
+            ? Text('Pilih file dari galeri')
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _files.map((file) => Image.file(file)).toList(),
+              ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _pickFiles,
+        tooltip: 'Pilih File',
+        child: Icon(Icons.file_upload),
+      ),
+    );
+  }
+}

@@ -189,7 +189,7 @@ class _ContenOtherState extends State<ContenOther> {
                                
 
                                 
-                               
+                          
                               ],
                             ),
                           ),
