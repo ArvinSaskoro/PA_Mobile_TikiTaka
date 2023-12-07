@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.25),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.5),
         child: Stack(
           children: <Widget>[
             Container(
@@ -80,7 +80,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       }
                     },
                   ),
-
                   StreamBuilder<DocumentSnapshot>(
                     stream: User.users.doc(User.idlogin).snapshots(),
                     builder: (_, snapshot) {
@@ -102,7 +101,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                   SizedBox(height: 10),
-
                   GestureDetector(
                     onTap: () {
                       // Tambahkan logika untuk mengedit atau menambah bio
