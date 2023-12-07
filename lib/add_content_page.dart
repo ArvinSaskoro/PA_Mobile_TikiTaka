@@ -16,6 +16,7 @@ import 'package:tikitaka/model/Postingan.dart';
 import 'dart:io';
 
 import 'Provider/postingan.dart';
+
 bool imagefilled = false;
 bool musicfilled = false;
 
@@ -49,8 +50,11 @@ class _AddContentState extends State<AddContent> {
     }
     
 
-    void _readytopost(){
-      if (_judul.text != "" && _caption.text != "" && imagefilled == true && musicfilled == true  ) {
+    void _readytopost() {
+      if (_judul.text != "" &&
+          _caption.text != "" &&
+          imagefilled == true &&
+          musicfilled == true) {
         isReady = true;
         setState(() {
           post.selectedFiles;
@@ -61,8 +65,6 @@ class _AddContentState extends State<AddContent> {
       setState(() {});
     }
 
-  
-  
     Future<void> _pickFiles() async {
       final post = Provider.of<postinganProvider>(context, listen: false);
 
@@ -95,7 +97,7 @@ class _AddContentState extends State<AddContent> {
       final post = Provider.of<postinganProvider>(context, listen: false);
 
       try {
-         musicfilled = true;
+        musicfilled = true;
         FilePickerResult? result = await FilePicker.platform.pickFiles(
           type: FileType.audio,
           allowMultiple: false,
@@ -139,7 +141,7 @@ class _AddContentState extends State<AddContent> {
         post.selectedFiles = [];
         post.bytes = null;
         post.url_lagu = "";
-        post.url =[];
+        post.url = [];
         // post.selectedFiles= const [];
       });
       // Navigator.pushNamed(context, '/bottomnav');
@@ -218,14 +220,14 @@ class _AddContentState extends State<AddContent> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 18, 45, 66),
+                        color: Color.fromARGB(255, 41, 179, 173),
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 18, 45, 66),
+                        color: Color.fromARGB(255, 41, 179, 173),
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(10),
@@ -239,9 +241,7 @@ class _AddContentState extends State<AddContent> {
                   SizedBox(
                     width: 140,
                     child: ElevatedButton(
-                      onPressed:
-                        
-                          _pickFiles,
+                      onPressed: _pickFiles,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.all(20),
                         backgroundColor: Color.fromARGB(255, 29, 72, 106),
@@ -263,12 +263,6 @@ class _AddContentState extends State<AddContent> {
                     ),
                   ),
                   SizedBox(width: 10),
-                  // Flexible(
-                  //   child: Text(
-                  //     post.selectedFiles.toString(),
-                  //     style: TextStyle(fontSize: 14),
-                  //   ),
-                  // ),
                   Flexible(
                     child: Text(
                       selectedResult != null
@@ -294,7 +288,6 @@ class _AddContentState extends State<AddContent> {
 
               Row(
                 children: [
-                  // Tombol pertama
                   SizedBox(
                     width: 140,
                     child: ElevatedButton(
@@ -323,7 +316,7 @@ class _AddContentState extends State<AddContent> {
                   Flexible(
                     child: Text(
                       selectedMusicResult != null
-                          ? selectedMusicResult!.files.single.name!
+                          ? selectedMusicResult!.files.single.name
                           : 'No music selected',
                       style: TextStyle(fontSize: 14),
                     ),

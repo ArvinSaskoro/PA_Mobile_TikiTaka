@@ -102,21 +102,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         _uploadImage();
                       },
                     ),
-                    // child: Image(image: FileImage(_image!)),
                   )
-                  // Container(
-                  //   width: 100,
-                  //   height: 100,
-                  //   decoration: BoxDecoration(
-
-                  //     color: Colors.white,
-                  //     shape: BoxShape.circle,
-                  //   ),
-
-                  //   child: Image(image: FileImage(_image!)),),
-                  //   ElevatedButton(onPressed: (){
-                  //     print(_image!);
-                  //   }, child: Text("data"))
                 ],
               ),
             ),
