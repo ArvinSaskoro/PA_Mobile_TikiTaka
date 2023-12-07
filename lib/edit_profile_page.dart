@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 // import 'dart:html' as html;
 import 'dart:typed_data';
@@ -20,15 +21,16 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  Uint8List? _image;
-  String namafile = "";
+  File? _image;
+  String? _namafile;
 
   TextEditingController _username = TextEditingController();
   TextEditingController _pass = TextEditingController();
   TextEditingController _conpass = TextEditingController();
 
   Future<List<String>> fetchData() async {
-    final User = Provider.of<UserProvider>(context, listen: false);
+    final User =
+        Provider.of<UserProvider>(context as BuildContext, listen: false);
     // Contoh penundaan untuk mensimulasikan operasi async
     List<String> edit = [];
     edit.add(await User.getFieldById("username", User.idlogin));
@@ -37,36 +39,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _uploadImage() async {
-    // // final html.InputElement input = html.FileUploadInputElement()..accept = 'image/*';
-    // final html.FileUploadInputElement input = html.FileUploadInputElement();
-    // input.accept = 'user/*';
-    // input.click();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
 
-    // input.onChange.listen((event) {
-    //   final files = input.files;
-    //   if (files != null && files.isNotEmpty) {
-    //     final file = files[0];
-    //     final reader = html.FileReader();
-    //     reader.readAsArrayBuffer(file);
-    //     reader.onLoadEnd.listen((loadEndEvent) async {
-    //       final Uint8List data = reader.result as Uint8List;
-    //       _image = data;
-    //       namafile = file.name;
-    //       // print(namafile);
+    if (result != null) {
+      String? filePath = result.paths.isNotEmpty ? result.paths.first : null;
 
-    //     });
-    //   }
-    // });
+      if (filePath != null) {
+        File pickedFile = File(filePath);
+        setState(() {
+          _image = pickedFile;
+          _namafile = basename(filePath);
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final User = Provider.of<UserProvider>(context, listen: false);
-
-    fetchData().then((result) {
-      _username.text = result.first;
-      _pass.text = result.last;
-    });
+    // fetchData().then((result) {
+    //     _username.text = result.first;
+    //     _pass.text =result.last;
+    // });
 
     FirebaseFirestore db = FirebaseFirestore.instance;
     CollectionReference users = db.collection("users");
@@ -195,20 +191,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   onPressed: () async {
                     if (_pass.text == _conpass.text) {
                       if (User.userAuth != null) {
-                        final ref = FirebaseStorage.instance
-                            .ref()
-                            .child('user/$namafile');
-                        await ref.putData(_image!);
-                        String downloadUrl = await FirebaseStorage.instance
-                            .ref()
-                            .child('user/$namafile')
-                            .getDownloadURL();
-                        print(downloadUrl);
-                        await users.doc(User.idlogin).update({
-                          'username': _username.text,
-                          'pass': _pass.text,
-                          'path_potoProfile': downloadUrl
-                        });
+                        if (_image != null) {
+                          final ref = FirebaseStorage.instance
+                              .ref()
+                              .child('user/$_namafile');
+                          await ref.putFile(_image!);
+                          String downloadUrl = await FirebaseStorage.instance
+                              .ref()
+                              .child('user/$_namafile')
+                              .getDownloadURL();
+                          print(downloadUrl);
+                          await users.doc(User.idlogin).update({
+                            'username': _username.text,
+                            'pass': _pass.text,
+                            'path_potoProfile': downloadUrl
+                          });
+                        } else {
+                          await users.doc(User.idlogin).update(
+                              {'username': _username.text, 'pass': _pass.text});
+                        }
+
                         Navigator.pop(context);
                       }
                     }
